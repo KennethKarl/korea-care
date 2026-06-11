@@ -4,6 +4,8 @@ import {
   Building2, ChevronRight, Hotel, Languages, HeartPulse,
   Stethoscope, Award, Image as ImageIcon,
   Settings, Plus, Trash2, X, Eye, Type, Move, Palette,
+  ArrowLeft, Phone, Mail, Send, ChevronDown, HelpCircle,
+  Calendar, Users, CheckCircle2, MessageSquare,
 } from "lucide-react";
 
 /* =========================================================================
@@ -70,26 +72,68 @@ const initialContent = {
   ],
 };
 
+/* ----------------------- shared: total-care steps ----------------------- */
+const CARE_STEPS = [
+  { icon: Stethoscope, t: "Care plan & match", d: "We match a covered program to your records." },
+  { icon: Plane, t: "Travel arranged", d: "Flights, visa, pickup for you and a companion." },
+  { icon: Languages, t: "In-Korea support", d: "Dedicated English interpreter and coordinator." },
+  { icon: Hotel, t: "Recovery stay", d: "Hospital-adjacent accommodation booked." },
+  { icon: HeartPulse, t: "US aftercare", d: "Follow-up coordinated with your home doctor." },
+];
+
 /* ============================== ROOT ============================== */
 export default function App() {
   const [content, setContent] = useState(initialContent);
   const [showEditor, setShowEditor] = useState(true);
   const [activeDeptId, setActiveDeptId] = useState(initialContent.departments[0].id);
+  // simple in-app routing: { name: "home" | "detail" | "faq" | "contact", deptId?, hospitalId? }
+  const [route, setRoute] = useState({ name: "home" });
 
   const activeDepts = content.departments.filter((d) => d.active);
   const safeDeptId = activeDepts.find((d) => d.id === activeDeptId) ? activeDeptId : activeDepts[0]?.id;
 
+  const go = (next) => { setRoute(next); window.scrollTo({ top: 0, behavior: "auto" }); };
+  const goHome = () => go({ name: "home" });
+
+  // resolve detail target live from content (stays in sync with admin edits)
+  const detailDept = route.name === "detail" ? content.departments.find((d) => d.id === route.deptId) : null;
+  const detailHospital = detailDept ? detailDept.hospitals.find((h) => h.id === route.hospitalId) : null;
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", background: "#f4f6f7", minHeight: "100vh", display: "flex" }}>
-      <div style={{ flex: 1, minWidth: 0, overflowX: "hidden" }}>
-        <Nav content={content} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} />
+      <div style={{ flex: 1, minWidth: 0, overflowX: "hidden", display: "flex", flexDirection: "column" }}>
+        <Nav content={content} route={route} onNav={go} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} />
         <InsurerBanner insurer={content.brand.insurer} />
-        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px" }}>
-          <Hero hero={content.hero} />
-          <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
-          <Results dept={activeDepts.find((d) => d.id === safeDeptId)} />
-          <TotalCare />
+        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
+          {route.name === "home" && (
+            <>
+              <Hero hero={content.hero} />
+              <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
+              <Results
+                dept={activeDepts.find((d) => d.id === safeDeptId)}
+                onView={(h, d) => go({ name: "detail", deptId: d.id, hospitalId: h.id })}
+              />
+              <TotalCare />
+            </>
+          )}
+          {route.name === "detail" && (
+            <HospitalDetail
+              hospital={detailHospital}
+              dept={detailDept}
+              insurer={content.brand.insurer}
+              onBack={goHome}
+              onContact={() => go({ name: "contact", hospitalId: route.hospitalId, deptId: route.deptId })}
+            />
+          )}
+          {route.name === "faq" && <FAQPage onContact={() => go({ name: "contact" })} />}
+          {route.name === "contact" && (
+            <ContactPage
+              depts={content.departments}
+              prefillHospital={content.departments.find((d) => d.id === route.deptId)?.hospitals.find((h) => h.id === route.hospitalId)}
+            />
+          )}
         </div>
+        <Footer brand={content.brand} onNav={go} onHome={goHome} />
       </div>
 
       {showEditor && (
@@ -106,16 +150,33 @@ export default function App() {
 }
 
 /* ------------------------------ Nav ------------------------------ */
-function Nav({ content, onToggleEditor, editorOpen }) {
+function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen }) {
+  const links = [
+    { id: "home", label: "Programs", on: () => onHome() },
+    { id: "faq", label: "FAQ", on: () => onNav({ name: "faq" }) },
+    { id: "contact", label: "Contact Us", on: () => onNav({ name: "contact" }) },
+  ];
   return (
-    <div style={{ background: "#fff", borderBottom: `1px solid ${LINE}` }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 20, color: TEAL }}>
+    <div style={{ background: "#fff", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 5 }}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+        <button onClick={onHome} style={{ border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 20, color: TEAL, padding: 0 }}>
           <Plane size={20} /> {content.brand.name}
-        </div>
-        <button onClick={onToggleEditor} style={{ ...btn(editorOpen ? TEAL : "#fff", editorOpen ? "#fff" : SUB), border: editorOpen ? "none" : `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", gap: 6 }}>
-          <Settings size={15} /> {editorOpen ? "Admin: on" : "Admin"}
         </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+          {links.map((l) => {
+            const active = route?.name === l.id;
+            return (
+              <button key={l.id} onClick={l.on} style={{
+                border: "none", background: "transparent", cursor: "pointer",
+                padding: "8px 12px", borderRadius: 8, fontSize: 14,
+                fontWeight: active ? 700 : 500, color: active ? TEAL : SUB,
+              }}>{l.label}</button>
+            );
+          })}
+          <button onClick={onToggleEditor} style={{ ...btn(editorOpen ? TEAL : "#fff", editorOpen ? "#fff" : SUB), border: editorOpen ? "none" : `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 4 }}>
+            <Settings size={15} /> {editorOpen ? "Admin: on" : "Admin"}
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -206,7 +267,7 @@ function DeptChips({ depts, activeId, onPick }) {
 }
 
 /* ----------------------------- Results ----------------------------- */
-function Results({ dept }) {
+function Results({ dept, onView }) {
   if (!dept) return <div style={{ marginTop: 30, color: MUTE }}>No active departments. Enable one in the admin panel.</div>;
   return (
     <div style={{ marginTop: 24 }}>
@@ -247,7 +308,7 @@ function Results({ dept }) {
               <div style={{ fontSize: 11, color: MUTE, marginTop: 4 }}>Korea all-in</div>
               <div style={{ fontSize: 22, fontWeight: 800, color: TEAL }}>${h.kr.toLocaleString()}</div>
               <div style={{ fontSize: 11, color: "#1f9d6b", fontWeight: 700 }}>Save ${(h.us - h.kr).toLocaleString()}</div>
-              <button style={{ ...btn(TEAL, "#fff"), marginTop: 10, fontSize: 13, display: "flex", alignItems: "center", gap: 6, justifyContent: "center", width: "100%" }}>
+              <button onClick={() => onView(h, dept)} style={{ ...btn(TEAL, "#fff"), marginTop: 10, fontSize: 13, display: "flex", alignItems: "center", gap: 6, justifyContent: "center", width: "100%" }}>
                 View plan <ChevronRight size={15} />
               </button>
             </div>
@@ -260,31 +321,341 @@ function Results({ dept }) {
 
 /* ---------------------------- Total care --------------------------- */
 function TotalCare() {
-  const steps = [
-    { icon: <Stethoscope size={20} />, t: "Care plan & match", d: "We match a covered program to your records." },
-    { icon: <Plane size={20} />, t: "Travel arranged", d: "Flights, visa, pickup for you and a companion." },
-    { icon: <Languages size={20} />, t: "In-Korea support", d: "Dedicated English interpreter and coordinator." },
-    { icon: <Hotel size={20} />, t: "Recovery stay", d: "Hospital-adjacent accommodation booked." },
-    { icon: <HeartPulse size={20} />, t: "US aftercare", d: "Follow-up coordinated with your home doctor." },
-  ];
   return (
     <div style={{ marginTop: 30 }}>
       <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: "0 0 4px" }}>One team, the whole journey</h2>
       <p style={{ fontSize: 14, color: SUB, margin: "0 0 20px" }}>You never coordinate a single vendor yourself.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }} className="steps-grid">
-        {steps.map((s, i) => (
-          <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18, position: "relative" }}>
-            <div style={{ position: "absolute", top: 14, right: 14, fontSize: 12, fontWeight: 800, color: "#cfd8dd" }}>0{i + 1}</div>
-            <div style={{ width: 40, height: 40, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", marginBottom: 12 }}>{s.icon}</div>
-            <div style={{ fontWeight: 700, color: INK, fontSize: 14, marginBottom: 4 }}>{s.t}</div>
-            <div style={{ fontSize: 12.5, color: SUB, lineHeight: 1.45 }}>{s.d}</div>
-          </div>
-        ))}
+        {CARE_STEPS.map((s, i) => {
+          const Icon = s.icon;
+          return (
+            <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18, position: "relative" }}>
+              <div style={{ position: "absolute", top: 14, right: 14, fontSize: 12, fontWeight: 800, color: "#cfd8dd" }}>0{i + 1}</div>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", marginBottom: 12 }}><Icon size={20} /></div>
+              <div style={{ fontWeight: 700, color: INK, fontSize: 14, marginBottom: 4 }}>{s.t}</div>
+              <div style={{ fontSize: 12.5, color: SUB, lineHeight: 1.45 }}>{s.d}</div>
+            </div>
+          );
+        })}
       </div>
       <style>{`@media(max-width:880px){.steps-grid{grid-template-columns:1fr 1fr!important}}`}</style>
     </div>
   );
 }
+
+/* ========================================================================
+   HOSPITAL DETAIL  (shown on "View plan")
+   ======================================================================== */
+function HospitalDetail({ hospital, dept, insurer, onBack, onContact }) {
+  if (!hospital) {
+    return (
+      <div style={{ marginTop: 40, textAlign: "center", color: MUTE }}>
+        <p>This program is no longer available.</p>
+        <button onClick={onBack} style={{ ...btn(TEAL, "#fff"), marginTop: 8 }}>Back to programs</button>
+      </div>
+    );
+  }
+  const save = hospital.us - hospital.kr;
+  const savePct = hospital.us > 0 ? Math.round((save / hospital.us) * 100) : 0;
+  const programIncludes = [
+    "Specialist consultation & second-opinion review",
+    `${dept?.name || "Treatment"} procedure at ${hospital.name}`,
+    "Pre-op diagnostics and imaging",
+    "Inpatient stay & nursing care",
+    "Post-op check-ups before discharge",
+  ];
+
+  return (
+    <div style={{ marginTop: 20 }}>
+      <button onClick={onBack} style={{ border: "none", background: "transparent", cursor: "pointer", color: SUB, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, padding: "6px 0", marginBottom: 8 }}>
+        <ArrowLeft size={16} /> Back to {dept?.name || "programs"}
+      </button>
+
+      <OverlayImage image={hospital.image} height={280} />
+
+      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginTop: 20, alignItems: "flex-start" }}>
+        {/* main column */}
+        <div style={{ flex: 1, minWidth: 280 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            <h1 style={{ fontSize: 26, fontWeight: 800, color: INK, margin: 0 }}>{hospital.name}</h1>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "#eef6ff", color: "#2563a8", padding: "3px 9px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
+              <Award size={12} /> {hospital.accred}
+            </span>
+            {hospital.covered && (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: TEAL_SOFT, color: TEAL, padding: "3px 9px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
+                <Check size={12} /> Covered
+              </span>
+            )}
+          </div>
+          <div style={{ fontSize: 16, color: TEAL, fontWeight: 700, marginTop: 8 }}>{hospital.program}</div>
+          {hospital.lead && <div style={{ fontSize: 14.5, color: SUB, marginTop: 4 }}>{hospital.lead}</div>}
+
+          <div style={{ display: "flex", alignItems: "center", gap: 18, marginTop: 14, fontSize: 14, color: SUB, flexWrap: "wrap" }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><Star size={15} fill="#f5a623" color="#f5a623" /><b style={{ color: INK }}>{hospital.rating}</b> ({hospital.reviews} reviews)</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><MapPin size={15} /> {hospital.city}</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><Clock size={15} /> {hospital.weeks} in Korea</span>
+          </div>
+
+          <SectionDivider />
+
+          <h3 style={{ fontSize: 17, fontWeight: 800, color: INK, margin: "0 0 12px" }}>What this program includes</h3>
+          <div style={{ display: "grid", gap: 10 }}>
+            {programIncludes.map((p, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: SUB }}>
+                <CheckCircle2 size={18} color={TEAL} style={{ flexShrink: 0, marginTop: 1 }} /> {p}
+              </div>
+            ))}
+          </div>
+
+          <SectionDivider />
+
+          <h3 style={{ fontSize: 17, fontWeight: 800, color: INK, margin: "0 0 6px" }}>End-to-end, handled by KoreCare</h3>
+          <p style={{ fontSize: 14, color: SUB, margin: "0 0 16px" }}>Beyond the procedure itself, your full journey is coordinated for you.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="detail-care-grid">
+            {CARE_STEPS.map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <div key={i} style={{ display: "flex", gap: 12, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 14 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 9, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", flexShrink: 0 }}><Icon size={18} /></div>
+                  <div>
+                    <div style={{ fontWeight: 700, color: INK, fontSize: 13.5 }}>{s.t}</div>
+                    <div style={{ fontSize: 12.5, color: SUB, lineHeight: 1.45, marginTop: 2 }}>{s.d}</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* price / cta column */}
+        <div style={{ width: 320, flexShrink: 0, position: "sticky", top: 80 }} className="detail-aside">
+          <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22, boxShadow: "0 6px 24px rgba(11,107,107,.08)" }}>
+            <div style={{ fontSize: 12, color: MUTE }}>Typical US cost</div>
+            <div style={{ fontSize: 15, color: MUTE, textDecoration: "line-through" }}>${hospital.us.toLocaleString()}</div>
+            <div style={{ fontSize: 12, color: MUTE, marginTop: 8 }}>Korea all-in price</div>
+            <div style={{ fontSize: 32, fontWeight: 800, color: TEAL, lineHeight: 1.1 }}>${hospital.kr.toLocaleString()}</div>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eafaf2", color: "#1f9d6b", padding: "5px 10px", borderRadius: 8, fontSize: 13, fontWeight: 700, marginTop: 10 }}>
+              Save ${save.toLocaleString()} ({savePct}% less)
+            </div>
+
+            {hospital.covered && (
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 14, fontSize: 12.5, color: SUB, background: TEAL_SOFT, borderRadius: 10, padding: "10px 12px" }}>
+                <Shield size={15} color={TEAL} style={{ flexShrink: 0, marginTop: 1 }} />
+                <span>Covered under your <b>{insurer}</b> referral. Final out-of-pocket confirmed after records review.</span>
+              </div>
+            )}
+
+            <div style={{ display: "grid", gap: 8, marginTop: 16 }}>
+              <button onClick={onContact} style={{ ...btn(TEAL, "#fff"), display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                <Send size={16} /> Request this plan
+              </button>
+              <button onClick={onContact} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}`, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                <Phone size={16} /> Talk to a coordinator
+              </button>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 12, color: MUTE }}>
+              <Calendar size={14} /> Estimated stay: {hospital.weeks}
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`@media(max-width:760px){.detail-aside{width:100%!important;position:static!important}.detail-care-grid{grid-template-columns:1fr!important}}`}</style>
+    </div>
+  );
+}
+
+function SectionDivider() {
+  return <div style={{ height: 1, background: LINE, margin: "24px 0" }} />;
+}
+
+/* ========================================================================
+   FAQ
+   ======================================================================== */
+const FAQ_ITEMS = [
+  { q: "Is my procedure really covered by my insurer?", a: "If you were referred to KoreCare by your insurer, the listed program is covered under that referral. We confirm your exact out-of-pocket amount after a short records review — before you commit to anything." },
+  { q: "Which hospitals do you work with?", a: "Only internationally accredited (e.g. JCI) tertiary hospitals in Korea, each with a dedicated international patient center. You see the accreditation and patient ratings on every program card." },
+  { q: "What exactly does KoreCare arrange?", a: "Everything outside the treatment room: care-plan matching, flights and visa support, airport pickup, a dedicated English interpreter and coordinator, hospital-adjacent recovery accommodation, and follow-up coordination with your doctor back home." },
+  { q: "Can a companion travel with me?", a: "Yes. Travel and accommodation for one companion are included in the standard journey arrangement." },
+  { q: "Will language be a problem?", a: "No. You are assigned an English-speaking coordinator and medical interpreter for every appointment, from consultation through discharge." },
+  { q: "How long will I need to stay in Korea?", a: "It depends on the program — each card shows a typical stay (for example 3–5 weeks for oncology, a few days for screening). Your coordinator confirms the schedule once your treatment plan is set." },
+  { q: "How is aftercare handled once I'm home?", a: "Before you fly home we prepare a full medical summary and coordinate follow-up directly with your US physician, so your local care continues seamlessly." },
+  { q: "How do I get started?", a: "Pick a program and tap “Request this plan”, or send us a message from the Contact page. A coordinator follows up to review your records and confirm coverage." },
+];
+
+function FAQPage({ onContact }) {
+  const [open, setOpen] = useState(0);
+  return (
+    <div style={{ marginTop: 28, maxWidth: 760 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
+        <HelpCircle size={15} /> Frequently asked questions
+      </div>
+      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>Everything you might be wondering</h1>
+      <p style={{ fontSize: 15, color: SUB, margin: "0 0 24px" }}>Can't find your answer? Our coordinators are one message away.</p>
+
+      <div style={{ display: "grid", gap: 10 }}>
+        {FAQ_ITEMS.map((item, i) => {
+          const isOpen = open === i;
+          return (
+            <div key={i} style={{ background: "#fff", border: `1px solid ${isOpen ? TEAL : LINE}`, borderRadius: 12, overflow: "hidden" }}>
+              <button onClick={() => setOpen(isOpen ? -1 : i)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "16px 18px", border: "none", background: isOpen ? TEAL_SOFT : "#fff", cursor: "pointer", textAlign: "left" }}>
+                <span style={{ fontSize: 15, fontWeight: 700, color: INK }}>{item.q}</span>
+                <ChevronDown size={18} color={isOpen ? TEAL : MUTE} style={{ flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
+              </button>
+              {isOpen && (
+                <div style={{ padding: "0 18px 16px", fontSize: 14, color: SUB, lineHeight: 1.6 }}>{item.a}</div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ marginTop: 26, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+        <div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: INK }}>Still have a question?</div>
+          <div style={{ fontSize: 13.5, color: SUB, marginTop: 2 }}>Talk to a KoreCare coordinator — no obligation.</div>
+        </div>
+        <button onClick={onContact} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 8 }}>
+          <MessageSquare size={16} /> Contact us
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* ========================================================================
+   CONTACT
+   ======================================================================== */
+function ContactPage({ depts, prefillHospital }) {
+  const [form, setForm] = useState({
+    name: "", email: "", phone: "",
+    interest: prefillHospital ? `${prefillHospital.name} — ${prefillHospital.program}` : "",
+    message: prefillHospital ? `I'd like to know more about the ${prefillHospital.program} at ${prefillHospital.name}.` : "",
+  });
+  const [sent, setSent] = useState(false);
+  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
+  const valid = form.name.trim() && /\S+@\S+\.\S+/.test(form.email);
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (!valid) return;
+    // No backend in this prototype — submission is captured client-side only.
+    setSent(true);
+  };
+
+  const interestOptions = [];
+  depts.forEach((d) => d.hospitals.forEach((h) => interestOptions.push(`${h.name} — ${h.program}`)));
+
+  return (
+    <div style={{ marginTop: 28 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
+        <Mail size={15} /> Contact us
+      </div>
+      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>Talk to a care coordinator</h1>
+      <p style={{ fontSize: 15, color: SUB, margin: "0 0 24px" }}>Tell us a little about what you need. A coordinator replies within one business day.</p>
+
+      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-start" }}>
+        {/* form */}
+        <div style={{ flex: 1, minWidth: 300 }}>
+          {sent ? (
+            <div style={{ background: "#fff", border: `1px solid ${TEAL}`, borderRadius: 16, padding: 32, textAlign: "center" }}>
+              <div style={{ width: 56, height: 56, borderRadius: "50%", background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", margin: "0 auto 14px" }}>
+                <CheckCircle2 size={30} />
+              </div>
+              <h3 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: "0 0 6px" }}>Thanks, {form.name.split(" ")[0] || "there"}!</h3>
+              <p style={{ fontSize: 14, color: SUB, margin: "0 0 18px", lineHeight: 1.6 }}>Your request has been received. A KoreCare coordinator will reach out to <b>{form.email}</b> within one business day.</p>
+              <button onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", interest: "", message: "" }); }} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}` }}>Send another message</button>
+            </div>
+          ) : (
+            <form onSubmit={submit} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
+              <Field label="Full name *">
+                <input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Jane Doe" style={contactInput} />
+              </Field>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="contact-row">
+                <Field label="Email *">
+                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="jane@email.com" style={contactInput} />
+                </Field>
+                <Field label="Phone">
+                  <input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+1 555 000 0000" style={contactInput} />
+                </Field>
+              </div>
+              <Field label="Program of interest">
+                <select value={form.interest} onChange={(e) => set("interest", e.target.value)} style={{ ...contactInput, background: "#fff" }}>
+                  <option value="">— Select a program (optional) —</option>
+                  {interestOptions.map((o) => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </Field>
+              <Field label="Message">
+                <textarea value={form.message} onChange={(e) => set("message", e.target.value)} rows={5} placeholder="Tell us about your condition, timing, or questions…" style={{ ...contactInput, resize: "vertical", fontFamily: "inherit" }} />
+              </Field>
+              <button type="submit" disabled={!valid} style={{ ...btn(valid ? TEAL : "#cfd8dd", "#fff"), width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: valid ? "pointer" : "not-allowed", marginTop: 4 }}>
+                <Send size={16} /> Send request
+              </button>
+              <div style={{ fontSize: 11.5, color: MUTE, textAlign: "center", marginTop: 10 }}>By sending, you agree to be contacted about your inquiry. We never share your information.</div>
+            </form>
+          )}
+        </div>
+
+        {/* contact info */}
+        <div style={{ width: 300, flexShrink: 0 }} className="contact-aside">
+          <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 800, color: INK, margin: "0 0 14px" }}>Reach us directly</h3>
+            <ContactRow icon={<Mail size={16} />} label="Email" value="care@korecare.example" />
+            <ContactRow icon={<Phone size={16} />} label="Coordinator line" value="+1 (888) 555-0142" />
+            <ContactRow icon={<MessageSquare size={16} />} label="Hours" value="Mon–Fri, 9am–6pm ET" />
+            <ContactRow icon={<Users size={16} />} label="In Korea" value="Seoul international patient desk" last />
+          </div>
+          <div style={{ background: TEAL_SOFT, borderRadius: 16, padding: 18, marginTop: 12, fontSize: 13, color: TEAL, display: "flex", gap: 10 }}>
+            <Shield size={18} style={{ flexShrink: 0 }} />
+            <span>Referred by your insurer? Mention it and we'll fast-track your coverage check.</span>
+          </div>
+        </div>
+      </div>
+      <style>{`@media(max-width:760px){.contact-aside{width:100%!important}.contact-row{grid-template-columns:1fr!important}}`}</style>
+    </div>
+  );
+}
+
+function Field({ label, children }) {
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ fontSize: 12.5, fontWeight: 700, color: SUB, marginBottom: 6 }}>{label}</div>
+      {children}
+    </div>
+  );
+}
+function ContactRow({ icon, label, value, last }) {
+  return (
+    <div style={{ display: "flex", alignItems: "flex-start", gap: 12, paddingBottom: last ? 0 : 14, marginBottom: last ? 0 : 14, borderBottom: last ? "none" : `1px solid ${LINE}` }}>
+      <span style={{ color: TEAL, marginTop: 1 }}>{icon}</span>
+      <div>
+        <div style={{ fontSize: 11.5, color: MUTE }}>{label}</div>
+        <div style={{ fontSize: 14, color: INK, fontWeight: 600 }}>{value}</div>
+      </div>
+    </div>
+  );
+}
+const contactInput = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 9, padding: "10px 12px", fontSize: 14, color: INK, outline: "none", boxSizing: "border-box" };
+
+/* ------------------------------- Footer ------------------------------- */
+function Footer({ brand, onNav, onHome }) {
+  return (
+    <div style={{ background: "#fff", borderTop: `1px solid ${LINE}`, marginTop: "auto" }}>
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "24px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 16, color: TEAL }}>
+          <Plane size={17} /> {brand.name}
+        </div>
+        <div style={{ display: "flex", gap: 18, fontSize: 13.5 }}>
+          <button onClick={onHome} style={footerLink}>Programs</button>
+          <button onClick={() => onNav({ name: "faq" })} style={footerLink}>FAQ</button>
+          <button onClick={() => onNav({ name: "contact" })} style={footerLink}>Contact Us</button>
+        </div>
+        <div style={{ fontSize: 12, color: MUTE }}>© {brand.name}. Prototype — not medical advice.</div>
+      </div>
+    </div>
+  );
+}
+const footerLink = { border: "none", background: "transparent", cursor: "pointer", color: SUB, fontSize: 13.5, padding: 0, fontWeight: 500 };
 
 /* =========================================================================
    ADMIN EDITOR
