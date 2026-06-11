@@ -5,8 +5,10 @@ import {
   Stethoscope, Award, Image as ImageIcon,
   Settings, Plus, Trash2, X, Eye, Type, Move, Palette,
   ArrowLeft, Phone, Mail, Send, ChevronDown, HelpCircle,
-  Calendar, Users, CheckCircle2, MessageSquare,
+  Calendar, Users, CheckCircle2, MessageSquare, Globe, User, Newspaper,
 } from "lucide-react";
+import { treatments as TREATMENTS, reviews as REVIEWS, beforeAfter as BEFORE_AFTER, blogPosts as BLOG_POSTS, i18n as I18N } from "./site-data.js";
+import { TreatmentsPage, TreatmentDetail, ReviewsPage, BeforeAfterPage, BlogPage, BlogPostPage, ReservationPage, MyPage } from "./screens.jsx";
 
 /* =========================================================================
    KoreCare — fully admin-controllable
@@ -105,8 +107,10 @@ export default function App() {
     () => !(typeof window !== "undefined" && window.matchMedia("(max-width:900px)").matches)
   );
   const [activeDeptId, setActiveDeptId] = useState(initialContent.departments[0].id);
-  // simple in-app routing: { name: "home" | "detail" | "faq" | "contact", deptId?, hospitalId? }
+  // simple in-app routing: { name: "home" | "detail" | "faq" | "contact" | "treatments" | "treatment" | "reviews" | "beforeafter" | "blog" | "blogpost" | "reservation" | "mypage", ... }
   const [route, setRoute] = useState({ name: "home" });
+  const [lang, setLang] = useState("en");
+  const t = I18N[lang];
 
   const activeDepts = content.departments.filter((d) => d.active);
   const safeDeptId = activeDepts.find((d) => d.id === activeDeptId) ? activeDeptId : activeDepts[0]?.id;
@@ -121,7 +125,7 @@ export default function App() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", background: "#f4f6f7", minHeight: "100vh", display: "flex" }}>
       <div style={{ flex: 1, minWidth: 0, overflowX: "hidden", display: "flex", flexDirection: "column" }}>
-        <Nav content={content} route={route} onNav={go} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} />
+        <Nav content={content} route={route} onNav={go} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} lang={lang} onToggleLang={() => setLang((l) => (l === "en" ? "ko" : "en"))} t={t} />
         <InsurerBanner insurer={content.brand.insurer} />
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
           {route.name === "home" && (
@@ -154,6 +158,21 @@ export default function App() {
           {route.name === "about" && <AboutPage insurer={content.brand.insurer} onContact={() => go({ name: "contact" })} onPrograms={goHome} />}
           {route.name === "howitworks" && <HowItWorksPage onPrograms={goHome} onContact={() => go({ name: "contact" })} />}
           {route.name === "legal" && <LegalPage doc={route.doc} onContact={() => go({ name: "contact" })} />}
+
+          {route.name === "treatments" && (
+            <TreatmentsPage treatments={TREATMENTS} departments={content.departments} lang={lang} t={t}
+              onOpen={(id) => go({ name: "treatment", treatmentId: id })} />
+          )}
+          {route.name === "treatment" && (
+            <TreatmentDetail treatment={TREATMENTS.find((x) => x.id === route.treatmentId)} departments={content.departments} lang={lang} t={t}
+              onBack={() => go({ name: "treatments" })} onBook={(id) => go({ name: "reservation", treatmentId: id })} />
+          )}
+          {route.name === "reviews" && <ReviewsPage reviews={REVIEWS} lang={lang} t={t} />}
+          {route.name === "beforeafter" && <BeforeAfterPage beforeAfter={BEFORE_AFTER} lang={lang} t={t} />}
+          {route.name === "blog" && <BlogPage blogPosts={BLOG_POSTS} lang={lang} t={t} onOpen={(id) => go({ name: "blogpost", postId: id })} />}
+          {route.name === "blogpost" && <BlogPostPage post={BLOG_POSTS.find((p) => p.id === route.postId)} lang={lang} t={t} onBack={() => go({ name: "blog" })} />}
+          {route.name === "reservation" && <ReservationPage treatments={TREATMENTS} lang={lang} t={t} prefillTreatmentId={route.treatmentId} />}
+          {route.name === "mypage" && <MyPage lang={lang} t={t} onBook={() => go({ name: "reservation" })} />}
         </div>
         <Footer brand={content.brand} onNav={go} onHome={goHome} />
       </div>
@@ -176,27 +195,39 @@ export default function App() {
 }
 
 /* ------------------------------ Nav ------------------------------ */
-function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobile }) {
+function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobile, lang, onToggleLang, t }) {
+  // primary menu = 요구사항정의서 상단 메뉴 (시술·병원·리뷰·비포/애프터·블로그·FAQ)
   const links = [
-    { id: "home", label: "Programs", on: () => onHome() },
-    { id: "howitworks", label: "How It Works", on: () => onNav({ name: "howitworks" }) },
-    { id: "about", label: "About", on: () => onNav({ name: "about" }) },
-    { id: "faq", label: "FAQ", on: () => onNav({ name: "faq" }) },
-    { id: "contact", label: "Contact Us", on: () => onNav({ name: "contact" }) },
+    { id: "treatments", label: t.nav.treatments, on: () => onNav({ name: "treatments" }) },
+    { id: "home", label: t.nav.hospitals, on: () => onHome() },
+    { id: "reviews", label: t.nav.reviews, on: () => onNav({ name: "reviews" }) },
+    { id: "beforeafter", label: t.nav.beforeafter, on: () => onNav({ name: "beforeafter" }) },
+    { id: "blog", label: t.nav.blog, on: () => onNav({ name: "blog" }) },
+    { id: "faq", label: t.nav.faq, on: () => onNav({ name: "faq" }) },
   ];
   const LinkButtons = () => links.map((l) => {
-    const active = route?.name === l.id;
+    const active = route?.name === l.id || (l.id === "blog" && route?.name === "blogpost") || (l.id === "treatments" && route?.name === "treatment");
     return (
       <button key={l.id} onClick={l.on} style={{
         border: "none", background: "transparent", cursor: "pointer", whiteSpace: "nowrap",
-        padding: "8px 12px", borderRadius: 8, fontSize: 14,
+        padding: "8px 10px", borderRadius: 8, fontSize: 14,
         fontWeight: active ? 700 : 500, color: active ? TEAL : SUB,
       }}>{l.label}</button>
     );
   });
+  const langBtn = (
+    <button onClick={onToggleLang} title="Language" style={{ border: `1px solid ${LINE}`, background: "#fff", color: SUB, cursor: "pointer", borderRadius: 8, padding: "8px 10px", fontSize: 13, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
+      <Globe size={14} /> {lang === "en" ? "EN" : "한"}
+    </button>
+  );
+  const loginBtn = (
+    <button onClick={() => onNav({ name: "mypage" })} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, padding: "9px 14px" }}>
+      <User size={15} /> {t.nav.login}
+    </button>
+  );
   const adminBtn = (
-    <button onClick={onToggleEditor} style={{ ...btn(editorOpen ? TEAL : "#fff", editorOpen ? "#fff" : SUB), border: editorOpen ? "none" : `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, padding: "9px 14px" }}>
-      <Settings size={15} /> {editorOpen ? "Admin: on" : "Admin"}
+    <button onClick={onToggleEditor} title="Admin" style={{ border: `1px solid ${LINE}`, background: editorOpen ? TEAL : "#fff", color: editorOpen ? "#fff" : MUTE, cursor: "pointer", borderRadius: 8, padding: "8px 10px", display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
+      <Settings size={15} />
     </button>
   );
   const brand = (
@@ -209,8 +240,9 @@ function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobi
     <div style={{ background: "#fff", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 5 }}>
       {isMobile ? (
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "12px 16px" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
-            {brand}{adminBtn}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            {brand}
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>{langBtn}{loginBtn}{adminBtn}</div>
           </div>
           {/* horizontally scrollable link row */}
           <div style={{ display: "flex", gap: 2, marginTop: 8, overflowX: "auto", WebkitOverflowScrolling: "touch", marginLeft: -4 }}>
@@ -222,7 +254,7 @@ function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobi
           {brand}
           <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
             <LinkButtons />
-            <span style={{ marginLeft: 4 }}>{adminBtn}</span>
+            <span style={{ display: "inline-flex", gap: 6, marginLeft: 6 }}>{langBtn}{loginBtn}{adminBtn}</span>
           </div>
         </div>
       )}
