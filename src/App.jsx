@@ -132,6 +132,9 @@ export default function App() {
               prefillHospital={content.departments.find((d) => d.id === route.deptId)?.hospitals.find((h) => h.id === route.hospitalId)}
             />
           )}
+          {route.name === "about" && <AboutPage insurer={content.brand.insurer} onContact={() => go({ name: "contact" })} onPrograms={goHome} />}
+          {route.name === "howitworks" && <HowItWorksPage onPrograms={goHome} onContact={() => go({ name: "contact" })} />}
+          {route.name === "legal" && <LegalPage doc={route.doc} onContact={() => go({ name: "contact" })} />}
         </div>
         <Footer brand={content.brand} onNav={go} onHome={goHome} />
       </div>
@@ -153,6 +156,8 @@ export default function App() {
 function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen }) {
   const links = [
     { id: "home", label: "Programs", on: () => onHome() },
+    { id: "howitworks", label: "How It Works", on: () => onNav({ name: "howitworks" }) },
+    { id: "about", label: "About", on: () => onNav({ name: "about" }) },
     { id: "faq", label: "FAQ", on: () => onNav({ name: "faq" }) },
     { id: "contact", label: "Contact Us", on: () => onNav({ name: "contact" }) },
   ];
@@ -641,21 +646,217 @@ const contactInput = { width: "100%", border: `1px solid ${LINE}`, borderRadius:
 function Footer({ brand, onNav, onHome }) {
   return (
     <div style={{ background: "#fff", borderTop: `1px solid ${LINE}`, marginTop: "auto" }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "24px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 16, color: TEAL }}>
-          <Plane size={17} /> {brand.name}
+      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "24px 20px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 16, color: TEAL }}>
+            <Plane size={17} /> {brand.name}
+          </div>
+          <div style={{ display: "flex", gap: 18, fontSize: 13.5, flexWrap: "wrap" }}>
+            <button onClick={onHome} style={footerLink}>Programs</button>
+            <button onClick={() => onNav({ name: "howitworks" })} style={footerLink}>How It Works</button>
+            <button onClick={() => onNav({ name: "about" })} style={footerLink}>About</button>
+            <button onClick={() => onNav({ name: "faq" })} style={footerLink}>FAQ</button>
+            <button onClick={() => onNav({ name: "contact" })} style={footerLink}>Contact Us</button>
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 18, fontSize: 13.5 }}>
-          <button onClick={onHome} style={footerLink}>Programs</button>
-          <button onClick={() => onNav({ name: "faq" })} style={footerLink}>FAQ</button>
-          <button onClick={() => onNav({ name: "contact" })} style={footerLink}>Contact Us</button>
+        <div style={{ height: 1, background: LINE, margin: "16px 0" }} />
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 16, fontSize: 12.5, flexWrap: "wrap" }}>
+            <button onClick={() => onNav({ name: "legal", doc: "privacy" })} style={footerLink}>Privacy Policy</button>
+            <button onClick={() => onNav({ name: "legal", doc: "terms" })} style={footerLink}>Terms of Service</button>
+            <button onClick={() => onNav({ name: "legal", doc: "refund" })} style={footerLink}>Refund Policy</button>
+          </div>
+          <div style={{ fontSize: 12, color: MUTE }}>© {brand.name}. Prototype — not medical advice.</div>
         </div>
-        <div style={{ fontSize: 12, color: MUTE }}>© {brand.name}. Prototype — not medical advice.</div>
       </div>
     </div>
   );
 }
 const footerLink = { border: "none", background: "transparent", cursor: "pointer", color: SUB, fontSize: 13.5, padding: 0, fontWeight: 500 };
+
+/* ========================================================================
+   ABOUT  (mirrors SafeDoc "Company")
+   ======================================================================== */
+function AboutPage({ insurer, onContact, onPrograms }) {
+  const stats = [
+    { n: "500+", l: "Partner hospitals & clinics in Korea" },
+    { n: "12", l: "JCI-accredited tertiary centers" },
+    { n: "60%+", l: "Average savings vs. US list price" },
+    { n: "24/7", l: "English coordinator support" },
+  ];
+  const values = [
+    { icon: Shield, t: "Insurer-aligned", d: "We work directly with referrers so covered programs are clear before you commit." },
+    { icon: Award, t: "Accredited only", d: "Every partner is internationally accredited (JCI) with a dedicated international patient center." },
+    { icon: Users, t: "One team, end to end", d: "From records review to US aftercare, a single coordinator owns your journey." },
+  ];
+  return (
+    <div style={{ marginTop: 28, maxWidth: 860 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
+        <Building2 size={15} /> About KoreCare
+      </div>
+      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>World-class care in Korea, fully managed</h1>
+      <p style={{ fontSize: 15.5, color: SUB, margin: "0 0 22px", lineHeight: 1.6 }}>
+        KoreCare connects internationally-referred patients with Korea's top accredited hospitals — and manages
+        every step around the procedure. Your insurer covers the treatment; we handle travel, language, recovery,
+        and follow-up so you never coordinate a single vendor yourself.
+      </p>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }} className="about-stats">
+        {stats.map((s, i) => (
+          <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 16 }}>
+            <div style={{ fontSize: 24, fontWeight: 800, color: TEAL }}>{s.n}</div>
+            <div style={{ fontSize: 12.5, color: SUB, marginTop: 4, lineHeight: 1.4 }}>{s.l}</div>
+          </div>
+        ))}
+      </div>
+
+      <SectionDivider />
+
+      <h3 style={{ fontSize: 18, fontWeight: 800, color: INK, margin: "0 0 14px" }}>What we stand for</h3>
+      <div style={{ display: "grid", gap: 12 }}>
+        {values.map((v, i) => {
+          const Icon = v.icon;
+          return (
+            <div key={i} style={{ display: "flex", gap: 14, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 16 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", flexShrink: 0 }}><Icon size={20} /></div>
+              <div>
+                <div style={{ fontWeight: 700, color: INK, fontSize: 15 }}>{v.t}</div>
+                <div style={{ fontSize: 13.5, color: SUB, marginTop: 3, lineHeight: 1.5 }}>{v.d}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ marginTop: 22, background: TEAL_SOFT, borderRadius: 14, padding: 20, fontSize: 13.5, color: TEAL, display: "flex", gap: 10, alignItems: "flex-start" }}>
+        <Shield size={18} style={{ flexShrink: 0, marginTop: 1 }} />
+        <span>Referred by <b>{insurer}</b>? Your covered programs are highlighted across the site — start from Programs or talk to a coordinator.</span>
+      </div>
+
+      <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
+        <button onClick={onPrograms} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 8 }}>Browse programs <ChevronRight size={16} /></button>
+        <button onClick={onContact} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}`, display: "inline-flex", alignItems: "center", gap: 8 }}>Contact us</button>
+      </div>
+      <style>{`@media(max-width:760px){.about-stats{grid-template-columns:1fr 1fr!important}}`}</style>
+    </div>
+  );
+}
+
+/* ========================================================================
+   HOW IT WORKS  (mirrors SafeDoc "Service" + Transportation/Accommodation/Tour)
+   ======================================================================== */
+function HowItWorksPage({ onPrograms, onContact }) {
+  const journey = [
+    { icon: Stethoscope, t: "1 · Match & review", d: "Share your records. We match a covered program and confirm your out-of-pocket before you commit." },
+    { icon: Plane, t: "2 · Transportation", d: "Flights, visa support and airport pickup arranged for you and one companion." },
+    { icon: Hotel, t: "3 · Accommodation", d: "Hospital-adjacent recovery stay booked to fit your treatment schedule." },
+    { icon: Languages, t: "4 · In-Korea support", d: "A dedicated English coordinator and medical interpreter join every appointment." },
+    { icon: MapPin, t: "5 · Tour & recovery", d: "Optional guided tours and wellness activities during recovery downtime." },
+    { icon: HeartPulse, t: "6 · US aftercare", d: "We prepare your medical summary and coordinate follow-up with your home doctor." },
+  ];
+  return (
+    <div style={{ marginTop: 28, maxWidth: 920 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
+        <Plane size={15} /> How it works
+      </div>
+      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>One team, the whole journey</h1>
+      <p style={{ fontSize: 15.5, color: SUB, margin: "0 0 24px", lineHeight: 1.6 }}>
+        Your insurer covers the procedure — KoreCare manages everything around it. Transportation, accommodation,
+        language, tours and aftercare are all handled by a single coordinator.
+      </p>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="how-grid">
+        {journey.map((s, i) => {
+          const Icon = s.icon;
+          return (
+            <div key={i} style={{ display: "flex", gap: 14, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", flexShrink: 0 }}><Icon size={20} /></div>
+              <div>
+                <div style={{ fontWeight: 700, color: INK, fontSize: 15 }}>{s.t}</div>
+                <div style={{ fontSize: 13.5, color: SUB, marginTop: 3, lineHeight: 1.5 }}>{s.d}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div style={{ marginTop: 24, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+        <div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: INK }}>Ready to see covered programs?</div>
+          <div style={{ fontSize: 13.5, color: SUB, marginTop: 2 }}>Browse by department and see your savings instantly.</div>
+        </div>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <button onClick={onPrograms} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 8 }}>View programs <ChevronRight size={16} /></button>
+          <button onClick={onContact} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}` }}>Contact us</button>
+        </div>
+      </div>
+      <style>{`@media(max-width:760px){.how-grid{grid-template-columns:1fr!important}}`}</style>
+    </div>
+  );
+}
+
+/* ========================================================================
+   LEGAL  (Privacy / Terms / Refund — mirrors SafeDoc footer)
+   ======================================================================== */
+const LEGAL_DOCS = {
+  privacy: {
+    title: "Privacy Policy",
+    intro: "How KoreCare collects, uses and protects your personal and health information.",
+    sections: [
+      { h: "Information we collect", b: "Contact details you submit (name, email, phone) and any medical records you share to confirm program coverage. We collect only what is needed to coordinate your care." },
+      { h: "How we use it", b: "To match you to covered programs, confirm out-of-pocket costs with your insurer, and arrange travel, accommodation and aftercare. We never sell your information." },
+      { h: "Sharing", b: "We share relevant medical details only with the partner hospital you select and, where applicable, your referring insurer — always to deliver your care." },
+      { h: "Your rights", b: "You may request access to, correction of, or deletion of your data at any time by contacting us." },
+    ],
+  },
+  terms: {
+    title: "Terms of Service",
+    intro: "The terms that govern your use of the KoreCare website and coordination services.",
+    sections: [
+      { h: "Service scope", b: "KoreCare is a care-coordination service. We arrange and manage the journey around medical treatment; we do not provide medical care ourselves and are not a substitute for professional medical advice." },
+      { h: "Quotes & coverage", b: "Prices shown are estimates. Final out-of-pocket amounts are confirmed after a records review with your insurer before any commitment." },
+      { h: "Bookings", b: "Travel, accommodation and treatment bookings are made on your behalf with third-party providers and partner hospitals, subject to their terms." },
+      { h: "Liability", b: "This site is a prototype for demonstration. Treatment outcomes are the responsibility of the providing hospital and your medical team." },
+    ],
+  },
+  refund: {
+    title: "Refund Policy",
+    intro: "When and how coordination fees and bookings can be refunded.",
+    sections: [
+      { h: "Coordination fees", b: "Any coordination fee is fully refundable until you confirm a program. After confirmation, refunds are prorated against services already arranged." },
+      { h: "Travel & accommodation", b: "Flights and stays follow the cancellation terms of the airline and property. We help you secure flexible options where possible." },
+      { h: "Treatment deposits", b: "Hospital deposits are refundable according to the partner hospital's policy, which we disclose before you pay." },
+      { h: "How to request", b: "Email our coordinator line with your booking reference; refunds are processed to your original payment method." },
+    ],
+  },
+};
+
+function LegalPage({ doc, onContact }) {
+  const d = LEGAL_DOCS[doc] || LEGAL_DOCS.privacy;
+  return (
+    <div style={{ marginTop: 28, maxWidth: 760 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
+        <Shield size={15} /> Legal
+      </div>
+      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>{d.title}</h1>
+      <p style={{ fontSize: 15, color: SUB, margin: "0 0 22px", lineHeight: 1.6 }}>{d.intro}</p>
+
+      <div style={{ display: "grid", gap: 14 }}>
+        {d.sections.map((s, i) => (
+          <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18 }}>
+            <div style={{ fontWeight: 700, color: INK, fontSize: 15, marginBottom: 6 }}>{s.h}</div>
+            <div style={{ fontSize: 13.5, color: SUB, lineHeight: 1.6 }}>{s.b}</div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 20, fontSize: 12.5, color: MUTE }}>
+        Prototype document for demonstration — not legal advice. Questions?{" "}
+        <button onClick={onContact} style={{ ...footerLink, color: TEAL, fontWeight: 600 }}>Contact us</button>.
+      </div>
+    </div>
+  );
+}
 
 /* =========================================================================
    ADMIN EDITOR
