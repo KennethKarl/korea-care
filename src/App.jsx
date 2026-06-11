@@ -81,10 +81,29 @@ const CARE_STEPS = [
   { icon: HeartPulse, t: "US aftercare", d: "Follow-up coordinated with your home doctor." },
 ];
 
+/* ---------------------- responsive helper ---------------------- */
+function useIsMobile(maxWidth = 900) {
+  const [mobile, setMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia(`(max-width:${maxWidth}px)`).matches
+  );
+  React.useEffect(() => {
+    const mq = window.matchMedia(`(max-width:${maxWidth}px)`);
+    const onChange = () => setMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [maxWidth]);
+  return mobile;
+}
+
 /* ============================== ROOT ============================== */
 export default function App() {
+  const isMobile = useIsMobile(900);
   const [content, setContent] = useState(initialContent);
-  const [showEditor, setShowEditor] = useState(true);
+  // editor starts closed on mobile so the site is visible first
+  const [showEditor, setShowEditor] = useState(
+    () => !(typeof window !== "undefined" && window.matchMedia("(max-width:900px)").matches)
+  );
   const [activeDeptId, setActiveDeptId] = useState(initialContent.departments[0].id);
   // simple in-app routing: { name: "home" | "detail" | "faq" | "contact", deptId?, hospitalId? }
   const [route, setRoute] = useState({ name: "home" });
@@ -102,12 +121,12 @@ export default function App() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", background: "#f4f6f7", minHeight: "100vh", display: "flex" }}>
       <div style={{ flex: 1, minWidth: 0, overflowX: "hidden", display: "flex", flexDirection: "column" }}>
-        <Nav content={content} route={route} onNav={go} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} />
+        <Nav content={content} route={route} onNav={go} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} />
         <InsurerBanner insurer={content.brand.insurer} />
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
           {route.name === "home" && (
             <>
-              <Hero hero={content.hero} />
+              <Hero hero={content.hero} isMobile={isMobile} />
               <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
               <Results
                 dept={activeDepts.find((d) => d.id === safeDeptId)}
@@ -139,6 +158,9 @@ export default function App() {
         <Footer brand={content.brand} onNav={go} onHome={goHome} />
       </div>
 
+      {showEditor && isMobile && (
+        <div onClick={() => setShowEditor(false)} style={{ position: "fixed", inset: 0, background: "rgba(8,20,24,.45)", zIndex: 40 }} />
+      )}
       {showEditor && (
         <AdminEditor
           content={content}
@@ -146,6 +168,7 @@ export default function App() {
           activeDeptId={safeDeptId}
           setActiveDeptId={setActiveDeptId}
           onClose={() => setShowEditor(false)}
+          isMobile={isMobile}
         />
       )}
     </div>
@@ -153,7 +176,7 @@ export default function App() {
 }
 
 /* ------------------------------ Nav ------------------------------ */
-function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen }) {
+function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobile }) {
   const links = [
     { id: "home", label: "Programs", on: () => onHome() },
     { id: "howitworks", label: "How It Works", on: () => onNav({ name: "howitworks" }) },
@@ -161,28 +184,48 @@ function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen }) {
     { id: "faq", label: "FAQ", on: () => onNav({ name: "faq" }) },
     { id: "contact", label: "Contact Us", on: () => onNav({ name: "contact" }) },
   ];
+  const LinkButtons = () => links.map((l) => {
+    const active = route?.name === l.id;
+    return (
+      <button key={l.id} onClick={l.on} style={{
+        border: "none", background: "transparent", cursor: "pointer", whiteSpace: "nowrap",
+        padding: "8px 12px", borderRadius: 8, fontSize: 14,
+        fontWeight: active ? 700 : 500, color: active ? TEAL : SUB,
+      }}>{l.label}</button>
+    );
+  });
+  const adminBtn = (
+    <button onClick={onToggleEditor} style={{ ...btn(editorOpen ? TEAL : "#fff", editorOpen ? "#fff" : SUB), border: editorOpen ? "none" : `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, padding: "9px 14px" }}>
+      <Settings size={15} /> {editorOpen ? "Admin: on" : "Admin"}
+    </button>
+  );
+  const brand = (
+    <button onClick={onHome} style={{ border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 20, color: TEAL, padding: 0 }}>
+      <Plane size={20} /> {content.brand.name}
+    </button>
+  );
+
   return (
     <div style={{ background: "#fff", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 5 }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-        <button onClick={onHome} style={{ border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 20, color: TEAL, padding: 0 }}>
-          <Plane size={20} /> {content.brand.name}
-        </button>
-        <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-          {links.map((l) => {
-            const active = route?.name === l.id;
-            return (
-              <button key={l.id} onClick={l.on} style={{
-                border: "none", background: "transparent", cursor: "pointer",
-                padding: "8px 12px", borderRadius: 8, fontSize: 14,
-                fontWeight: active ? 700 : 500, color: active ? TEAL : SUB,
-              }}>{l.label}</button>
-            );
-          })}
-          <button onClick={onToggleEditor} style={{ ...btn(editorOpen ? TEAL : "#fff", editorOpen ? "#fff" : SUB), border: editorOpen ? "none" : `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", gap: 6, marginLeft: 4 }}>
-            <Settings size={15} /> {editorOpen ? "Admin: on" : "Admin"}
-          </button>
+      {isMobile ? (
+        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "12px 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+            {brand}{adminBtn}
+          </div>
+          {/* horizontally scrollable link row */}
+          <div style={{ display: "flex", gap: 2, marginTop: 8, overflowX: "auto", WebkitOverflowScrolling: "touch", marginLeft: -4 }}>
+            <LinkButtons />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+          {brand}
+          <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
+            <LinkButtons />
+            <span style={{ marginLeft: 4 }}>{adminBtn}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -199,7 +242,7 @@ function InsurerBanner({ insurer }) {
 }
 
 /* --------------- reusable: image with text overlays --------------- */
-function OverlayImage({ image, height, radius = 16 }) {
+function OverlayImage({ image, height, radius = 16, textScale = 1 }) {
   if (!image || !image.url) {
     return (
       <div style={{ height: height === "100%" ? "100%" : height, minHeight: 120, borderRadius: radius, background: "#dfe6e9", display: "grid", placeItems: "center", color: MUTE }}>
@@ -223,7 +266,7 @@ function OverlayImage({ image, height, radius = 16 }) {
           transform: "translateY(-50%)",
           maxWidth: o.align === "center" ? "100%" : `${o.maxWidth || 80}%`,
           padding: o.align === "center" ? "0 6%" : 0,
-          color: o.color, fontSize: o.size, fontWeight: o.weight,
+          color: o.color, fontSize: Math.round(o.size * textScale), fontWeight: o.weight,
           textAlign: o.align, lineHeight: 1.15,
           textShadow: "0 1px 8px rgba(0,0,0,.35)",
           pointerEvents: "none",
@@ -236,17 +279,17 @@ function OverlayImage({ image, height, radius = 16 }) {
 }
 
 /* ------------------------------- Hero ----------------------------- */
-function Hero({ hero }) {
+function Hero({ hero, isMobile }) {
   return (
-    <div style={{ marginTop: 20 }}>
-      <OverlayImage image={hero.image} height={300} />
-      <div style={{ background: "#fff", padding: 8, borderRadius: 14, boxShadow: "0 6px 24px rgba(11,107,107,.12)", maxWidth: 720, marginTop: -28, marginLeft: 20, position: "relative" }}>
+    <div style={{ marginTop: isMobile ? 12 : 20 }}>
+      <OverlayImage image={hero.image} height={isMobile ? 380 : 300} textScale={isMobile ? 0.62 : 1} />
+      <div style={{ background: "#fff", padding: 8, borderRadius: 14, boxShadow: "0 6px 24px rgba(11,107,107,.12)", maxWidth: 720, marginTop: -28, marginLeft: isMobile ? 0 : 20, position: "relative" }}>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 14px", background: "#f6f8f9", borderRadius: 9, flex: 1, minWidth: 180, height: 50, color: MUTE }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 14px", background: "#f6f8f9", borderRadius: 9, flex: 1, minWidth: 160, height: 50, color: MUTE }}>
             <Search size={18} />
             <input placeholder="Treatment, condition, or hospital" style={{ border: "none", background: "transparent", outline: "none", fontSize: 15, width: "100%", color: INK }} />
           </div>
-          <button style={{ ...btn(TEAL, "#fff"), padding: "0 28px", fontSize: 15 }}>Find programs</button>
+          <button style={{ ...btn(TEAL, "#fff"), padding: "0 28px", fontSize: 15, flex: isMobile ? 1 : "none" }}>Find programs</button>
         </div>
       </div>
     </div>
@@ -861,7 +904,7 @@ function LegalPage({ doc, onContact }) {
 /* =========================================================================
    ADMIN EDITOR
    ========================================================================= */
-function AdminEditor({ content, setContent, activeDeptId, setActiveDeptId, onClose }) {
+function AdminEditor({ content, setContent, activeDeptId, setActiveDeptId, onClose, isMobile }) {
   const [tab, setTab] = useState("hero");
 
   const update = (fn) => setContent((prev) => {
@@ -872,8 +915,11 @@ function AdminEditor({ content, setContent, activeDeptId, setActiveDeptId, onClo
 
   const activeDept = content.departments.find((d) => d.id === activeDeptId) || content.departments.find((d) => d.active);
 
+  const shellStyle = isMobile
+    ? { position: "fixed", top: 0, right: 0, bottom: 0, width: "100%", maxWidth: 400, background: "#fff", borderLeft: `1px solid ${LINE}`, height: "100vh", overflowY: "auto", zIndex: 41, boxShadow: "-8px 0 40px rgba(8,20,24,.25)" }
+    : { width: 380, flexShrink: 0, background: "#fff", borderLeft: `1px solid ${LINE}`, height: "100vh", position: "sticky", top: 0, overflowY: "auto" };
   return (
-    <div style={{ width: 380, flexShrink: 0, background: "#fff", borderLeft: `1px solid ${LINE}`, height: "100vh", position: "sticky", top: 0, overflowY: "auto" }}>
+    <div style={shellStyle}>
       <div style={{ padding: "16px 18px", borderBottom: `1px solid ${LINE}`, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, background: "#fff", zIndex: 2 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, color: INK }}>
           <Settings size={18} color={TEAL} /> Content admin
