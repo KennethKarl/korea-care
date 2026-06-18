@@ -24,4 +24,4 @@ npm run preview  # 빌드 결과 미리보기
 ```
 
 `main` 브랜치 push 시 GitHub Actions가 자동으로 빌드하여 GitHub Pages로 배포한다
-(`.github/workflows/deploy.yml`). 배포 URL은 `https://<owner>.github.io/korea-care/`.
+(`.github/workflows/deploy.yml`). 배포 URL은 `https://global.safedoc.io` (커스텀 도메인, `public/CNAME`).

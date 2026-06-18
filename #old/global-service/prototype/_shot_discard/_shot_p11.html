@@ -1,0 +1,9 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>p11</title></head><body>
+<script>
+const FULL = Object.assign({lang:'en',persona:'us_individual',signedIn:false,profile:null,bookings:{},couponCode:null,conflictChoice:null,cart:[]}, {signedIn:true,persona:'ka_enterprise',profile:{"name":"Sarah Kim","email":"sarah.kim@acme.example.com","citizenship":"KR","enterprise":"acme","enterpriseStatus":"verified"}});
+localStorage.setItem('safedoc_demo_v1', JSON.stringify(FULL));
+document.documentElement.lang = FULL.lang || 'en';
+location.replace('./demo.html#/book/samsung-mc/smc-derm-laser');
+</script>
+</body></html>

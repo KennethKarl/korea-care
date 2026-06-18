@@ -8,10 +8,9 @@ import {
   CheckCircle2, Stethoscope, Target, ListChecks, AlertTriangle, Tag, User, LogOut,
 } from "lucide-react";
 
-const TEAL = "#0b6b6b", TEAL_SOFT = "#e6f5f3", INK = "#11181c", SUB = "#52606b", MUTE = "#8a96a0", LINE = "#eef1f3";
-const txt = (v, lang) => (v && typeof v === "object" ? v[lang] ?? v.en : v);
-const btn = (bg, fg) => ({ background: bg, color: fg, border: "none", padding: "11px 18px", borderRadius: 9, fontWeight: 600, cursor: "pointer", fontSize: 14 });
-const money = (n) => "$" + n.toLocaleString();
+import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, INK, SUB, MUTE, LINE, ACCENT, STAR, txt, btn, money } from "./theme.js";
+import { submitReservation } from "./api.js";
+import { trackEvent } from "./analytics.js";
 
 function PageHead({ icon: Icon, kicker, title, subtitle }) {
   return (
@@ -229,16 +228,35 @@ export function ReservationPage({ treatments, lang, t, prefillTreatmentId, onCre
   const [form, setForm] = useState({ name: "", email: "", country: "", treatmentId: prefillTreatmentId || "", date: "", message: "" });
   const [done, setDone] = useState(false);
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    // mock: 웹사이트 예약 신청 → 어드민 예약 DB 생성. localStorage에 적재(백엔드 대체).
+    const tr = treatments.find((x) => x.id === form.treatmentId);
+    const payload = {
+      ...form,
+      id: "bk_" + Date.now(),
+      patientName: form.name,
+      treatment: tr ? txt(tr.name, lang) : "",
+      hospital: "",
+      amount: tr?.price ?? 0,
+      listPrice: tr?.usPrice ?? 0,
+      visit1: { date: form.date || "", slot: "" },
+      visit2: { date: "", slot: "" },
+      confirmedAt: null,
+      stage: 0,
+      reviewed: false,
+      cancelRequested: false,
+      createdAt: new Date().toISOString(),
+    };
+    // 로컬 캐시(어드민 마이페이지 표시용) — 백엔드 미연동 시에도 UX 유지
     try {
       const key = "korecare_bookings";
       const prev = JSON.parse(localStorage.getItem(key) || "[]");
-      const tr = treatments.find((x) => x.id === form.treatmentId);
-      prev.push({ ...form, treatment: tr ? txt(tr.name, lang) : "", createdAt: new Date().toISOString() });
+      prev.push(payload);
       localStorage.setItem(key, JSON.stringify(prev));
     } catch (_) {}
+    // 세이프닥 서버로 예약 전송 (VITE_API_BASE 미설정 시 api.js 가 mock 처리)
+    try { await submitReservation(payload); } catch (_) {}
+    trackEvent("reservation_submit", { treatment: form.treatmentId });
     setDone(true);
     onCreated && onCreated();
     window.scrollTo({ top: 0 });

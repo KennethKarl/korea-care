@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Search, MapPin, Star, Shield, Clock, Check, Plane,
   Building2, ChevronRight, Hotel, Languages, HeartPulse,
@@ -9,6 +9,15 @@ import {
 } from "lucide-react";
 import { treatments as TREATMENTS, reviews as REVIEWS, beforeAfter as BEFORE_AFTER, blogPosts as BLOG_POSTS, i18n as I18N } from "./site-data.js";
 import { TreatmentsPage, TreatmentDetail, ReviewsPage, BeforeAfterPage, BlogPage, BlogPostPage, ReservationPage, MyPage } from "./screens.jsx";
+import { Outlet, useNavigate, useLocation, useParams, useSearchParams, useOutletContext } from "react-router-dom";
+import { ClientOnly } from "vite-react-ssg";
+import { Seo, orgJsonLd, procedureJsonLd, faqJsonLd, breadcrumbJsonLd } from "./seo.jsx";
+import { initAnalytics, trackPageView, trackEvent } from "./analytics.js";
+import { submitLead } from "./api.js";
+import { SITE_URL } from "./config.js";
+import AccountHub from "./account.jsx";
+import { AdminApp, HospitalApp } from "./backoffice.jsx";
+import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, BLUE_DARK, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, SUCCESS, STAR, BG_SOFT, btn } from "./theme.js";
 
 /* =========================================================================
    KoreCare — fully admin-controllable
@@ -20,12 +29,7 @@ import { TreatmentsPage, TreatmentDetail, ReviewsPage, BeforeAfterPage, BlogPage
      - add / edit / remove departments, hospitals, programs
    ========================================================================= */
 
-const TEAL = "#0b6b6b";
-const TEAL_SOFT = "#e6f5f3";
-const INK = "#11181c";
-const SUB = "#52606b";
-const MUTE = "#8a96a0";
-const LINE = "#eef1f3";
+/* 디자인 토큰은 theme.js 로 중앙화 (TEAL=BLUE, TEAL_SOFT=BLUE_SOFT 별칭) */
 
 const initialContent = {
   brand: { name: "KoreCare", insurer: "Meridian Health Insurance" },
@@ -98,101 +102,278 @@ function useIsMobile(maxWidth = 900) {
   return mobile;
 }
 
-/* ============================== ROOT ============================== */
-export default function App() {
+/* ========================================================================
+   ROUTING — react-router 데이터 라우트 (vite-react-ssg 가 라우트별 정적 HTML 생성)
+   기존 페이지 컴포넌트(Hero/Results/HospitalDetail/…)는 그대로 두고, URL 라우트
+   래퍼가 useParams/useSearchParams + navigate 콜백으로 연결한다.
+   ======================================================================== */
+
+// {name,...} 라우트 의도 → URL 경로 (Nav/Footer 기존 콜백 호환)
+function navPath(next) {
+  if (typeof next === "string") return next;
+  const n = next.name;
+  if (n === "home") return "/";
+  if (n === "treatments") return "/programs";
+  if (n === "treatment") return `/treatment/${next.treatmentId}`;
+  if (n === "detail") return `/hospital/${next.deptId}/${next.hospitalId}`;
+  if (n === "reviews") return "/reviews";
+  if (n === "beforeafter") return "/before-after";
+  if (n === "blog") return "/blog";
+  if (n === "blogpost") return `/blog/${next.postId}`;
+  if (n === "reservation") return next.treatmentId ? `/reservation?treatment=${next.treatmentId}` : "/reservation";
+  if (n === "contact") return (next.deptId && next.hospitalId) ? `/contact?dept=${next.deptId}&hospital=${next.hospitalId}` : "/contact";
+  if (n === "about") return "/about";
+  if (n === "howitworks") return "/how-it-works";
+  if (n === "faq") return "/faq";
+  if (n === "legal") return `/legal/${next.doc}`;
+  if (n === "mypage") return "/mypage";
+  return "/";
+}
+
+// URL → Nav 활성표시용 route 이름
+function pathToRoute(pathname) {
+  const p = (pathname || "/").replace(/\/+$/, "") || "/";
+  if (p === "/") return { name: "home" };
+  if (p.startsWith("/programs")) return { name: "treatments" };
+  if (p.startsWith("/treatment")) return { name: "treatment" };
+  if (p.startsWith("/hospital")) return { name: "detail" };
+  if (p.startsWith("/reviews")) return { name: "reviews" };
+  if (p.startsWith("/before-after")) return { name: "beforeafter" };
+  if (p.startsWith("/blog")) return { name: p.split("/").length > 2 ? "blogpost" : "blog" };
+  if (p.startsWith("/reservation")) return { name: "reservation" };
+  if (p.startsWith("/contact")) return { name: "contact" };
+  if (p.startsWith("/about")) return { name: "about" };
+  if (p.startsWith("/how-it-works")) return { name: "howitworks" };
+  if (p.startsWith("/faq")) return { name: "faq" };
+  if (p.startsWith("/legal")) return { name: "legal" };
+  if (p.startsWith("/mypage")) return { name: "mypage" };
+  return { name: "home" };
+}
+
+/* ------------------------------ Layout ------------------------------ */
+function Layout() {
   const isMobile = useIsMobile(900);
   const [content, setContent] = useState(initialContent);
-  // editor starts closed on mobile so the site is visible first
-  const [showEditor, setShowEditor] = useState(
-    () => !(typeof window !== "undefined" && window.matchMedia("(max-width:900px)").matches)
-  );
-  const [activeDeptId, setActiveDeptId] = useState(initialContent.departments[0].id);
-  // simple in-app routing: { name: "home" | "detail" | "faq" | "contact" | "treatments" | "treatment" | "reviews" | "beforeafter" | "blog" | "blogpost" | "reservation" | "mypage", ... }
-  const [route, setRoute] = useState({ name: "home" });
+  const [showEditor, setShowEditor] = useState(false);
+  const [editorDeptId, setEditorDeptId] = useState(initialContent.departments[0].id);
   const [lang, setLang] = useState("en");
   const t = I18N[lang];
+  const navigate = useNavigate();
+  const location = useLocation();
+  const route = pathToRoute(location.pathname);
+  const onNav = (next) => navigate(navPath(next));
+  const goHome = () => navigate("/");
 
-  const activeDepts = content.departments.filter((d) => d.active);
-  const safeDeptId = activeDepts.find((d) => d.id === activeDeptId) ? activeDeptId : activeDepts[0]?.id;
-
-  const go = (next) => { setRoute(next); window.scrollTo({ top: 0, behavior: "auto" }); };
-  const goHome = () => go({ name: "home" });
-
-  // resolve detail target live from content (stays in sync with admin edits)
-  const detailDept = route.name === "detail" ? content.departments.find((d) => d.id === route.deptId) : null;
-  const detailHospital = detailDept ? detailDept.hospitals.find((h) => h.id === route.hospitalId) : null;
+  useEffect(() => { initAnalytics(); }, []);
+  useEffect(() => {
+    trackPageView(location.pathname);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "auto" });
+  }, [location.pathname]);
 
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", background: "#f4f6f7", minHeight: "100vh", display: "flex" }}>
+    <div style={{ fontFamily: "Pretendard, system-ui, sans-serif", background: BG_SOFT, minHeight: "100vh", display: "flex" }}>
       <div style={{ flex: 1, minWidth: 0, overflowX: "hidden", display: "flex", flexDirection: "column" }}>
-        <Nav content={content} route={route} onNav={go} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} lang={lang} onToggleLang={() => setLang((l) => (l === "en" ? "ko" : "en"))} t={t} />
+        <Nav content={content} route={route} onNav={onNav} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} lang={lang} onToggleLang={() => setLang((l) => (l === "en" ? "ko" : "en"))} t={t} />
         <InsurerBanner insurer={content.brand.insurer} />
-        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
-          {route.name === "home" && (
-            <>
-              <Hero hero={content.hero} isMobile={isMobile} />
-              <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
-              <Results
-                dept={activeDepts.find((d) => d.id === safeDeptId)}
-                onView={(h, d) => go({ name: "detail", deptId: d.id, hospitalId: h.id })}
-              />
-              <TotalCare />
-            </>
-          )}
-          {route.name === "detail" && (
-            <HospitalDetail
-              hospital={detailHospital}
-              dept={detailDept}
-              insurer={content.brand.insurer}
-              onBack={goHome}
-              onContact={() => go({ name: "contact", hospitalId: route.hospitalId, deptId: route.deptId })}
-            />
-          )}
-          {route.name === "faq" && <FAQPage onContact={() => go({ name: "contact" })} />}
-          {route.name === "contact" && (
-            <ContactPage
-              depts={content.departments}
-              prefillHospital={content.departments.find((d) => d.id === route.deptId)?.hospitals.find((h) => h.id === route.hospitalId)}
-            />
-          )}
-          {route.name === "about" && <AboutPage insurer={content.brand.insurer} onContact={() => go({ name: "contact" })} onPrograms={goHome} />}
-          {route.name === "howitworks" && <HowItWorksPage onPrograms={goHome} onContact={() => go({ name: "contact" })} />}
-          {route.name === "legal" && <LegalPage doc={route.doc} onContact={() => go({ name: "contact" })} />}
-
-          {route.name === "treatments" && (
-            <TreatmentsPage treatments={TREATMENTS} departments={content.departments} lang={lang} t={t}
-              onOpen={(id) => go({ name: "treatment", treatmentId: id })} />
-          )}
-          {route.name === "treatment" && (
-            <TreatmentDetail treatment={TREATMENTS.find((x) => x.id === route.treatmentId)} departments={content.departments} lang={lang} t={t}
-              onBack={() => go({ name: "treatments" })} onBook={(id) => go({ name: "reservation", treatmentId: id })} />
-          )}
-          {route.name === "reviews" && <ReviewsPage reviews={REVIEWS} lang={lang} t={t} />}
-          {route.name === "beforeafter" && <BeforeAfterPage beforeAfter={BEFORE_AFTER} lang={lang} t={t} />}
-          {route.name === "blog" && <BlogPage blogPosts={BLOG_POSTS} lang={lang} t={t} onOpen={(id) => go({ name: "blogpost", postId: id })} />}
-          {route.name === "blogpost" && <BlogPostPage post={BLOG_POSTS.find((p) => p.id === route.postId)} lang={lang} t={t} onBack={() => go({ name: "blog" })} />}
-          {route.name === "reservation" && <ReservationPage treatments={TREATMENTS} lang={lang} t={t} prefillTreatmentId={route.treatmentId} />}
-          {route.name === "mypage" && <MyPage lang={lang} t={t} onBook={() => go({ name: "reservation" })} />}
-        </div>
-        <Footer brand={content.brand} onNav={go} onHome={goHome} />
+        <main style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
+          <Outlet context={{ content, setContent, lang, t, isMobile, onNav }} />
+        </main>
+        <Footer brand={content.brand} onNav={onNav} onHome={goHome} />
       </div>
 
-      {showEditor && isMobile && (
-        <div onClick={() => setShowEditor(false)} style={{ position: "fixed", inset: 0, background: "rgba(8,20,24,.45)", zIndex: 40 }} />
-      )}
-      {showEditor && (
-        <AdminEditor
-          content={content}
-          setContent={setContent}
-          activeDeptId={safeDeptId}
-          setActiveDeptId={setActiveDeptId}
-          onClose={() => setShowEditor(false)}
-          isMobile={isMobile}
-        />
-      )}
+      {/* 어드민 에디터는 내부 도구 — SSG HTML 에서 제외(ClientOnly) */}
+      <ClientOnly>
+        {() => (showEditor ? (
+          <>
+            {isMobile && <div onClick={() => setShowEditor(false)} style={{ position: "fixed", inset: 0, background: "rgba(8,20,24,.45)", zIndex: 40 }} />}
+            <AdminEditor content={content} setContent={setContent} activeDeptId={editorDeptId} setActiveDeptId={setEditorDeptId} onClose={() => setShowEditor(false)} isMobile={isMobile} />
+          </>
+        ) : null)}
+      </ClientOnly>
     </div>
   );
 }
+
+/* ------------------------- page route wrappers ------------------------- */
+function HomePage() {
+  const { content, isMobile } = useOutletContext();
+  const navigate = useNavigate();
+  const activeDepts = content.departments.filter((d) => d.active);
+  const [activeDeptId, setActiveDeptId] = useState(activeDepts[0]?.id);
+  const safeDeptId = activeDepts.find((d) => d.id === activeDeptId) ? activeDeptId : activeDepts[0]?.id;
+  return (
+    <>
+      <Seo path="/" jsonLd={orgJsonLd} />
+      <Hero hero={content.hero} isMobile={isMobile} />
+      <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
+      <Results dept={activeDepts.find((d) => d.id === safeDeptId)} onView={(h, d) => navigate(`/hospital/${d.id}/${h.id}`)} />
+      <TotalCare />
+    </>
+  );
+}
+
+function TreatmentsRoute() {
+  const { content, lang, t } = useOutletContext();
+  const navigate = useNavigate();
+  return (
+    <>
+      <Seo title="Programs & Treatments" description="Browse covered treatments in Korea — oncology, orthopedics, cardiac surgery and full health screening — matched to your US insurance referral." path="/programs" jsonLd={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Programs", path: "/programs" }])} />
+      <TreatmentsPage treatments={TREATMENTS} departments={content.departments} lang={lang} t={t} onOpen={(id) => navigate(`/treatment/${id}`)} />
+    </>
+  );
+}
+
+function TreatmentRoute() {
+  const { content, lang, t } = useOutletContext();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const tr = TREATMENTS.find((x) => x.id === id);
+  const name = tr ? (tr.name?.[lang] ?? tr.name?.en ?? tr.name) : "Treatment";
+  const desc = tr ? (tr.summary?.[lang] ?? tr.summary?.en) : undefined;
+  const path = `/treatment/${id}`;
+  return (
+    <>
+      <Seo title={typeof name === "string" ? name : "Treatment"} description={desc} type="article" path={path}
+        jsonLd={tr ? [procedureJsonLd({ name, description: desc || name, url: SITE_URL + path }), breadcrumbJsonLd([{ name: "Programs", path: "/programs" }, { name, path }])] : undefined} />
+      <TreatmentDetail treatment={tr} departments={content.departments} lang={lang} t={t} onBack={() => navigate("/programs")} onBook={(tid) => navigate(`/reservation?treatment=${tid}`)} />
+    </>
+  );
+}
+
+function HospitalDetailRoute() {
+  const { content } = useOutletContext();
+  const { deptId, hospitalId } = useParams();
+  const navigate = useNavigate();
+  const dept = content.departments.find((d) => d.id === deptId);
+  const hospital = dept?.hospitals.find((h) => h.id === hospitalId);
+  const path = `/hospital/${deptId}/${hospitalId}`;
+  return (
+    <>
+      <Seo
+        title={hospital ? `${hospital.program} — ${hospital.name}` : "Program"}
+        description={hospital ? `${hospital.program} at ${hospital.name} (${hospital.city}). Korea all-in $${hospital.kr.toLocaleString()} vs US $${hospital.us.toLocaleString()} — covered, fully managed by KoreCare.` : undefined}
+        path={path}
+        jsonLd={hospital ? [procedureJsonLd({ name: `${hospital.program} — ${hospital.name}`, description: hospital.lead || hospital.program, url: SITE_URL + path }), breadcrumbJsonLd([{ name: "Programs", path: "/" }, { name: dept?.name || "Program", path: "/" }, { name: hospital.name, path }])] : undefined}
+      />
+      <HospitalDetail hospital={hospital} dept={dept} insurer={content.brand.insurer} onBack={() => navigate("/")} onContact={() => navigate(`/contact?dept=${deptId}&hospital=${hospitalId}`)} />
+    </>
+  );
+}
+
+function ReviewsRoute() {
+  const { lang, t } = useOutletContext();
+  return (<><Seo title="Patient Reviews" description="Real patient reviews of KoreCare-managed treatment journeys in Korea." path="/reviews" /><ReviewsPage reviews={REVIEWS} lang={lang} t={t} /></>);
+}
+
+function BeforeAfterRoute() {
+  const { lang, t } = useOutletContext();
+  return (<><Seo title="Before & After" description="Before-and-after outcomes from KoreCare partner hospitals in Korea." path="/before-after" /><BeforeAfterPage beforeAfter={BEFORE_AFTER} lang={lang} t={t} /></>);
+}
+
+function BlogRoute() {
+  const { lang, t } = useOutletContext();
+  const navigate = useNavigate();
+  return (<><Seo title="Blog" description="Guides on medical travel to Korea — coverage, hospitals, recovery and aftercare." path="/blog" /><BlogPage blogPosts={BLOG_POSTS} lang={lang} t={t} onOpen={(id) => navigate(`/blog/${id}`)} /></>);
+}
+
+function BlogPostRoute() {
+  const { lang, t } = useOutletContext();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const post = BLOG_POSTS.find((p) => p.id === id);
+  const title = post ? (post.title?.[lang] ?? post.title?.en ?? post.title) : "Article";
+  return (<><Seo title={typeof title === "string" ? title : "Article"} type="article" path={`/blog/${id}`} /><BlogPostPage post={post} lang={lang} t={t} onBack={() => navigate("/blog")} /></>);
+}
+
+function ReservationRoute() {
+  const { lang, t } = useOutletContext();
+  const [sp] = useSearchParams();
+  return (<><Seo title="Book a Consultation" description="Request your treatment consultation with KoreCare — coverage confirmed after a short records review." path="/reservation" /><ReservationPage treatments={TREATMENTS} lang={lang} t={t} prefillTreatmentId={sp.get("treatment") || ""} /></>);
+}
+
+function ContactRoute() {
+  const { content } = useOutletContext();
+  const [sp] = useSearchParams();
+  const prefillHospital = content.departments.find((d) => d.id === sp.get("dept"))?.hospitals.find((h) => h.id === sp.get("hospital"));
+  return (<><Seo title="Contact a Coordinator" description="Talk to a KoreCare care coordinator — coverage check and program questions, no obligation." path="/contact" /><ContactPage depts={content.departments} prefillHospital={prefillHospital} /></>);
+}
+
+function AboutRoute() {
+  const { content } = useOutletContext();
+  const navigate = useNavigate();
+  return (<><Seo title="About KoreCare" description="KoreCare manages medical treatment in Korea for US insurance members — the insurer covers the procedure, we handle everything around it." path="/about" /><AboutPage insurer={content.brand.insurer} onContact={() => navigate("/contact")} onPrograms={() => navigate("/")} /></>);
+}
+
+function HowItWorksRoute() {
+  const navigate = useNavigate();
+  return (<><Seo title="How It Works" description="From care-plan matching to US aftercare — the 5-step KoreCare journey." path="/how-it-works" /><HowItWorksPage onPrograms={() => navigate("/")} onContact={() => navigate("/contact")} /></>);
+}
+
+function FaqRoute() {
+  const navigate = useNavigate();
+  return (<><Seo title="FAQ" description="Answers about insurer coverage, hospitals, travel, language and aftercare for treatment in Korea." path="/faq" jsonLd={faqJsonLd(FAQ_ITEMS)} /><FAQPage onContact={() => navigate("/contact")} /></>);
+}
+
+function LegalRoute() {
+  const { doc } = useParams();
+  const navigate = useNavigate();
+  const titles = { privacy: "Privacy Policy", terms: "Terms of Service", refund: "Refund Policy" };
+  return (<><Seo title={titles[doc] || "Legal"} path={`/legal/${doc}`} noindex /><LegalPage doc={doc} onContact={() => navigate("/contact")} /></>);
+}
+
+function MyPageRoute() {
+  const navigate = useNavigate();
+  return (<><Seo title="My Page" path="/mypage" noindex /><ClientOnly>{() => <AccountHub onBook={() => navigate("/reservation")} />}</ClientOnly></>);
+}
+
+function NotFound() {
+  const navigate = useNavigate();
+  return (
+    <>
+      <Seo title="Not found" noindex />
+      <div style={{ marginTop: 60, textAlign: "center" }}>
+        <h1 style={{ fontSize: 26, color: INK }}>Page not found</h1>
+        <button onClick={() => navigate("/")} style={{ ...btn(TEAL, "#fff"), marginTop: 16 }}>Back to home</button>
+      </div>
+    </>
+  );
+}
+
+/* 운영자 어드민 / 병원 관리자 (별도 셸, noindex, client-only mock) */
+function AdminRoute() {
+  return (<><Seo title="Operator Admin" path="/admin" noindex /><ClientOnly>{() => <AdminApp />}</ClientOnly></>);
+}
+function HospitalRoute() {
+  return (<><Seo title="Hospital Manager" path="/hospital-admin" noindex /><ClientOnly>{() => <HospitalApp />}</ClientOnly></>);
+}
+
+/* ------------------------------- routes ------------------------------- */
+export const routes = [
+  { path: "/admin", element: <AdminRoute /> },
+  { path: "/hospital-admin", element: <HospitalRoute /> },
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      { index: true, element: <HomePage /> },
+      { path: "programs", element: <TreatmentsRoute /> },
+      { path: "treatment/:id", element: <TreatmentRoute />, getStaticPaths: () => TREATMENTS.map((x) => `treatment/${x.id}`) },
+      { path: "hospital/:deptId/:hospitalId", element: <HospitalDetailRoute />, getStaticPaths: () => initialContent.departments.flatMap((d) => d.hospitals.map((h) => `hospital/${d.id}/${h.id}`)) },
+      { path: "reviews", element: <ReviewsRoute /> },
+      { path: "before-after", element: <BeforeAfterRoute /> },
+      { path: "blog", element: <BlogRoute /> },
+      { path: "blog/:id", element: <BlogPostRoute />, getStaticPaths: () => BLOG_POSTS.map((p) => `blog/${p.id}`) },
+      { path: "reservation", element: <ReservationRoute /> },
+      { path: "contact", element: <ContactRoute /> },
+      { path: "about", element: <AboutRoute /> },
+      { path: "how-it-works", element: <HowItWorksRoute /> },
+      { path: "faq", element: <FaqRoute /> },
+      { path: "legal/:doc", element: <LegalRoute />, getStaticPaths: () => ["privacy", "terms", "refund"].map((d) => `legal/${d}`) },
+      { path: "mypage", element: <MyPageRoute /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+];
 
 /* ------------------------------ Nav ------------------------------ */
 function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobile, lang, onToggleLang, t }) {
@@ -613,14 +794,24 @@ function ContactPage({ depts, prefillHospital }) {
     message: prefillHospital ? `I'd like to know more about the ${prefillHospital.program} at ${prefillHospital.name}.` : "",
   });
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState("");
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const valid = form.name.trim() && /\S+@\S+\.\S+/.test(form.email);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (!valid) return;
-    // No backend in this prototype — submission is captured client-side only.
-    setSent(true);
+    if (!valid || submitting) return;
+    setSubmitting(true); setErr("");
+    try {
+      await submitLead({ ...form, source: "contact", page: typeof window !== "undefined" ? window.location.href : "" });
+      trackEvent("lead_submit", { form: "contact" });
+      setSent(true);
+    } catch (_) {
+      setErr("Something went wrong. Please try again or email us directly.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const interestOptions = [];
@@ -668,8 +859,9 @@ function ContactPage({ depts, prefillHospital }) {
               <Field label="Message">
                 <textarea value={form.message} onChange={(e) => set("message", e.target.value)} rows={5} placeholder="Tell us about your condition, timing, or questions…" style={{ ...contactInput, resize: "vertical", fontFamily: "inherit" }} />
               </Field>
-              <button type="submit" disabled={!valid} style={{ ...btn(valid ? TEAL : "#cfd8dd", "#fff"), width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: valid ? "pointer" : "not-allowed", marginTop: 4 }}>
-                <Send size={16} /> Send request
+              {err && <div style={{ fontSize: 13, color: ACCENT, background: ACCENT_SOFT, borderRadius: 8, padding: "8px 12px", marginBottom: 4 }}>{err}</div>}
+              <button type="submit" disabled={!valid || submitting} style={{ ...btn(valid && !submitting ? TEAL : "#cfd8dd", "#fff"), width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: valid && !submitting ? "pointer" : "not-allowed", marginTop: 4 }}>
+                <Send size={16} /> {submitting ? "Sending…" : "Send request"}
               </button>
               <div style={{ fontSize: 11.5, color: MUTE, textAlign: "center", marginTop: 10 }}>By sending, you agree to be contacted about your inquiry. We never share your information.</div>
             </form>
@@ -741,7 +933,11 @@ function Footer({ brand, onNav, onHome }) {
             <button onClick={() => onNav({ name: "legal", doc: "terms" })} style={footerLink}>Terms of Service</button>
             <button onClick={() => onNav({ name: "legal", doc: "refund" })} style={footerLink}>Refund Policy</button>
           </div>
-          <div style={{ fontSize: 12, color: MUTE }}>© {brand.name}. Prototype — not medical advice.</div>
+          <div style={{ fontSize: 12, color: MUTE, display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+            <a href="/admin" style={{ color: MUTE, textDecoration: "none" }}>운영자 어드민</a>
+            <a href="/hospital-admin" style={{ color: MUTE, textDecoration: "none" }}>병원 관리자</a>
+            <span>© {brand.name}. Prototype — not medical advice.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1193,6 +1389,4 @@ const input = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 8, pad
 const inputSm = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 7, padding: "6px 8px", fontSize: 12.5, color: INK, outline: "none", boxSizing: "border-box" };
 const selectS = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 6, padding: "5px 6px", fontSize: 12, color: INK, background: "#fff", outline: "none" };
 
-function btn(bg, fg) {
-  return { background: bg, color: fg, border: "none", padding: "11px 18px", borderRadius: 9, fontWeight: 600, cursor: "pointer", fontSize: 14 };
-}
+/* btn() 은 theme.js 로 이동 (상단 import) */

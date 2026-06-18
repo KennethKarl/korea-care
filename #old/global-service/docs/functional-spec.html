@@ -1,0 +1,1489 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>SafeDoc Global Service 기능명세서 v1.0</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<style>
+  :root {
+    --brand-50:#EEF3FF; --brand-100:#D7E2FF; --brand-200:#B3C4FF;
+    --brand-500:#1B59FA; --brand-600:#1546C7; --brand-700:#0F359A;
+    --brand-800:#0A2570; --brand-900:#061849;
+    --ink:#0F1520; --ink-soft:#3A4454; --ink-muted:#4A5360; --ink-faint:#A6B0BE;
+    --paper:#FFFFFF; --paper-sunken:#F7F9FB; --paper-muted:#F0F3F7; --paper-line:#E1E5EB;
+    --success:#1E8E5C; --warning:#B4760C; --danger:#C8321F; --info:#10788C;
+  }
+  @page { size: A4; margin: 18mm 16mm 22mm 16mm; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  body {
+    font-family: 'Pretendard Variable', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    color: var(--ink);
+    line-height: 1.65;
+    letter-spacing: 0;
+    font-size: 10.5pt;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  .cover {
+    page-break-after: always;
+    min-height: calc(100vh - 40mm);
+    padding: 32mm 8mm 12mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background:
+      radial-gradient(at 8% 12%, rgba(27,89,250,.16), transparent 55%),
+      radial-gradient(at 90% 28%, rgba(16,120,140,.10), transparent 55%),
+      radial-gradient(at 60% 92%, rgba(91,63,184,.08), transparent 55%),
+      linear-gradient(180deg,#FFF,#F7F9FB);
+    border-left: 6px solid var(--brand-600);
+  }
+  .cover .eyebrow {
+    font-size: 11pt; font-weight: 600; color: var(--brand-700);
+    letter-spacing: .14em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .cover .eyebrow::before {
+    content:''; width:28px; height:2px; background: var(--brand-600);
+  }
+  .cover h1 {
+    font-size: 38pt; line-height: 1.15; font-weight: 800;
+    margin: 16mm 0 6mm; letter-spacing: -0.02em;
+    color: var(--brand-900);
+  }
+  .cover h1 .accent { color: var(--brand-600); }
+  .cover .subtitle {
+    font-size: 14pt; color: var(--ink-soft); font-weight: 500;
+    max-width: 140mm; line-height: 1.55;
+  }
+  .cover .meta-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 6mm;
+    padding: 8mm; border: 1px solid var(--paper-line);
+    border-radius: 4mm; background: rgba(255,255,255,.7);
+  }
+  .cover .meta-grid .k {
+    font-size: 8.5pt; color: var(--ink-muted); text-transform: uppercase;
+    letter-spacing: .08em; margin-bottom: 2mm;
+  }
+  .cover .meta-grid .v { font-size: 11pt; color: var(--ink); font-weight: 600; }
+
+  section { page-break-inside: auto; margin-bottom: 10mm; }
+  h2 {
+    font-size: 18pt; line-height: 1.25; font-weight: 700;
+    color: var(--brand-800); margin: 12mm 0 4mm;
+    padding-bottom: 3mm; border-bottom: 2px solid var(--brand-600);
+    letter-spacing: -0.01em;
+    display: flex; align-items: baseline; gap: 4mm;
+  }
+  h2 .num {
+    font-size: 11pt; font-weight: 700; color: var(--brand-500);
+    background: var(--brand-50); padding: 2mm 3mm; border-radius: 2mm;
+    min-width: 12mm; text-align: center;
+  }
+  h3 {
+    font-size: 13pt; font-weight: 700; color: var(--ink);
+    margin: 6mm 0 3mm; letter-spacing: -0.01em;
+  }
+  h4 {
+    font-size: 11pt; font-weight: 700; color: var(--ink-soft);
+    margin: 4mm 0 2mm;
+  }
+  p { margin: 0 0 3mm; }
+
+  ul, ol { padding-left: 6mm; margin: 0 0 3mm; }
+  li { margin: 0 0 1.5mm; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 3mm 0 4mm; font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  thead th {
+    background: var(--brand-800); color: #fff;
+    text-align: left; padding: 2.5mm 3mm; font-weight: 600;
+    font-size: 9pt; letter-spacing: .02em;
+  }
+  tbody td {
+    padding: 2.5mm 3mm;
+    border-bottom: 1px solid var(--paper-line);
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) td { background: var(--paper-sunken); }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .screen-card {
+    border: 1px solid var(--paper-line);
+    border-radius: 4mm;
+    padding: 0;
+    margin: 5mm 0 8mm;
+    background: var(--paper);
+    page-break-inside: auto;
+  }
+  .screen-card .header {
+    background: linear-gradient(135deg, var(--brand-700), var(--brand-500));
+    color: #fff; padding: 5mm 6mm;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 6mm; flex-wrap: wrap;
+    border-radius: 3.5mm 3.5mm 0 0;
+  }
+  .screen-card .header .pid {
+    font-size: 9pt; font-weight: 700; letter-spacing: .14em;
+    background: rgba(255,255,255,.18); padding: 1mm 3mm; border-radius: 2mm;
+    text-transform: uppercase;
+  }
+  .screen-card .header .pname {
+    font-size: 16pt; font-weight: 700; letter-spacing: -0.01em; margin-top: 1mm;
+  }
+  .screen-card .header .proute {
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    font-size: 9pt; color: rgba(255,255,255,.85);
+    background: rgba(0,0,0,.18); padding: 1mm 2.5mm; border-radius: 2mm;
+  }
+  .screen-card .body { padding: 5mm 6mm; }
+
+  .screen-section {
+    margin-bottom: 5mm; padding-bottom: 5mm;
+    border-bottom: 1px solid var(--paper-line);
+  }
+  .screen-section:last-child {
+    margin-bottom: 0; padding-bottom: 0;
+    border-bottom: none;
+  }
+
+  .field-block {
+    display: grid; grid-template-columns: 24mm 1fr; gap: 4mm;
+    margin: 3mm 0; padding: 3mm 0;
+  }
+  .field-label {
+    font-size: 8.5pt; font-weight: 700; color: var(--brand-700);
+    letter-spacing: .08em; text-transform: uppercase;
+    padding-top: 0.5mm;
+  }
+  .field-content { font-size: 9.5pt; color: var(--ink); }
+  .field-content code {
+    background: var(--paper-muted); border-radius: 2mm;
+    padding: 0.4mm 1.6mm; font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    font-size: 9pt; color: var(--brand-700);
+  }
+
+  pre {
+    background: var(--ink); color: #E1E5EB;
+    padding: 4mm 5mm; border-radius: 3mm; font-size: 9pt;
+    font-family: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+    overflow-x: auto; line-height: 1.55;
+    margin: 3mm 0;
+  }
+
+  @media print {
+    .screen-card { page-break-inside: auto; }
+    .screen-card .header { page-break-after: avoid; page-break-inside: avoid; }
+    h2, h3 { page-break-after: avoid; page-break-inside: avoid; }
+    table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div>
+    <div class="eyebrow">FUNCTIONAL SPECIFICATION · v1.1</div>
+    <h1>SafeDoc Global Service<br/><span class="accent">기능명세서</span></h1>
+    <p class="subtitle">화면별 입력·출력·상태 전이·검증 — 개발 관점. 19개 화면의 동작 명세를 정의하며, 각 화면마다 8개 필드를 상세 기술한다: 라우트·목적·레이아웃·입력·출력·상태전이·검증·i18n&a11y.</p>
+  </div>
+
+  <div class="cover .meta-grid">
+    <div><div class="k">버전</div><div class="v">v1.1</div></div>
+    <div><div class="k">작성일</div><div class="v">2026-05-15</div></div>
+    <div><div class="k">화면 수</div><div class="v">19</div></div>
+    <div><div class="k">D-Day</div><div class="v">2026-05-15</div></div>
+  </div>
+</div>
+
+<section>
+  <h2><span class="num">P01</span>랜딩 (홈) — 11개 섹션 스크롤</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P01</div><div class="pname">랜딩 (홈)</div></div>
+      <div class="proute">#/</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <div class="field-block">
+          <div class="field-label">URL</div>
+          <div class="field-content"><code>#/</code></div>
+        </div>
+        <div class="field-block">
+          <div class="field-label">권한 가드</div>
+          <div class="field-content">게스트 진입 가능 (미인증 O)</div>
+        </div>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>미국 거주자에게 60초 이내에 SafeDoc의 가치(신뢰·투명한 가격·코디네이션)를 전달하고, 진료과 Browse/시술 탐색 또는 가격 시뮬레이션으로 전환.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>레이아웃</h4>
+        <p><strong>데스크톱:</strong> Hero + 11개 섹션 수직 연결 + sticky header + footer</p>
+        <p><strong>모바일:</strong> Hero 수직 + 섹션 풀 너비</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>검색 입력</td><td>text</td><td>search-query</td></tr>
+            <tr><td>검색 버튼</td><td>button</td><td>search-submit</td></tr>
+            <tr><td>진료과 타일(6개)</td><td>clickable</td><td>dept-tile</td></tr>
+            <tr><td>메뉴 앵커</td><td>anchor</td><td>nav-jump-{id}</td></tr>
+            <tr><td>시뮬레이터 5개 레버</td><td>혼합</td><td>sim-{lever}</td></tr>
+          </tbody>
+        </table>
+        <p style="font-size:9pt; color:var(--ink-muted); margin-top:2mm;"><strong>11개 섹션:</strong> Hero · Trust Marquee · Featured Specialties · Before & After · Reviews Wall · Providers · Guides · How it works · FAQ · Closing+Enterprise · Price Simulator</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>정적 콘텐츠 (i18n 키 기반) + 동적 가격 계산 (현재 페르소나) + 언어 토글 (EN/KO)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>검색 제출</td><td><code>#/services?q={query}</code></td></tr>
+            <tr><td>진료과 타일 클릭</td><td><code>#/hospitals?dept={dept_id}</code></td></tr>
+            <tr><td>메뉴 앵커</td><td>in-page scroll</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>hp_hero_*</code>, <code>hp_marquee_*</code>, <code>hp_step_*</code>, <code>hp_story_*</code>, <code>hp_provider_*</code>, <code>hp_guide_*</code>, <code>hp_faq_*</code></p>
+        <p><strong>a11y:</strong> 마퀴 <code>aria-label="Trust marquee"</code>, FAQ native <code>&lt;details&gt;</code>, prefers-reduced-motion: 마퀴·호버 비활성</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P02</span>진료과 카탈로그</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P02</div><div class="pname">진료과 카탈로그</div></div>
+      <div class="proute">#/departments</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <div class="field-block">
+          <div class="field-label">URL</div>
+          <div class="field-content"><code>#/departments</code></div>
+        </div>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>8개 진료과를 카드 그리드로 한눈에 보여주고, 각 진료과별 병원 목록으로 진입.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>Browse 탭</td><td>segment</td><td>browse-mode</td></tr>
+            <tr><td>진료과 카드</td><td>clickable</td><td>dept-{id}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>각 진료과 병원 개수 + min price (현재 페르소나) + 진료과명(EN/KO) + 설명</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>진료과 타일</td><td><code>#/hospitals?dept={id}</code></td></tr>
+            <tr><td>"Treatments" 탭</td><td><code>#/services</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>dept_{id}_en</code> / <code>dept_{id}_ko</code></p>
+        <p><strong>a11y:</strong> 각 카드 <code>role="link"</code> + <code>tabindex="0"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P03</span>시술 카탈로그 (필터 + 그룹)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P03</div><div class="pname">시술 카탈로그</div></div>
+      <div class="proute">#/services?dept=&concern=&price=&hospital=&sort=</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/services</code>. 파라미터: <code>dept</code>, <code>concern</code>, <code>price</code> (<code>lt500</code>, <code>500_1500</code>, <code>1500_3000</code>, <code>gt3000</code>), <code>hospital</code>, <code>sort</code> (<code>recommend</code>, <code>popularity</code>, <code>price_asc</code>, <code>price_desc</code>, <code>duration_asc</code>)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>시술 탐색 시 다중 필터·정렬·그룹으로 사용자 맞춤 추천 및 가격 비교.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>진료과 서브</td><td>clickable</td><td>subnav-dept-{id}</td></tr>
+            <tr><td>Concern/Price/Hospital 필터</td><td>select/checkbox</td><td>filter-{type}</td></tr>
+            <tr><td>Sort</td><td>dropdown</td><td>filter-sort</td></tr>
+            <tr><td>시술 카드</td><td>clickable</td><td>service-{id}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>Filtered 시술 list + 그룹 헤더 + 각 카드: 진료과 chip + 시술명(EN/KO) + 병원명 + 가격 + 평점</p>
+        <p><strong>빈 상태:</strong> <code>empty_services_t</code> 메시지 + Browse CTA</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>필터 변경</td><td>URL 쿼리 갱신</td></tr>
+            <tr><td>시술 카드</td><td><code>#/service/{id}</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>filter_concern</code>, <code>filter_price_*</code>, <code>filter_hospital</code>, <code>filter_sort</code></p>
+        <p><strong>a11y:</strong> 필터 라벨 명시적 <code>&lt;label&gt;</code>, 빈 상태 <code>aria-live="polite"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P04</span>진료과별 병원 목록</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P04</div><div class="pname">진료과별 병원</div></div>
+      <div class="proute">#/hospitals?dept={id}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/hospitals?dept={id}</code> (필수: <code>dept</code>)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>선택한 진료과의 병원을 시각적으로 비교하고, 각 병원 상세로 진입.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th></tr></thead>
+          <tbody>
+            <tr><td>진료과 서브</td><td>clickable</td></tr>
+            <tr><td>병원 카드</td><td>clickable</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>병원 list (dept 기준). 각 카드: photo-tile + 병원명(EN/KO) + 평점 + 위치 + review count + 가격 범위 + 특징 칩</p>
+        <p><strong>빈 상태:</strong> <code>empty_dept_t</code> + CTA → <code>#/services</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>병원 카드</td><td><code>#/hospital/{id}</code></td></tr>
+            <tr><td>진료과 서브</td><td><code>?dept={id}</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>hospital_{id}_en</code> / <code>hospital_{id}_ko</code></p>
+        <p><strong>a11y:</strong> 각 카드 <code>role="link"</code>, 평점 <code>aria-label="평점 X.X / 5"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P05</span>병원 상세 (sticky 4-탭)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P05</div><div class="pname">병원 상세</div></div>
+      <div class="proute">#/hospital/{id}?tab={services|overview|reviews|location}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/hospital/{id}</code> (필수: <code>id</code>, 선택: <code>tab</code>, 기본값: <code>services</code>)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>병원의 시술, 소개, 평판, 위치를 종합적으로 제시하고 시술 추가 또는 예약 신청.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs - Services 탭)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>탭 선택</td><td>segment</td><td>tab-{name}</td></tr>
+            <tr><td>시술 아코디언</td><td>&lt;details&gt;</td><td>service-{id}</td></tr>
+            <tr><td>Add to cart</td><td>button</td><td>cart-add-{service_id}</td></tr>
+            <tr><td>Book now</td><td>button</td><td>book-now-{service_id}</td></tr>
+            <tr><td>쿠폰 입력</td><td>text</td><td>coupon-code</td></tr>
+            <tr><td>쿠폰 적용</td><td>button</td><td>coupon-apply</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>Services 탭:</strong> 병원 시술 list + 각 시술 가격 + 설명 + 버튼</p>
+        <p><strong>Overview 탭:</strong> Accreditation 칩 + KR DB 필드 (<code>kr_phone</code>, <code>kr_hours</code>, <code>kr_address</code>, <code>kr_transport</code>, <code>kr_landmark</code>, <code>kr_notice</code>)</p>
+        <p><strong>Reviews / Location:</strong> 플레이홀더</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th><th>토스트</th></tr></thead>
+          <tbody>
+            <tr><td>탭 선택</td><td><code>?tab={name}</code></td><td>—</td></tr>
+            <tr><td>Add to cart</td><td>—</td><td><code>toast_added_cart</code> 또는 <code>toast_already_in_cart</code></td></tr>
+            <tr><td>Book now</td><td><code>#/book/{hospital_id}/{service_id}</code></td><td>—</td></tr>
+            <tr><td>쿠폰 적용</td><td>—</td><td><code>toast_coupon_applied</code> 또는 <code>err_coupon_invalid</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>coupon-code:</strong> <code>/^[A-Z0-9]{4,20}$/</code> + COUPONS lookup → <code>err_coupon_invalid</code></p>
+        <p><strong>중복 시술:</strong> <code>err_duplicate_service</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>tab_services_*</code>, <code>tab_overview_*</code>, <code>hosp_*</code></p>
+        <p><strong>a11y:</strong> Sticky 탭 <code>role="tablist"</code> + 좌/우 키 이동, 가격 <code>aria-live="polite"</code></p>
+        <p><strong>prefers-reduced-motion:</strong> 탭 animation 제거, 호버 outline으로 대체</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P06</span>시술 상세 (KR DB)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P06</div><div class="pname">시술 상세</div></div>
+      <div class="proute">#/service/{id}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/service/{id}</code> (필수: <code>id</code>)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>시술의 전체 프로세스, 준비·사후관리, 포함 항목 제시. 카트 추가 또는 예약 신청.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>Add to cart</td><td>button</td><td>cart-add-{service_id}</td></tr>
+            <tr><td>Book now</td><td>button</td><td>book-now</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>KR DB SERVICE_DETAILS 매핑:</p>
+        <table>
+          <thead><tr><th>섹션</th><th>필드</th><th>조건</th></tr></thead>
+          <tbody>
+            <tr><td>Overview</td><td><code>desc</code> (EN/KO)</td><td>항상</td></tr>
+            <tr><td>Included</td><td><code>included[]</code></td><td>배열 ≠ empty</td></tr>
+            <tr><td>Process</td><td><code>process[]</code> (번호)</td><td>배열 있으면</td></tr>
+            <tr><td>Prep</td><td><code>prep[]</code></td><td>있으면, 아니면 <code>svc_no_prep</code></td></tr>
+            <tr><td>Aftercare</td><td><code>aftercare[]</code></td><td>있으면</td></tr>
+            <tr><td>다른 시술</td><td>같은 병원 services</td><td>max 3개</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th><th>토스트</th></tr></thead>
+          <tbody>
+            <tr><td>Add to cart</td><td>—</td><td><code>toast_added_cart</code></td></tr>
+            <tr><td>이미 카트</td><td><code>#/cart</code></td><td>—</td></tr>
+            <tr><td>Book now</td><td><code>#/book/{hospital_id}/{service_id}</code></td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>svc_overview</code>, <code>svc_included</code>, <code>svc_process</code>, <code>svc_prep</code>, <code>svc_aftercare</code></p>
+        <p><strong>a11y:</strong> Process <code>&lt;ol start="1"&gt;</code>, 가격 <code>aria-live="polite"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P07</span>장바구니 (멀티-병원)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P07</div><div class="pname">장바구니</div></div>
+      <div class="proute">#/cart</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/cart</code> (게스트 진입 가능, 빈 상태도 표시)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>선택한 시술들을 병원·방문일별로 묶어 관리. 예약 그룹화 시각화 후 결제.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th><th>검증</th></tr></thead>
+          <tbody>
+            <tr><td>라인 Remove</td><td>button</td><td>cart-remove-{service_id}</td><td>filter</td></tr>
+            <tr><td>라인 visitDate</td><td>input[date]</td><td>cart-date-{service_id}</td><td>min={today+1}</td></tr>
+            <tr><td>결제 진행</td><td>button</td><td>cart-proceed</td><td>모든 visitDate 입력 필수</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>동적:</strong> 각 라인 serviceId + hospitalId + visitDate + 계산 가격</p>
+        <p><strong>Grouping 카드:</strong> <code>cartGroups()</code> 결과 (병원, visitDate)별 묶음 + 그룹 번호 + 시술 개수</p>
+        <p><strong>합계:</strong> Items subtotal + Total savings + Estimated grand total</p>
+        <p><strong>빈 상태:</strong> <code>cart_empty_t</code> + CTA → <code>#/services</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>Remove</td><td>—</td></tr>
+            <tr><td>visitDate 입력</td><td>— (라이브 재계산)</td></tr>
+            <tr><td>결제 진행</td><td><code>#/checkout</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>visitDate:</strong> min={today+1}, ISO date. 미입력 시 경고 톤</p>
+        <p><strong>결제:</strong> <code>cartReadyGroups().length > 0</code> 필수</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>cart_title</code>, <code>cart_empty_t</code>, <code>cart_groups_t</code>, <code>cart_subtotal</code>, <code>cart_grand_total</code></p>
+        <p><strong>a11y:</strong> 각 라인 <code>role="article"</code>, Grouping <code>role="region"</code> + <code>aria-live="polite"</code>, visitDate <code>aria-label="예약 방문일, YYYY-MM-DD 형식"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P08</span>결제 인테이크 (1프로필 N예약)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P08</div><div class="pname">결제 인테이크</div></div>
+      <div class="proute">#/checkout</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/checkout</code>. 미인증 → <code>#/signin?next=#/checkout</code>, 카트 비어있음 → <code>#/cart</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>1회 Patient 정보 (자동 채워짐) + Travel 정보 + Add-ons 수집. 그룹별 booking 생성 후 완료 페이지로.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs - Patient)</h4>
+        <table>
+          <thead><tr><th>필드</th><th>타입</th><th>검증</th></tr></thead>
+          <tbody>
+            <tr><td>Name</td><td>text</td><td>읽기전용 (OAuth)</td></tr>
+            <tr><td>Email</td><td>email</td><td>읽기전용</td></tr>
+            <tr><td>Phone</td><td>tel</td><td><code>^[+\d\-\s()]{10,20}$</code></td></tr>
+            <tr><td>Age</td><td>number</td><td>18–120</td></tr>
+            <tr><td>Gender</td><td>radio</td><td>F/M/O</td></tr>
+            <tr><td>Nationality</td><td>select</td><td>dropdown</td></tr>
+            <tr><td>Passport</td><td>text</td><td><code>/^[A-Za-z0-9]{6,12}$/</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs - Travel)</h4>
+        <table>
+          <thead><tr><th>필드</th><th>타입</th><th>검증</th></tr></thead>
+          <tbody>
+            <tr><td>Entry date</td><td>date</td><td>≥ today</td></tr>
+            <tr><td>Exit date</td><td>date</td><td>&gt; entry</td></tr>
+            <tr><td>Hotel</td><td>text</td><td>자유 텍스트</td></tr>
+            <tr><td>Flight</td><td>text</td><td>자유 텍스트</td></tr>
+            <tr><td>Notes</td><td>textarea</td><td>max 500 chars</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs - Add-ons)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th></tr></thead>
+          <tbody>
+            <tr><td>Lodging / Flight / Tour</td><td>checkbox</td></tr>
+            <tr><td>Notes</td><td>textarea (max 300 chars)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>Reservations Summary:</strong> <code>cartGroups()</code> 페어별: 병원명 + visitDate + 시술 list + 소계</p>
+        <p><strong>동적 가격:</strong> Base price + Enterprise discount + Coupon discount + Estimated total</p>
+        <p><strong>충돌 라디오:</strong> Enterprise vs Coupon (둘 다 적용 가능하고 stackable 아닐 때)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th><th>토스트</th></tr></thead>
+          <tbody>
+            <tr><td>폼 제출</td><td><code>#/checkout-done?ids={id1,id2,…}</code></td><td><code>toast_booking_submitted</code></td></tr>
+            <tr><td>제출 후</td><td>— (state.cart = [])</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <table>
+          <thead><tr><th>입력</th><th>규칙</th><th>에러 키</th></tr></thead>
+          <tbody>
+            <tr><td>phone</td><td><code>^[+\d\-\s()]{10,20}$</code></td><td><code>err_phone</code></td></tr>
+            <tr><td>age</td><td>18 ≤ age ≤ 120</td><td><code>err_age</code></td></tr>
+            <tr><td>passport</td><td><code>/^[A-Za-z0-9]{6,12}$/</code></td><td><code>err_passport</code></td></tr>
+            <tr><td>entry/exit</td><td>exit &gt; entry</td><td><code>err_dates</code></td></tr>
+            <tr><td>필수 필드</td><td>모두 입력</td><td><code>err_required</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>checkout_reservations_t</code>, <code>checkout_patient_*</code>, <code>checkout_travel_*</code>, <code>checkout_addons_*</code></p>
+        <p><strong>a11y:</strong> <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code>, 필수 <code>aria-required="true"</code>, 오류 <code>aria-invalid="true"</code> + <code>aria-describedby</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P08'</span>결제 완료</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P08'</div><div class="pname">결제 완료</div></div>
+      <div class="proute">#/checkout-done?ids={csv}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/checkout-done?ids={csv}</code>. 게스트도 진입 가능.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>제출된 예약들을 카드 그리드로 확인. "내 예약 보기"로 상세 추적.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th></tr></thead>
+          <tbody>
+            <tr><td>카드 클릭</td><td>clickable</td></tr>
+            <tr><td>"모두 보기"</td><td>link</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>URL <code>ids</code> 파싱 (CSV). 각 ID: photo-tile + <code>status_waiting</code> 칩 + booking ID (mono) + 병원명 + visitDate + 시술 개수 + 가격</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>카드 클릭</td><td><code>#/booking/{id}</code></td></tr>
+            <tr><td>"모두 보기"</td><td><code>#/bookings</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>checkout_done_t</code>, <code>checkout_done_s</code>, <code>view_all_bookings</code></p>
+        <p><strong>a11y:</strong> 각 카드 <code>role="link"</code> + <code>aria-label="예약 ABC-001, Samsung Medical Center, 2026-06-15, 2개 시술, $1,500"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P09</span>OAuth 로그인</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P09</div><div class="pname">로그인</div></div>
+      <div class="proute">#/signin?next={url}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/signin?next={url}</code>. 로그인한 경우 next로 리다이렉트.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>Google/Apple OAuth 인증. 프로필 기본정보 수집 후 온보딩 또는 요청 라우트로.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>Google 버튼</td><td>button</td><td>signin-google</td></tr>
+            <tr><td>Apple 버튼</td><td>button</td><td>signin-apple</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>데모:</strong> 클릭 시 <code>state.signedIn = true</code> + <code>state.profile = PERSONAS[persona]</code>. citizenship 있으면 → <code>next</code>, 없으면 → <code>#/onboarding?next={next}</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>OAuth 성공</td><td>next 또는 <code>#/onboarding</code></td></tr>
+            <tr><td>OAuth 실패</td><td>— (토스트: <code>toast_signin_error</code>)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>signin_title</code>, <code>signin_google</code>, <code>signin_apple</code>, <code>signin_terms</code></p>
+        <p><strong>a11y:</strong> 버튼 <code>aria-label="Google 계정으로 로그인"</code>, <code>aria-label="Apple 계정으로 로그인"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P10</span>온보딩 (시민권 + 기업코드)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P10</div><div class="pname">온보딩</div></div>
+      <div class="proute">#/onboarding?next={url}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/onboarding?next={url}</code>. 미인증 → <code>#/signin?next={current}</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>시민권 자가신고(US/KR) + 기업 코드(선택). 사용자 티어 결정 및 가격 시뮬레이션 준비.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>필드</th><th>타입</th><th>필드명</th><th>필수</th><th>검증</th></tr></thead>
+          <tbody>
+            <tr><td>Email</td><td>text</td><td>email</td><td>Y</td><td>읽기전용</td></tr>
+            <tr><td>Citizenship</td><td>radio</td><td>citizenship</td><td>Y</td><td>US/KR</td></tr>
+            <tr><td>Enterprise code</td><td>text</td><td>enterprise-code</td><td>N</td><td><code>/^[A-Z0-9\-]{4,20}$/</code></td></tr>
+            <tr><td>Verify now</td><td>button</td><td>verify-now</td><td>N</td><td>demo mode only</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>Citizenship 선택 시 가격 티어 즉시 반영. Enterprise code 입력 시 PENDING + "Verify now". Verify 후 VERIFIED + 토스트 + 할인 적용.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>Citizenship 선택</td><td>— (재렌더)</td></tr>
+            <tr><td>Enterprise code 입력</td><td>— (재렌더, "Verify now" 노출)</td></tr>
+            <tr><td>Verify now</td><td>— (재렌더, <code>toast_ent_verified</code>)</td></tr>
+            <tr><td>Complete</td><td><code>next</code> 복귀</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>citizenship:</strong> 필수</p>
+        <p><strong>enterprise-code:</strong> <code>/^[A-Z0-9\-]{4,20}$/</code> → <code>err_enterprise_format</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>onboarding_title</code>, <code>onboarding_citizenship</code>, <code>onboarding_enterprise_code</code>, <code>onboarding_complete</code></p>
+        <p><strong>a11y:</strong> Citizenship <code>role="radio"</code> + <code>aria-checked</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P11</span>단일 시술 예약</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P11</div><div class="pname">단일 시술 예약</div></div>
+      <div class="proute">#/book/{hospitalId}/{serviceId}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/book/{hospitalId}/{serviceId}</code>. 미인증 → <code>#/signin?next={current}</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>단일 시술에 대해 환자 + 여행 + 부가서비스 정보 수집. booking 생성 후 상태 페이지로.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <p><strong>모두 P08과 동일</strong> (Patient / Travel / Add-ons 폼)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>상단 Hero Strip:</strong> 시술 photo-tile + 진료과명 (eyebrow) + 병원명 + 링크 + 시술명</p>
+        <p><strong>우측 가격 카드:</strong> 현재 페르소나 기준 가격 (라이브)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th><th>토스트</th></tr></thead>
+          <tbody>
+            <tr><td>폼 제출</td><td><code>#/booking/{id}</code></td><td><code>toast_booking_created</code></td></tr>
+            <tr><td>유효성 실패</td><td>— (폼 유지)</td><td><code>toast_validation_error</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>P08과 동일:</strong> phone / age / passport / dates / 필수 필드 / 충돌</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n & a11y:</strong> P08과 동일</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P12</span>예약 상태 (4-step 타임라인)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P12</div><div class="pname">예약 상태</div></div>
+      <div class="proute">#/booking/{id}</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/booking/{id}</code>. 미인증 → <code>#/signin?next={current}</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>예약의 전체 진행 상황을 4-step 타임라인으로 시각화. 상태 변경(병원 승인) 시뮬레이션.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th><th>가드</th></tr></thead>
+          <tbody>
+            <tr><td>Simulate confirmation</td><td>button</td><td>simulate-confirm</td><td>demo mode</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>Booking Detail:</strong> photo-tile + 진료과 + 병원명 + 위치 + visitDate + 시술 list + 환자 정보 (이름, 성별, 나이, 여권 마스킹 <code>●●●●●678</code>)</p>
+        <p><strong>4-Step Timeline:</strong> (1) Request submitted ✓ (2) Forwarded to hospital ✓ (3) Hospital confirmed (4) CS notified for add-ons</p>
+        <p><strong>상태별:</strong> waiting = info 박스 + Simulate 버튼, confirmed = success 박스</p>
+        <p><strong>우측 가격:</strong> Base + Enterprise discount + Coupon discount + Total</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>상태 변경</th><th>토스트</th></tr></thead>
+          <tbody>
+            <tr><td>Simulate confirm</td><td>status='confirmed'</td><td><code>toast_hospital_ok</code></td></tr>
+            <tr><td>실제 API</td><td>webhook/polling</td><td><code>toast_hospital_ok</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>booking_detail_t</code>, <code>booking_patient_info</code>, <code>booking_timeline_*</code>, <code>booking_status_waiting</code>, <code>booking_status_confirmed</code>, <code>simulate_hint</code></p>
+        <p><strong>a11y:</strong> Timeline <code>role="list"</code> + <code>role="listitem"</code>, step <code>aria-current="step"</code></p>
+        <p><strong>prefers-reduced-motion:</strong> Timeline animation 제거, transition 비활성</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P13</span>내 예약 목록</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P13</div><div class="pname">내 예약 목록</div></div>
+      <div class="proute">#/bookings</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/bookings</code>. 미인증 → <code>#/signin?next=#/bookings</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>사용자의 모든 booking을 카드 그리드로 표시. 각 예약의 상세 페이지로 진입.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th></tr></thead>
+          <tbody>
+            <tr><td>카드 클릭</td><td>clickable</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>동적:</strong> state.bookings 모든 booking 목록</p>
+        <p><strong>각 카드:</strong> photo-tile + status 칩 (confirmed 녹색 / waiting 황색) + booking ID (mono) + 병원명 + visitDate + 시술 개수 + 가격</p>
+        <p><strong>빈 상태:</strong> <code>no_bookings_t</code> + CTA → <code>#/departments</code></p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>카드 클릭</td><td><code>#/booking/{id}</code></td></tr>
+            <tr><td>Browse CTA</td><td><code>#/departments</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>bookings_title</code>, <code>bookings_subtitle</code>, <code>no_bookings_t</code>, <code>no_bookings_s</code>, <code>status_confirmed</code>, <code>status_waiting</code></p>
+        <p><strong>a11y:</strong> 각 카드 <code>role="link"</code> + <code>tabindex="0"</code>, <code>aria-label="예약 ABC-0001, Samsung Medical Center, 2026-06-15, 상태: 확정, 2개 시술, $1,500"</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P15</span>Providers (파트너 병원 목록 + 상세)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P15</div><div class="pname">Providers</div></div>
+      <div class="proute">#/providers?spec=&loc=&eng=1&intl=1</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><strong>List:</strong> <code>#/providers?spec={dept}&loc={location}&eng=1&intl=1</code><br/>
+        <strong>Detail:</strong> <code>#/providers/:id</code> (미인증: 열람, 로그인: 예약 진행)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>검증된 한국 의료 파트너를 신뢰 단서와 함께 노출. 진료과·지역·외국인 친화 필터 → 상세 → 시술·리뷰·B&A → 문의 CTA.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>진료과 필터</td><td>select</td><td>filter-spec</td></tr>
+            <tr><td>지역 필터</td><td>select</td><td>filter-loc</td></tr>
+            <tr><td>영어 진료 체크</td><td>checkbox</td><td>filter-eng</td></tr>
+            <tr><td>국제 병동 체크</td><td>checkbox</td><td>filter-intl</td></tr>
+            <tr><td>병원 카드 (list)</td><td>clickable</td><td>hospital-{id}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>List:</strong> 병원 카드 (이름 · 진료과 칩 · 평점 · 리뷰수 · 지역 · "View provider")</p>
+        <p><strong>Detail:</strong> 상세정보 + 신뢰 배지 4종 + 시술 그리드(페르소나 가격) + 리뷰 4건 + B&A + "문의" CTA</p>
+        <p><strong>빈 상태:</strong> Empty state + 제안</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>필터 변경</td><td>URL push → fetch hospitals</td></tr>
+            <tr><td>병원 카드 클릭</td><td><code>#/providers/:id</code></td></tr>
+            <tr><td>"문의하기"</td><td><code>#/qa</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>pv_*</code>, <code>pvd_*</code>, 필터 라벨</p>
+        <p><strong>a11y:</strong> 필터 라벨 명시적, navy hero 명도비 ≥ 4.5:1, 한국어 <code>word-break: keep-all</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P16</span>Reviews (환자 후기)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P16</div><div class="pname">Reviews</div></div>
+      <div class="proute">#/reviews?provider=&dept=&rating=</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/reviews?provider={id}&dept={spec}&rating={1-5}</code> (게스트 열람만)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>검증된 환자 후기를 필터링하여 신뢰 단서 제공. 가명·신원 차단 정책 준수.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>병원 필터</td><td>select</td><td>filter-provider</td></tr>
+            <tr><td>진료과 필터</td><td>select</td><td>filter-dept</td></tr>
+            <tr><td>평점 필터</td><td>select</td><td>filter-rating</td></tr>
+            <tr><td>리뷰 카드</td><td>clickable</td><td>review-{id}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>리뷰 카드 (가명 · 메타 · 5-star rating · 인용문 · posted_at · verified 마크 · 언어)</p>
+        <p><code>REVIEW_DISCLAIMER_DEFAULT</code> 양 언어 고정 + 결과 count</p>
+        <p><strong>빈 상태:</strong> <code>empty_reviews_t</code> + 제안</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>필터 변경</td><td>URL push → fetch reviews</td></tr>
+            <tr><td>리뷰 카드 클릭</td><td><code>#/providers/:id</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>rv_*</code>, <code>REVIEW_DISCLAIMER_DEFAULT</code></p>
+        <p><strong>a11y:</strong> Rating star <code>aria-label="별점 {n}/5"</code>, 리뷰 카드 <code>role="article"</code>, 한국어 <code>word-break: keep-all</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P17</span>Before & After (전후 사진)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P17</div><div class="pname">Before & After</div></div>
+      <div class="proute">#/before-after?spec=&provider=&recovery=</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><strong>List:</strong> <code>#/before-after?spec={dept}&provider={id}&recovery={days}</code><br/>
+        <strong>Detail:</strong> <code>#/before-after/:caseId</code> (게스트 열람)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>동의 기반 전·후 사례를 필터링하여 탐색. 한국 의료광고 정책 준수 (신원 차단·디스클레이머).</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>진료과 필터</td><td>select</td><td>filter-spec</td></tr>
+            <tr><td>병원 필터</td><td>select</td><td>filter-provider</td></tr>
+            <tr><td>회복기간 필터</td><td>select</td><td>filter-recovery</td></tr>
+            <tr><td>케이스 카드</td><td>clickable</td><td>case-{id}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>List:</strong> 케이스 카드 (before/after 이미지 4:5 · 진료과 · 회복기간 · verified mark)</p>
+        <p><strong>Detail:</strong> 큰 before/after 비교 · 진료과·회복기간·날짜 메타 · Provider 링크 · <code>BA_DISCLAIMER_DEFAULT</code> · "Provider 보기" CTA · 추천 케이스 3개</p>
+        <p><strong>빈 상태:</strong> Empty state</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>필터 변경</td><td>URL push → fetch cases</td></tr>
+            <tr><td>케이스 카드</td><td><code>#/before-after/:caseId</code></td></tr>
+            <tr><td>"Provider 보기"</td><td><code>#/providers/:id</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>consent_meta 만료:</strong> <code>expires &lt; today</code> → 자동 숨김</p>
+        <p><strong>신원 식별 이미지:</strong> <code>identity_masked=false</code> → 비노출</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>ba_*</code>, <code>bad_*</code>, <code>BA_DISCLAIMER_DEFAULT</code></p>
+        <p><strong>a11y:</strong> 이미지 <code>alt</code> 필수, 회복기간 시간 단위 i18n, 한국어 <code>word-break: keep-all</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P18</span>Blog (블로그)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P18</div><div class="pname">Blog</div></div>
+      <div class="proute">#/blog?cat=&tag=</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><strong>List:</strong> <code>#/blog?cat={category}&tag={tag}</code><br/>
+        <strong>Detail:</strong> <code>#/blog/:slug</code> (게스트 열람)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>한국 의료 가이드·비용·여행 팁 콘텐츠로 SEO 유입 + 신뢰 강화.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>카테고리 필터</td><td>select</td><td>filter-cat</td></tr>
+            <tr><td>Tag 필터</td><td>select</td><td>filter-tag</td></tr>
+            <tr><td>블로그 카드</td><td>clickable</td><td>post-{slug}</td></tr>
+            <tr><td>공유 버튼</td><td>button</td><td>share-{provider}</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p><strong>List:</strong> 블로그 카드 (커버 · 카테고리 칩 · 제목 · 발행일 · 읽기 시간) + Pagination</p>
+        <p><strong>Detail:</strong> 커버 이미지 · 메타 · 본문 (markdown → HTML) · 추천 글 3건 · 공유 옵션</p>
+        <p><strong>빈 상태:</strong> Empty state</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>카테고리 필터</td><td>URL push</td></tr>
+            <tr><td>블로그 카드</td><td><code>#/blog/:slug</code></td></tr>
+            <tr><td>추천 글</td><td><code>#/blog/:slug</code></td></tr>
+            <tr><td>공유 버튼</td><td>외부 링크 또는 clipboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>published_at future:</strong> <code>published_at &gt; today</code> → 비노출 (draft)</p>
+        <p><strong>잘못된 slug:</strong> slug not found → 404 page</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>bg_*</code>, <code>blog_read_time</code>, <code>blog_share</code></p>
+        <p><strong>a11y:</strong> Heading hierarchy h1-h3, 이미지 <code>alt</code> 필수, 공유 버튼 <code>aria-label</code>, 한국어 <code>word-break: keep-all</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">P19</span>Q&A (자주 묻는 질문)</h2>
+
+  <div class="screen-card">
+    <div class="header">
+      <div><div class="pid">P19</div><div class="pname">Q&A</div></div>
+      <div class="proute">#/qa</div>
+    </div>
+    <div class="body">
+      <div class="screen-section">
+        <h4>라우트</h4>
+        <p><code>#/qa</code> (게스트 열람 가능)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>목적</h4>
+        <p>진료·요금·파트너·여행·지원에 대한 자주 묻는 질문을 카테고리별로 제공. CS 인입 큐 감소.</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>입력 (Inputs)</h4>
+        <table>
+          <thead><tr><th>요소</th><th>타입</th><th>필드명</th></tr></thead>
+          <tbody>
+            <tr><td>카테고리 네비</td><td>button</td><td>cat-{name}</td></tr>
+            <tr><td>Q&A 아코디언</td><td>&lt;details&gt;</td><td>qa-{id}</td></tr>
+            <tr><td>추가 문의</td><td>link</td><td>contact-cs</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>출력 (Outputs)</h4>
+        <p>카테고리별 Q&A 아이템 (question · answer · category). 비어있는 카테고리는 숨김.</p>
+        <p>헤더 텍스트 · 카테고리 라벨 · 추가 문의 안내 링크 (→ <code>mailto:cs@safedoc.io</code>)</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>상태 전이</h4>
+        <table>
+          <thead><tr><th>액션</th><th>라우트</th></tr></thead>
+          <tbody>
+            <tr><td>카테고리 클릭</td><td>URL hash 갱신 (in-page scroll)</td></tr>
+            <tr><td>아코디언 open</td><td>— (&lt;details open&gt;)</td></tr>
+            <tr><td>추가 문의</td><td><code>mailto:cs@safedoc.io</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="screen-section">
+        <h4>검증 & 에러</h4>
+        <p><strong>비어있는 카테고리:</strong> <code>qa_items.length === 0</code> → 숨김</p>
+      </div>
+
+      <div class="screen-section">
+        <h4>i18n & a11y</h4>
+        <p><strong>i18n:</strong> <code>qa_*</code>, <code>qa_contact_cs</code></p>
+        <p><strong>a11y:</strong> <code>&lt;details&gt;</code> native keyboard support, <code>&lt;summary&gt;</code> <code>aria-expanded</code>, 카테고리 버튼 <code>aria-selected</code>, 한국어 <code>word-break: keep-all</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">+</span>가격 정책 · computePrice()</h2>
+
+  <pre>base_price = user.citizenship === 'KR' ? service.kr_price : service.fx_price
+
+enterprise_discount = user.enterprise && user.enterpriseStatus === 'verified'
+  ? floor(base_price × discount_pct / 100)
+  : 0
+
+coupon_discount = couponCode ? COUPONS[couponCode].amount or pct : 0
+
+if enterprise_discount > 0 && coupon_discount > 0 && !coupon.stackable:
+  conflict = true
+
+total = base_price - enterprise_discount - coupon_discount</pre>
+
+  <p>모든 시술 가격은 위 함수 결과에 의존. 페르소나·시민권·기업 상태·쿠폰 변경 시 전역 재계산.</p>
+</section>
+
+<section>
+  <h2><span class="num">+</span>상태 영속화 · localStorage</h2>
+
+  <p><strong>키:</strong> <code>safedoc_demo_v1</code> (JSON)</p>
+  <p><strong>필드:</strong> <code>lang</code>, <code>persona</code>, <code>signedIn</code>, <code>profile</code>, <code>cart</code>, <code>couponCode</code>, <code>conflictChoice</code>, <code>bookings</code></p>
+</section>
+
+<section>
+  <h2><span class="num">+</span>i18n 키 카테고리</h2>
+
+  <table>
+    <thead><tr><th style="width:16%">카테고리</th><th>용도</th></tr></thead>
+    <tbody>
+      <tr><td><code>hp_*</code></td><td>랜딩(P01)</td></tr>
+      <tr><td><code>nav_*</code></td><td>네비게이션</td></tr>
+      <tr><td><code>dept_*</code></td><td>진료과</td></tr>
+      <tr><td><code>svc_*</code></td><td>시술</td></tr>
+      <tr><td><code>hosp_*</code></td><td>병원</td></tr>
+      <tr><td><code>tab_*</code></td><td>탭 라벨</td></tr>
+      <tr><td><code>cart_*</code></td><td>장바구니</td></tr>
+      <tr><td><code>checkout_*</code></td><td>결제</td></tr>
+      <tr><td><code>booking_*</code></td><td>예약 상태</td></tr>
+      <tr><td><code>signin_*</code>, <code>onboarding_*</code></td><td>인증</td></tr>
+      <tr><td><code>status_*</code></td><td>상태 칩</td></tr>
+      <tr><td><code>toast_*</code>, <code>err_*</code></td><td>메시지</td></tr>
+      <tr><td><code>footer_*</code></td><td>푸터</td></tr>
+      <tr><td><code>kr_*</code></td><td>KR DB 라벨</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2><span class="num">+</span>접근성 & NFR</h2>
+
+  <p><strong>Tab 순서:</strong> Header → 본문 → 사이드바 → Footer → Persona Panel</p>
+  <p><strong>WCAG 2.2 AA:</strong> 색 대비 4.5:1, focus-visible, ARIA 적절</p>
+  <p><strong>prefers-reduced-motion:</strong> 애니메이션 제거 (마퀴, 탭, 호버 transition)</p>
+
+  <table style="margin-top:5mm;">
+    <thead><tr><th style="width:16%">항목</th><th>목표</th></tr></thead>
+    <tbody>
+      <tr><td>LCP</td><td>&lt; 2.5s</td></tr>
+      <tr><td>INP</td><td>&lt; 200ms</td></tr>
+      <tr><td>CLS</td><td>&lt; 0.1</td></tr>
+      <tr><td>JS 번들</td><td>&lt; 150kb gzipped</td></tr>
+      <tr><td>WCAG</td><td>2.2 AA</td></tr>
+      <tr><td>i18n</td><td>EN/KO</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin-top:6mm; font-size:9pt; color:var(--ink-muted); border-top:1px solid var(--paper-line); padding-top:3mm;"><strong>End of Functional Specification v1.0</strong></p>
+</section>
+
+</body>
+</html>
