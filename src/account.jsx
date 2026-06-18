@@ -4,13 +4,14 @@
    전부 프론트 mock(localStorage). 백엔드 연동은 docs/SERVER-REQUEST.md 범위.
    client-only (App.jsx 의 MyPageRoute 가 <ClientOnly> 로 감싼다).
    ========================================================================= */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   User, Calendar, ShoppingCart, LogOut, Trash2, Star, CheckCircle2,
   Clock, Building2, ArrowLeft, XCircle, ChevronRight,
 } from "lucide-react";
 import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, BG_SOFT, SUCCESS, STAR, btn, money } from "./theme.js";
 import { trackEvent } from "./analytics.js";
+import { GOOGLE_CLIENT_ID } from "./config.js";
 
 /* ----------------------------- storage helpers ----------------------------- */
 const ls = {
@@ -65,15 +66,15 @@ export default function AccountHub({ onBook }) {
 
   useEffect(() => { if (user) seedIfEmpty(); }, [user]);
 
-  const login = (e) => {
-    e.preventDefault();
-    const u = { email: email || "guest@korecare.example" };
-    ls.set("korecare_user", u); setUser(u);
-    trackEvent("login", {});
+  const signIn = (u) => {
+    const profile = { email: "guest@korecare.example", ...u };
+    ls.set("korecare_user", profile); setUser(profile);
+    trackEvent("login", { provider: u.provider || "email" });
   };
+  const login = (e) => { e.preventDefault(); signIn({ email: email || "guest@korecare.example", provider: "email" }); };
   const logout = () => { localStorage.removeItem("korecare_user"); setUser(null); };
 
-  if (!user) return <LoginGate email={email} setEmail={setEmail} onSubmit={login} />;
+  if (!user) return <LoginGate email={email} setEmail={setEmail} onSubmit={login} onGoogle={signIn} />;
 
   const tabs = [
     { id: "reservations", label: "My Reservations", icon: Calendar },
@@ -112,20 +113,72 @@ export default function AccountHub({ onBook }) {
 }
 
 /* ------------------------------ Login gate ------------------------------ */
-function LoginGate({ email, setEmail, onSubmit }) {
+function LoginGate({ email, setEmail, onSubmit, onGoogle }) {
   const inputS = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 8, padding: "11px 12px", fontSize: 14, color: INK, outline: "none", boxSizing: "border-box" };
   return (
     <div style={{ marginTop: 40, maxWidth: 420, margin: "40px auto 0" }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}><User size={15} /> Sign in</div>
-      <h1 style={{ fontSize: 26, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>Welcome back</h1>
-      <p style={{ fontSize: 14, color: SUB, margin: "0 0 18px" }}>Sign in to manage reservations, cart and your profile.</p>
-      <form onSubmit={onSubmit} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22, display: "grid", gap: 14 }}>
-        <div><label style={lblS}>Email</label><input type="email" style={inputS} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" /></div>
-        <div><label style={lblS}>Password</label><input type="password" style={inputS} placeholder="••••••••" /></div>
-        <button type="submit" style={{ ...btn(TEAL, "#fff"), width: "100%" }}>Sign in</button>
-        <div style={{ fontSize: 11.5, color: MUTE, textAlign: "center" }}>Prototype — any email signs you in (mock).</div>
-      </form>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}><User size={15} /> Sign in / Sign up</div>
+      <h1 style={{ fontSize: 26, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>Welcome to KoreCare</h1>
+      <p style={{ fontSize: 14, color: SUB, margin: "0 0 18px" }}>Continue with Google, or use email to manage reservations, cart and your profile.</p>
+      <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
+        <GoogleSignIn onUser={onGoogle} />
+        <div style={{ display: "flex", alignItems: "center", gap: 10, margin: "16px 0" }}>
+          <div style={{ flex: 1, height: 1, background: LINE }} /><span style={{ fontSize: 12, color: MUTE }}>or</span><div style={{ flex: 1, height: 1, background: LINE }} />
+        </div>
+        <form onSubmit={onSubmit} style={{ display: "grid", gap: 14 }}>
+          <div><label style={lblS}>Email</label><input type="email" style={inputS} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@email.com" /></div>
+          <div><label style={lblS}>Password</label><input type="password" style={inputS} placeholder="••••••••" /></div>
+          <button type="submit" style={{ ...btn(TEAL, "#fff"), width: "100%" }}>Continue with email</button>
+          <div style={{ fontSize: 11.5, color: MUTE, textAlign: "center" }}>Prototype — Google uses real sign-in when configured, otherwise demo (mock).</div>
+        </form>
+      </div>
     </div>
+  );
+}
+
+/* Google Identity Services — VITE_GOOGLE_CLIENT_ID 설정 시 실제 로그인, 미설정 시 데모 폴백 */
+function decodeJwt(token) {
+  try {
+    const b = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+    return JSON.parse(decodeURIComponent(atob(b).split("").map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2)).join("")));
+  } catch { return {}; }
+}
+function GoogleSignIn({ onUser }) {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!GOOGLE_CLIENT_ID || typeof window === "undefined") return;
+    let cancelled = false;
+    const render = () => {
+      if (cancelled || !window.google?.accounts?.id || !ref.current) return;
+      window.google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: (resp) => { const p = decodeJwt(resp.credential); onUser({ email: p.email, name: p.name, picture: p.picture, provider: "google" }); },
+      });
+      window.google.accounts.id.renderButton(ref.current, { theme: "outline", size: "large", width: 330, text: "continue_with", shape: "rectangular" });
+    };
+    if (window.google?.accounts?.id) render();
+    else { const s = document.createElement("script"); s.src = "https://accounts.google.com/gsi/client"; s.async = true; s.defer = true; s.onload = render; document.head.appendChild(s); }
+    return () => { cancelled = true; };
+  }, [onUser]);
+
+  if (!GOOGLE_CLIENT_ID) {
+    return (
+      <button type="button" onClick={() => onUser({ email: "jane.kim@gmail.com", name: "Jane Kim", provider: "google-demo" })}
+        style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10, border: `1px solid ${LINE}`, background: "#fff", color: INK, borderRadius: 10, padding: "11px 14px", fontSize: 14, fontWeight: 600, cursor: "pointer" }}>
+        <GoogleIcon /> Continue with Google <span style={{ fontSize: 11, color: MUTE, fontWeight: 500 }}>(demo)</span>
+      </button>
+    );
+  }
+  return <div ref={ref} style={{ display: "flex", justifyContent: "center" }} />;
+}
+function GoogleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden>
+      <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.6 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.3l7.8 6.1C12.2 13.3 17.6 9.5 24 9.5z" />
+      <path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.5 3-2.2 5.5-4.7 7.2l7.3 5.7c4.3-4 6.8-9.9 6.8-17.4z" />
+      <path fill="#FBBC05" d="M10.3 28.6c-.5-1.5-.8-3-.8-4.6s.3-3.1.8-4.6l-7.8-6.1C.9 16.5 0 20.1 0 24s.9 7.5 2.5 10.7l7.8-6.1z" />
+      <path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.5l-7.3-5.7c-2 1.4-4.7 2.3-7.9 2.3-6.4 0-11.8-3.8-13.7-9.4l-7.8 6.1C6.4 42.6 14.6 48 24 48z" />
+    </svg>
   );
 }
 const lblS = { fontSize: 12.5, fontWeight: 600, color: SUB, marginBottom: 5, display: "block" };

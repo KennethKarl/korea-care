@@ -7,7 +7,7 @@ import {
   ArrowLeft, Phone, Mail, Send, ChevronDown, HelpCircle,
   Calendar, Users, CheckCircle2, MessageSquare, Globe, User, Newspaper,
 } from "lucide-react";
-import { treatments as TREATMENTS, reviews as REVIEWS, beforeAfter as BEFORE_AFTER, blogPosts as BLOG_POSTS, i18n as I18N } from "./site-data.js";
+import { treatments as TREATMENTS, reviews as REVIEWS, beforeAfter as BEFORE_AFTER, blogPosts as BLOG_POSTS, faqItems as FAQ_ITEMS, i18n as I18N } from "./site-data.js";
 import { TreatmentsPage, TreatmentDetail, ReviewsPage, BeforeAfterPage, BlogPage, BlogPostPage, ReservationPage, MyPage } from "./screens.jsx";
 import { Outlet, useNavigate, useLocation, useParams, useSearchParams, useOutletContext } from "react-router-dom";
 import { ClientOnly } from "vite-react-ssg";
@@ -280,7 +280,9 @@ function BlogPostRoute() {
   const { lang, t } = useOutletContext();
   const { id } = useParams();
   const navigate = useNavigate();
-  const post = BLOG_POSTS.find((p) => p.id === id);
+  let post = BLOG_POSTS.find((p) => p.id === id);
+  // 어드민 블로그 CMS 로 추가된 글(프리렌더 안 됨)은 클라이언트 localStorage 에서 탐색
+  if (!post && typeof window !== "undefined") { try { post = JSON.parse(localStorage.getItem("korecare_blogposts") || "[]").find((p) => p.id === id); } catch (_) {} }
   const title = post ? (post.title?.[lang] ?? post.title?.en ?? post.title) : "Article";
   return (<><Seo title={typeof title === "string" ? title : "Article"} type="article" path={`/blog/${id}`} /><BlogPostPage post={post} lang={lang} t={t} onBack={() => navigate("/blog")} /></>);
 }
@@ -731,21 +733,14 @@ function SectionDivider() {
 }
 
 /* ========================================================================
-   FAQ
+   FAQ  (FAQ_ITEMS 는 site-data.js 로 이동 — 어드민 CMS 와 공유)
    ======================================================================== */
-const FAQ_ITEMS = [
-  { q: "Is my procedure really covered by my insurer?", a: "If you were referred to KoreCare by your insurer, the listed program is covered under that referral. We confirm your exact out-of-pocket amount after a short records review — before you commit to anything." },
-  { q: "Which hospitals do you work with?", a: "Only internationally accredited (e.g. JCI) tertiary hospitals in Korea, each with a dedicated international patient center. You see the accreditation and patient ratings on every program card." },
-  { q: "What exactly does KoreCare arrange?", a: "Everything outside the treatment room: care-plan matching, flights and visa support, airport pickup, a dedicated English interpreter and coordinator, hospital-adjacent recovery accommodation, and follow-up coordination with your doctor back home." },
-  { q: "Can a companion travel with me?", a: "Yes. Travel and accommodation for one companion are included in the standard journey arrangement." },
-  { q: "Will language be a problem?", a: "No. You are assigned an English-speaking coordinator and medical interpreter for every appointment, from consultation through discharge." },
-  { q: "How long will I need to stay in Korea?", a: "It depends on the program — each card shows a typical stay (for example 3–5 weeks for oncology, a few days for screening). Your coordinator confirms the schedule once your treatment plan is set." },
-  { q: "How is aftercare handled once I'm home?", a: "Before you fly home we prepare a full medical summary and coordinate follow-up directly with your US physician, so your local care continues seamlessly." },
-  { q: "How do I get started?", a: "Pick a program and tap “Request this plan”, or send us a message from the Contact page. A coordinator follows up to review your records and confirm coverage." },
-];
 
 function FAQPage({ onContact }) {
   const [open, setOpen] = useState(0);
+  // SSG 는 정적 FAQ_ITEMS(SEO). 클라이언트에서 어드민 CMS 오버레이(korecare_faqs) 반영.
+  const [items, setItems] = useState(FAQ_ITEMS);
+  useEffect(() => { try { const o = JSON.parse(localStorage.getItem("korecare_faqs") || "null"); if (o?.length) setItems(o); } catch (_) {} }, []);
   return (
     <div style={{ marginTop: 28, maxWidth: 760 }}>
       <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
@@ -755,7 +750,7 @@ function FAQPage({ onContact }) {
       <p style={{ fontSize: 15, color: SUB, margin: "0 0 24px" }}>Can't find your answer? Our coordinators are one message away.</p>
 
       <div style={{ display: "grid", gap: 10 }}>
-        {FAQ_ITEMS.map((item, i) => {
+        {items.map((item, i) => {
           const isOpen = open === i;
           return (
             <div key={i} style={{ background: "#fff", border: `1px solid ${isOpen ? TEAL : LINE}`, borderRadius: 12, overflow: "hidden" }}>

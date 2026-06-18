@@ -134,6 +134,19 @@ export const blogPosts = [
     body: { en: "Referred by his insurer, Michael flew to Seoul for proton therapy. Over five weeks his coordinator managed every appointment, interpreter, and recovery stay. He saved over $90,000 versus his US quote and returned home with a coordinated aftercare plan.", ko: "보험사 추천으로 마이클은 양성자 치료를 위해 서울로 향했습니다. 5주간 전담 코디네이터가 모든 진료·통역·회복 숙소를 관리했고, 미국 견적 대비 9만 달러 이상을 절감하며 사후관리 계획과 함께 귀국했습니다." } },
 ];
 
+/* ------------------------------- FAQ ------------------------------- */
+/* 어드민 FAQ 관리(CMS)와 고객 FAQ 화면이 공유하는 정본. 어드민 수정 시 localStorage 오버레이로 웹 반영. */
+export const faqItems = [
+  { q: "Is my procedure really covered by my insurer?", a: "If you were referred to KoreCare by your insurer, the listed program is covered under that referral. We confirm your exact out-of-pocket amount after a short records review — before you commit to anything." },
+  { q: "Which hospitals do you work with?", a: "Only internationally accredited (e.g. JCI) tertiary hospitals in Korea, each with a dedicated international patient center. You see the accreditation and patient ratings on every program card." },
+  { q: "What exactly does KoreCare arrange?", a: "Everything outside the treatment room: care-plan matching, flights and visa support, airport pickup, a dedicated English interpreter and coordinator, hospital-adjacent recovery accommodation, and follow-up coordination with your doctor back home." },
+  { q: "Can a companion travel with me?", a: "Yes. Travel and accommodation for one companion are included in the standard journey arrangement." },
+  { q: "Will language be a problem?", a: "No. You are assigned an English-speaking coordinator and medical interpreter for every appointment, from consultation through discharge." },
+  { q: "How long will I need to stay in Korea?", a: "It depends on the program — each card shows a typical stay (for example 3–5 weeks for oncology, a few days for screening). Your coordinator confirms the schedule once your treatment plan is set." },
+  { q: "How is aftercare handled once I'm home?", a: "Before you fly home we prepare a full medical summary and coordinate follow-up directly with your US physician, so your local care continues seamlessly." },
+  { q: "How do I get started?", a: "Pick a program and tap “Request this plan”, or send us a message from the Contact page. A coordinator follows up to review your records and confirm coverage." },
+];
+
 /* ------------------------------- i18n ------------------------------- */
 export const i18n = {
   en: {

@@ -14,5 +14,8 @@ export const META_PIXEL_ID = env.VITE_META_PIXEL_ID || "";   // 예: 12345678901
 export const CLARITY_ID = env.VITE_CLARITY_ID || "";         // MS Clarity project id
 export const CHANNEL_PLUGIN_KEY = env.VITE_CHANNEL_PLUGIN_KEY || ""; // ChannelTalk
 
+// Google 로그인(회원가입 대체). 설정 시 실제 GIS 로그인, 미설정 시 데모 로그인 폴백.
+export const GOOGLE_CLIENT_ID = env.VITE_GOOGLE_CLIENT_ID || "";
+
 // 사이트 정식 URL (canonical/OG/sitemap 기준) — 커스텀 도메인 루트
 export const SITE_URL = "https://global.safedoc.io";

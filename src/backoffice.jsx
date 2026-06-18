@@ -13,9 +13,10 @@
 import React, { useState } from "react";
 import {
   Calendar, DollarSign, Users, Star, Building2, LayoutDashboard,
-  Eye, EyeOff, Plus, ExternalLink, ShieldCheck, Stethoscope,
+  Eye, EyeOff, Plus, Trash2, ExternalLink, ShieldCheck, Stethoscope, HelpCircle, Newspaper,
 } from "lucide-react";
-import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, BG_SOFT, SUCCESS, STAR, btn, money } from "./theme.js";
+import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, BG_SOFT, SUCCESS, STAR, btn, money, txt } from "./theme.js";
+import { treatments as TREATMENTS, blogPosts as BLOG_POSTS, faqItems as FAQ_ITEMS } from "./site-data.js";
 
 const ls = {
   get(k, fb) { try { return JSON.parse(localStorage.getItem(k) || "null") ?? fb; } catch { return fb; } },
@@ -53,6 +54,13 @@ function seedAdmin() {
     ls.set("korecare_users", u);
   }
   if (!ls.get("korecare_settlements", null)) ls.set("korecare_settlements", []);
+  // 시술 카탈로그(노출 토글) — 고객 시술 리스트와 id 매칭
+  if (!ls.get("korecare_treatments", null)) {
+    ls.set("korecare_treatments", TREATMENTS.map((t) => ({ id: t.id, name: txt(t.name, "en"), deptIds: t.deptIds, price: t.price, usPrice: t.usPrice, visible: true })));
+  }
+  // FAQ CMS / 블로그 CMS — 고객 화면과 공유(오버레이)
+  if (!ls.get("korecare_faqs", null)) ls.set("korecare_faqs", FAQ_ITEMS.map((f) => ({ ...f })));
+  if (!ls.get("korecare_blogposts", null)) ls.set("korecare_blogposts", BLOG_POSTS.map((p) => ({ ...p })));
 }
 
 /* ============================== shell ============================== */
@@ -103,6 +111,9 @@ export function AdminApp() {
     { id: "users", label: "유저 관리", icon: Users },
     { id: "reviews", label: "리뷰 관리", icon: Star },
     { id: "hospitals", label: "병원 관리", icon: Building2 },
+    { id: "treatments", label: "시술 관리", icon: Stethoscope },
+    { id: "faq", label: "FAQ 관리", icon: HelpCircle },
+    { id: "blog", label: "블로그 관리", icon: Newspaper },
   ];
   return (
     <Shell kind="admin" tabs={tabs} tab={tab} setTab={setTab}>
@@ -111,6 +122,9 @@ export function AdminApp() {
       {tab === "users" && <AdminUsers />}
       {tab === "reviews" && <AdminReviews />}
       {tab === "hospitals" && <AdminHospitals />}
+      {tab === "treatments" && <AdminTreatments />}
+      {tab === "faq" && <AdminFaq />}
+      {tab === "blog" && <AdminBlog />}
     </Shell>
   );
 }
@@ -138,6 +152,112 @@ function AdminReservations() {
         ))}
       </Table>
       {!rows.length && <Empty text="예약이 없습니다." />}
+    </Section>
+  );
+}
+
+function AdminTreatments() {
+  const [rows, setRows] = useState(() => ls.get("korecare_treatments", []));
+  const [form, setForm] = useState({ name: "", deptId: "onco", price: "", usPrice: "" });
+  const save = (next) => { setRows(next); ls.set("korecare_treatments", next); };
+  const toggle = (id) => save(rows.map((t) => (t.id === id ? { ...t, visible: !t.visible } : t)));
+  const add = (e) => {
+    e.preventDefault();
+    if (!form.name.trim()) return;
+    save([...rows, { id: "t_" + Date.now(), name: form.name, deptIds: [form.deptId], price: Number(form.price) || 0, usPrice: Number(form.usPrice) || 0, visible: true }]);
+    setForm({ name: "", deptId: form.deptId, price: "", usPrice: "" });
+  };
+  const inS = { border: `1px solid ${LINE}`, borderRadius: 8, padding: "9px 11px", fontSize: 13.5, outline: "none" };
+  const DEPTS = [["onco", "Oncology"], ["ortho", "Orthopedics & Spine"], ["cardiac", "Cardiac Surgery"], ["screen", "Full Health Screening"]];
+  return (
+    <Section title="시술 관리" desc="노출여부 토글로 고객 시술 리스트 노출을 제어합니다(즉시 연동). 시술 등록 시 카탈로그에 추가됩니다.">
+      <form onSubmit={add} style={{ ...card, display: "flex", gap: 10, flexWrap: "wrap", alignItems: "flex-end", marginBottom: 14 }}>
+        <label style={{ display: "grid", gap: 4 }}><span style={lblS}>시술명</span><input style={inS} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder="예: LASIK" /></label>
+        <label style={{ display: "grid", gap: 4 }}><span style={lblS}>진료과</span>
+          <select style={inS} value={form.deptId} onChange={(e) => setForm({ ...form, deptId: e.target.value })}>{DEPTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}</select>
+        </label>
+        <label style={{ display: "grid", gap: 4 }}><span style={lblS}>정가(US$)</span><input type="number" style={inS} value={form.usPrice} onChange={(e) => setForm({ ...form, usPrice: e.target.value })} /></label>
+        <label style={{ display: "grid", gap: 4 }}><span style={lblS}>세이프닥가</span><input type="number" style={inS} value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} /></label>
+        <button type="submit" style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 6 }}><Plus size={15} /> 시술 등록</button>
+      </form>
+      <Table head={["시술 ID", "시술명", "진료과", "정가", "할인가", "노출"]}>
+        {rows.map((t) => (
+          <tr key={t.id} style={trS}>
+            <Td><span style={{ fontFamily: "monospace", fontSize: 12, color: MUTE }}>{t.id}</span></Td>
+            <Td>{t.name}</Td>
+            <Td>{(t.deptIds || []).join(", ")}</Td>
+            <Td>{money(t.usPrice)}</Td>
+            <Td><b style={{ color: TEAL }}>{money(t.price)}</b></Td>
+            <Td>
+              <button onClick={() => toggle(t.id)} style={{ border: `1px solid ${t.visible ? SUCCESS : LINE}`, background: t.visible ? "#eafaf2" : "#fff", color: t.visible ? "#1f9d6b" : MUTE, borderRadius: 20, padding: "4px 10px", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 5 }}>
+                {t.visible ? <Eye size={13} /> : <EyeOff size={13} />} {t.visible ? "노출" : "숨김"}
+              </button>
+            </Td>
+          </tr>
+        ))}
+      </Table>
+    </Section>
+  );
+}
+
+function AdminFaq() {
+  const [rows, setRows] = useState(() => ls.get("korecare_faqs", []));
+  const [form, setForm] = useState({ q: "", a: "" });
+  const save = (next) => { setRows(next); ls.set("korecare_faqs", next); };
+  const remove = (i) => save(rows.filter((_, idx) => idx !== i));
+  const add = (e) => { e.preventDefault(); if (!form.q.trim()) return; save([...rows, { q: form.q, a: form.a }]); setForm({ q: "", a: "" }); };
+  const inS = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 8, padding: "9px 11px", fontSize: 13.5, outline: "none", boxSizing: "border-box" };
+  return (
+    <Section title="FAQ 관리" desc="등록·삭제 시 고객 FAQ 화면에 연동됩니다(오버레이).">
+      <form onSubmit={add} style={{ ...card, display: "grid", gap: 10, marginBottom: 14 }}>
+        <input style={inS} value={form.q} onChange={(e) => setForm({ ...form, q: e.target.value })} placeholder="질문(Q)" />
+        <textarea style={{ ...inS, resize: "vertical", fontFamily: "inherit" }} rows={2} value={form.a} onChange={(e) => setForm({ ...form, a: e.target.value })} placeholder="답변(A)" />
+        <div><button type="submit" style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 6 }}><Plus size={15} /> FAQ 등록</button></div>
+      </form>
+      <div style={{ display: "grid", gap: 10 }}>
+        {rows.map((f, i) => (
+          <div key={i} style={{ ...card, display: "flex", justifyContent: "space-between", gap: 12 }}>
+            <div><div style={{ fontWeight: 700, color: INK }}>{f.q}</div><div style={{ fontSize: 13, color: SUB, marginTop: 4, lineHeight: 1.5 }}>{f.a}</div></div>
+            <button onClick={() => remove(i)} title="삭제" style={{ border: `1px solid ${LINE}`, background: "#fff", color: ACCENT, borderRadius: 8, padding: 7, cursor: "pointer", height: 34, flexShrink: 0 }}><Trash2 size={15} /></button>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+function AdminBlog() {
+  const [rows, setRows] = useState(() => ls.get("korecare_blogposts", []));
+  const [form, setForm] = useState({ title: "", excerpt: "", body: "", tag: "Guide" });
+  const save = (next) => { setRows(next); ls.set("korecare_blogposts", next); };
+  const remove = (id) => save(rows.filter((p) => p.id !== id));
+  const add = (e) => {
+    e.preventDefault();
+    if (!form.title.trim()) return;
+    save([{ id: "post_" + Date.now(), tag: form.tag, date: nowStr().slice(0, 10), cover: "", title: form.title, excerpt: form.excerpt, body: form.body }, ...rows]);
+    setForm({ title: "", excerpt: "", body: "", tag: form.tag });
+  };
+  const inS = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 8, padding: "9px 11px", fontSize: 13.5, outline: "none", boxSizing: "border-box" };
+  return (
+    <Section title="블로그 관리" desc="게시글 등록 시 고객 블로그에 자동 노출됩니다(오버레이).">
+      <form onSubmit={add} style={{ ...card, display: "grid", gap: 10, marginBottom: 14 }}>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          <input style={{ ...inS, flex: 1, minWidth: 200 }} value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} placeholder="제목" />
+          <select style={{ ...inS, width: 130 }} value={form.tag} onChange={(e) => setForm({ ...form, tag: e.target.value })}><option>Guide</option><option>Travel</option><option>Medical</option><option>Story</option></select>
+        </div>
+        <input style={inS} value={form.excerpt} onChange={(e) => setForm({ ...form, excerpt: e.target.value })} placeholder="요약" />
+        <textarea style={{ ...inS, resize: "vertical", fontFamily: "inherit" }} rows={3} value={form.body} onChange={(e) => setForm({ ...form, body: e.target.value })} placeholder="본문" />
+        <div><button type="submit" style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 6 }}><Plus size={15} /> 게시글 등록</button></div>
+      </form>
+      <Table head={["날짜", "태그", "제목", "삭제"]}>
+        {rows.map((p) => (
+          <tr key={p.id} style={trS}>
+            <Td>{p.date}</Td><Td><Badge bg={TEAL_SOFT} fg={TEAL}>{p.tag}</Badge></Td>
+            <Td>{txt(p.title, "en")}</Td>
+            <Td><button onClick={() => remove(p.id)} style={{ border: `1px solid ${LINE}`, background: "#fff", color: ACCENT, borderRadius: 8, padding: 6, cursor: "pointer" }}><Trash2 size={14} /></button></Td>
+          </tr>
+        ))}
+      </Table>
     </Section>
   );
 }

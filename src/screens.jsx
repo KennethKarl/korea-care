@@ -2,7 +2,7 @@
    screens.jsx — 요구사항정의서 고객 웹사이트 화면 (self-contained)
    시술 리스트/상세 · 리뷰 · 비포/애프터 · 블로그 · 예약 신청 · 마이페이지(로그인)
    ========================================================================= */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ArrowLeft, Star, MapPin, Clock, Check, ChevronRight, Calendar,
   CheckCircle2, Stethoscope, Target, ListChecks, AlertTriangle, Tag, User, LogOut,
@@ -33,9 +33,17 @@ function BackBtn({ onClick, label }) {
 /* ============================ 시술 리스트 ============================ */
 export function TreatmentsPage({ treatments, departments, lang, t, onOpen }) {
   const [cat, setCat] = useState("all");
+  // 어드민 시술 관리(노출 토글) 반영: 숨김 처리된 시술은 클라이언트에서 제외
+  const [all, setAll] = useState(treatments);
+  useEffect(() => {
+    try {
+      const o = JSON.parse(localStorage.getItem("korecare_treatments") || "null");
+      if (o?.length) { const hidden = new Set(o.filter((x) => x.visible === false).map((x) => x.id)); setAll(treatments.filter((tr) => !hidden.has(tr.id))); }
+    } catch (_) {}
+  }, [treatments]);
   // categories = departments that have at least one treatment
-  const cats = departments.filter((d) => treatments.some((tr) => tr.deptIds.includes(d.id)));
-  const list = cat === "all" ? treatments : treatments.filter((tr) => tr.deptIds.includes(cat));
+  const cats = departments.filter((d) => all.some((tr) => tr.deptIds.includes(d.id)));
+  const list = cat === "all" ? all : all.filter((tr) => tr.deptIds.includes(cat));
   const chip = (active) => ({ border: active ? `1.5px solid ${TEAL}` : `1px solid ${LINE}`, background: active ? TEAL_SOFT : "#fff", color: active ? TEAL : SUB, borderRadius: 20, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" });
   return (
     <div style={{ marginTop: 28 }}>
@@ -185,11 +193,14 @@ export function BeforeAfterPage({ beforeAfter, lang, t }) {
 
 /* ============================ 블로그 ============================ */
 export function BlogPage({ blogPosts, lang, t, onOpen }) {
+  // 어드민 블로그 CMS 반영: korecare_blogposts 오버레이(클라이언트)
+  const [posts, setPosts] = useState(blogPosts);
+  useEffect(() => { try { const o = JSON.parse(localStorage.getItem("korecare_blogposts") || "null"); if (o?.length) setPosts(o); } catch (_) {} }, [blogPosts]);
   return (
     <div style={{ marginTop: 28 }}>
       <PageHead icon={Tag} kicker={t.nav.blog} title={t.blog.title} subtitle={t.blog.subtitle} />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 16 }}>
-        {blogPosts.map((p) => (
+        {posts.map((p) => (
           <button key={p.id} onClick={() => onOpen(p.id)} style={{ textAlign: "left", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, overflow: "hidden", cursor: "pointer", padding: 0, display: "flex", flexDirection: "column" }}>
             <div style={{ height: 160, background: `#dfe6e9 url(${p.cover}) center/cover` }} />
             <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 6, flex: 1 }}>
