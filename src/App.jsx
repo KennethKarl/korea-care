@@ -17,6 +17,7 @@ import { submitLead } from "./api.js";
 import { SITE_URL } from "./config.js";
 import AccountHub from "./account.jsx";
 import { AdminApp, HospitalApp } from "./backoffice.jsx";
+import SpecOverlay from "./spec-overlay.jsx";
 import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, BLUE_DARK, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, SUCCESS, STAR, BG_SOFT, btn } from "./theme.js";
 
 /* =========================================================================
@@ -208,6 +209,8 @@ function HomePage() {
       <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
       <Results dept={activeDepts.find((d) => d.id === safeDeptId)} onView={(h, d) => navigate(`/hospital/${d.id}/${h.id}`)} />
       <TotalCare />
+      {/* 기획 모드 오버레이 (홈 전용, client-only) */}
+      <ClientOnly>{() => <SpecOverlay />}</ClientOnly>
     </>
   );
 }
@@ -420,7 +423,7 @@ function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobi
   );
 
   return (
-    <div style={{ background: "#fff", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 5 }}>
+    <div data-spec="1-1" style={{ background: "#fff", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 5 }}>
       {isMobile ? (
         <div style={{ maxWidth: 1080, margin: "0 auto", padding: "12px 16px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
@@ -447,7 +450,7 @@ function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobi
 
 function InsurerBanner({ insurer }) {
   return (
-    <div style={{ background: TEAL, color: "#fff" }}>
+    <div data-spec="1-2" style={{ background: TEAL, color: "#fff" }}>
       <div style={{ maxWidth: 1080, margin: "0 auto", padding: "10px 20px", display: "flex", alignItems: "center", gap: 10, fontSize: 13, flexWrap: "wrap" }}>
         <Shield size={15} />
         <span style={{ opacity: .95 }}>You were referred by <b>{insurer}</b>. Covered programs are highlighted below.</span>
@@ -496,7 +499,7 @@ function OverlayImage({ image, height, radius = 16, textScale = 1 }) {
 /* ------------------------------- Hero ----------------------------- */
 function Hero({ hero, isMobile }) {
   return (
-    <div style={{ marginTop: isMobile ? 12 : 20 }}>
+    <div data-spec="1-3" style={{ marginTop: isMobile ? 12 : 20 }}>
       <OverlayImage image={hero.image} height={isMobile ? 380 : 300} textScale={isMobile ? 0.62 : 1} />
       <div style={{ background: "#fff", padding: 8, borderRadius: 14, boxShadow: "0 6px 24px rgba(11,107,107,.12)", maxWidth: 720, marginTop: -28, marginLeft: isMobile ? 0 : 20, position: "relative" }}>
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -514,7 +517,7 @@ function Hero({ hero, isMobile }) {
 /* --------------------------- Dept chips --------------------------- */
 function DeptChips({ depts, activeId, onPick }) {
   return (
-    <div style={{ display: "flex", gap: 8, marginTop: 22, flexWrap: "wrap" }}>
+    <div data-spec="1-4" style={{ display: "flex", gap: 8, marginTop: 22, flexWrap: "wrap" }}>
       {depts.map((d) => {
         const on = d.id === activeId;
         return (
@@ -533,7 +536,7 @@ function DeptChips({ depts, activeId, onPick }) {
 function Results({ dept, onView }) {
   if (!dept) return <div style={{ marginTop: 30, color: MUTE }}>No active departments. Enable one in the admin panel.</div>;
   return (
-    <div style={{ marginTop: 24 }}>
+    <div data-spec="1-5" style={{ marginTop: 24 }}>
       <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
         <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: 0 }}>{dept.name} programs</h2>
         <span style={{ fontSize: 13, color: MUTE }}>{dept.hospitals.length} matched · sorted by your coverage</span>
@@ -585,7 +588,7 @@ function Results({ dept, onView }) {
 /* ---------------------------- Total care --------------------------- */
 function TotalCare() {
   return (
-    <div style={{ marginTop: 30 }}>
+    <div data-spec="1-6" style={{ marginTop: 30 }}>
       <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: "0 0 4px" }}>One team, the whole journey</h2>
       <p style={{ fontSize: 14, color: SUB, margin: "0 0 20px" }}>You never coordinate a single vendor yourself.</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }} className="steps-grid">
