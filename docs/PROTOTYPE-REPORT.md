@@ -1,4 +1,4 @@
-# SafeDoc Korea Care — 프로토타입 작성 완료 보고서 (v2)
+# SafeDoc Korea Care — 프로토타입 작성 중간 보고서 (v2)
 
 **작성일**: 2026-06-18 · **브랜드**: KoreCare · **상태**: 프론트엔드 프로토타입(mock) 완료, 원격 배포
 
