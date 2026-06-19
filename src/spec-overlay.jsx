@@ -67,21 +67,20 @@ export default function SpecOverlay() {
     save([...markers, m]); setPlacing(false); setSel(null); setEditing({ ...m });
   };
 
-  /* --- 드래그 이동 (xy 마커) --- */
+  /* --- 드래그 이동 (모든 마커; 기본 마커도 끌면 자유 위치로 전환) --- */
   const startDrag = (e, m) => {
-    if (m.type !== "xy") return;
     e.preventDefault(); e.stopPropagation();
     drag.current = { id: m.id, moved: false, sx: e.clientX, sy: e.clientY };
     const move = (ev) => {
       const d = drag.current; if (!d) return;
       if (Math.abs(ev.clientX - d.sx) > 3 || Math.abs(ev.clientY - d.sy) > 3) d.moved = true;
-      if (d.moved) setMarkers((prev) => prev.map((x) => (x.id === d.id ? { ...x, x: ev.clientX + window.scrollX, y: ev.clientY + window.scrollY } : x)));
+      if (d.moved) setMarkers((prev) => prev.map((x) => (x.id === d.id ? { ...x, type: "xy", x: ev.clientX + window.scrollX, y: ev.clientY + window.scrollY } : x)));
     };
     const up = () => {
       window.removeEventListener("pointermove", move); window.removeEventListener("pointerup", up);
       const d = drag.current; drag.current = null;
       if (d && d.moved) setMarkers((prev) => { lsSet(prev); return prev; }); // 최신 위치 영속화
-      else setSel(m.id);
+      else setSel((s) => (s === m.id ? null : m.id));
     };
     window.addEventListener("pointermove", move); window.addEventListener("pointerup", up);
   };
@@ -111,7 +110,7 @@ export default function SpecOverlay() {
             <button onClick={() => save(DEFAULTS)} style={{ ...btn("#fff", SUB), border: `1px solid ${LINE}`, fontSize: 12, padding: "7px 10px" }}>초기화</button>
           </div>
           <div style={{ fontSize: 11, color: MUTE, marginTop: 8, lineHeight: 1.45 }}>
-            {placing ? "화면에서 마커를 놓을 위치를 클릭하세요." : "마커 클릭=설명 · 드래그=이동(커스텀) · 공유 "}{!placing && <code>?spec=1</code>}
+            {placing ? "화면에서 마커를 놓을 위치를 클릭하세요." : "마커 클릭=설명 · 드래그=이동(기본 마커도 가능) · 공유 "}{!placing && <code>?spec=1</code>}
           </div>
         </div>
       )}
@@ -128,12 +127,11 @@ export default function SpecOverlay() {
         return (
           <button key={mk.id}
             onPointerDown={(e) => startDrag(e, mk)}
-            onClick={(e) => { if (mk.type === "el") setSel(active ? null : mk.id); }}
-            title={mk.type === "xy" ? "드래그로 이동" : ""}
+            title="클릭=설명 · 드래그=이동"
             style={{ position: "fixed", top: Math.max(8, p.top), left: Math.max(4, p.left), zIndex: 8800,
               background: mk.type === "xy" ? TEAL : ACCENT, color: "#fff", border: "2px solid #fff", borderRadius: 8,
               minWidth: 30, height: 24, padding: "0 7px", fontSize: 12, fontWeight: 800,
-              cursor: mk.type === "xy" ? "grab" : "pointer",
+              cursor: "grab", touchAction: "none",
               boxShadow: active ? `0 0 0 3px ${ACCENT}55` : "0 2px 8px rgba(0,0,0,.25)" }}>
             {mk.label}
           </button>
