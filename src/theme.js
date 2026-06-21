@@ -23,6 +23,14 @@ export const BG_SOFT = "#f5f7f8";    // 섹션 배경
 export const SUCCESS = "#00d255";    // 절감/성공
 export const STAR = "#ffb020";       // 별점
 
+// Landing (KoreCare Landing.dc 디자인 토큰)
+export const NAVY = "#0a1f44";       // 다크 섹션/배너/푸터 배경
+export const NAVY_LINE = "#1a3460";  // 다크 섹션 내부 보더
+export const GREEN = "#16a34a";      // covered/절감 배지(랜딩)
+export const GREEN_SOFT = "#eafaf2";
+export const DISPLAY =               // 랜딩 디스플레이 폰트 스택(영문 우선, 한글 Pretendard 폴백)
+  '"Plus Jakarta Sans", "Pretendard Variable", Pretendard, system-ui, sans-serif';
+
 /* helpers (App.jsx / screens.jsx 공용) */
 export const btn = (bg, fg) => ({
   background: bg, color: fg, border: "none",

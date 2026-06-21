@@ -18,7 +18,7 @@ import { SITE_URL } from "./config.js";
 import AccountHub from "./account.jsx";
 import { AdminApp, HospitalApp } from "./backoffice.jsx";
 import SpecOverlay from "./spec-overlay.jsx";
-import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, BLUE_DARK, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, SUCCESS, STAR, BG_SOFT, btn } from "./theme.js";
+import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, BLUE_DARK, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, SUCCESS, STAR, BG_SOFT, NAVY, NAVY_LINE, GREEN, GREEN_SOFT, DISPLAY, btn } from "./theme.js";
 
 /* =========================================================================
    KoreCare — fully admin-controllable
@@ -81,12 +81,68 @@ const initialContent = {
 
 /* ----------------------- shared: total-care steps ----------------------- */
 const CARE_STEPS = [
-  { icon: Stethoscope, t: "Care plan & match", d: "We match a covered program to your records." },
-  { icon: Plane, t: "Travel arranged", d: "Flights, visa, pickup for you and a companion." },
-  { icon: Languages, t: "In-Korea support", d: "Dedicated English interpreter and coordinator." },
-  { icon: Hotel, t: "Recovery stay", d: "Hospital-adjacent accommodation booked." },
-  { icon: HeartPulse, t: "US aftercare", d: "Follow-up coordinated with your home doctor." },
+  { icon: Stethoscope, t: "Care plan & match", tk: "케어 플랜 & 매칭", d: "We match a covered program to your records.", dk: "진료 기록에 맞는 보장 프로그램을 매칭합니다." },
+  { icon: Plane, t: "Travel arranged", tk: "이동 준비", d: "Flights, visa, pickup for you and a companion.", dk: "환자와 동반자 1인의 항공, 비자, 공항 영접을 준비합니다." },
+  { icon: Languages, t: "In-Korea support", tk: "한국 내 지원", d: "Dedicated English interpreter and coordinator.", dk: "전담 영어 통역사와 코디네이터가 함께합니다." },
+  { icon: Hotel, t: "Recovery stay", tk: "회복 숙소", d: "Hospital-adjacent accommodation booked.", dk: "병원 인근 숙소를 예약해 드립니다." },
+  { icon: HeartPulse, t: "US aftercare", tk: "미국 내 사후관리", d: "Follow-up coordinated with your home doctor.", dk: "미국 주치의와 후속 진료를 조율합니다." },
 ];
+
+/* -----------------------------------------------------------------------
+   LANDING — KoreCare Landing.dc 디자인 카피(영/한). 기존 lang 토글과 연동.
+   디자인의 data-en/data-ko 페어를 그대로 옮긴 사전.
+   ----------------------------------------------------------------------- */
+const DEPT_KO = { onco: "암 치료", ortho: "정형외과 & 척추", cardiac: "심장 수술", screen: "건강검진" };
+const LANDING = {
+  en: {
+    bannerPre: "You were referred by ", bannerPost: ". Covered programs are highlighted below.",
+    heroBadge: "Covered by your plan",
+    heroTitle: "World-class treatment in Korea — fully managed.",
+    heroSub: "Your insurer covers the procedure. We handle everything else.",
+    heroCta1: "Find programs", heroCta2: "How it works →",
+    trustLabel: "ACCREDITED & VETTED", hipaa: "HIPAA-aligned data",
+    statPatients: "patients managed", statRating: "avg rating", statHospitals: "partner hospitals",
+    progSubMatched: "matched · sorted by your coverage", progViewAll: "View all programs →",
+    covered: "✓ COVERED", usCost: "US cost", krCost: "Korea all-in", save: "Save", viewPlan: "View plan",
+    journeyTitle: "One team, the whole journey", journeySub: "You never coordinate a single vendor yourself.",
+    reviewsEyebrow: "Reviews", reviewsTitle: "Real experiences from US members",
+    baEyebrow: "Before / After", baTitle: "Before treatment, and six months later", baBefore: "BEFORE",
+    ctaTitle: "Your plan may already cover this",
+    ctaSub: "We work directly with major US insurers to pre-verify costs. Check your coverage in 60 seconds.",
+    ctaBtn1: "Check my coverage", ctaBtn2: "Talk to a coordinator",
+    footerBlurb: "Connecting US insurance members to accredited Korean hospitals — fully managed, end to end.",
+    footerPrograms: "Programs", footerCompany: "Company", footerLegal: "Legal",
+    footProgItems: ["Oncology", "Orthopedics & Spine", "Cardiac", "How It Works"],
+    footCompanyItems: ["About", "FAQ", "Contact Us", "Blog"],
+    footLegalItems: ["Privacy Policy", "Terms of Service", "Refund Policy"],
+    footNote: "© KoreCare. Prototype — not medical advice.",
+    footNote2: "A coordination service — not a medical provider.",
+  },
+  ko: {
+    bannerPre: "", bannerPost: " 의 추천을 받으셨습니다. 보장되는 프로그램이 아래에 강조 표시됩니다.",
+    heroBadge: "플랜으로 보장됩니다",
+    heroTitle: "세계적 수준의 치료를 한국에서 — 전 과정 관리.",
+    heroSub: "보험사가 시술 비용을 보장합니다. 나머지 모든 것은 저희가 처리합니다.",
+    heroCta1: "프로그램 찾기", heroCta2: "이용 방법 →",
+    trustLabel: "인증 및 검증", hipaa: "HIPAA 준수 데이터",
+    statPatients: "환자 관리", statRating: "평균 평점", statHospitals: "제휴 병원",
+    progSubMatched: "건 매칭됨 · 회원님의 보장 기준 정렬", progViewAll: "전체 프로그램 보기 →",
+    covered: "✓ 보장됨", usCost: "미국 비용", krCost: "한국 올인", save: "절감", viewPlan: "플랜 보기",
+    journeyTitle: "하나의 팀이 모든 여정을 함께합니다", journeySub: "회원님이 직접 단 하나의 업체도 조율할 필요가 없습니다.",
+    reviewsEyebrow: "환자 후기", reviewsTitle: "실제 미국 회원들의 경험",
+    baEyebrow: "전후 사례", baTitle: "치료 전, 그리고 6개월 후", baBefore: "치료 전",
+    ctaTitle: "회원님의 플랜으로 이미 보장될 수 있습니다",
+    ctaSub: "대형 미국 보험사와 직접 협력하여 비용을 사전 확인합니다. 60초 만에 보장 여부를 확인하세요.",
+    ctaBtn1: "보장 확인하기", ctaBtn2: "코디네이터와 상담",
+    footerBlurb: "미국 보험 회원을 인증된 한국 병원과 연결하고, 전 과정을 관리합니다.",
+    footerPrograms: "프로그램", footerCompany: "회사", footerLegal: "법적 고지",
+    footProgItems: ["암 치료", "정형외과 & 척추", "심장", "이용 방법"],
+    footCompanyItems: ["소개", "자주 묻는 질문", "문의하기", "블로그"],
+    footLegalItems: ["개인정보 처리방침", "이용약관", "환불 정책"],
+    footNote: "© KoreCare. 프로토타입 — 의료 자문이 아닙니다.",
+    footNote2: "의료 서비스 제공 주체가 아닌 코디네이션 서비스입니다.",
+  },
+};
 
 /* ---------------------- responsive helper ---------------------- */
 function useIsMobile(maxWidth = 900) {
@@ -162,6 +218,7 @@ function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
   const route = pathToRoute(location.pathname);
+  const isHome = route.name === "home";
   const onNav = (next) => navigate(navPath(next));
   const goHome = () => navigate("/");
 
@@ -175,11 +232,14 @@ function Layout() {
     <div style={{ fontFamily: "Pretendard, system-ui, sans-serif", background: BG_SOFT, minHeight: "100vh", display: "flex" }}>
       <div style={{ flex: 1, minWidth: 0, overflowX: "hidden", display: "flex", flexDirection: "column" }}>
         <Nav content={content} route={route} onNav={onNav} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} lang={lang} onToggleLang={() => setLang((l) => (l === "en" ? "ko" : "en"))} t={t} />
-        <InsurerBanner insurer={content.brand.insurer} />
-        <main style={{ maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
+        <InsurerBanner insurer={content.brand.insurer} lang={lang} />
+        {/* 홈(랜딩)은 풀블리드 — 자체 max-width/다크 섹션 관리. 그 외 페이지는 1080 컨테이너. */}
+        <main style={isHome
+          ? { width: "100%", flex: 1 }
+          : { maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
           <Outlet context={{ content, setContent, lang, t, isMobile, onNav }} />
         </main>
-        <Footer brand={content.brand} onNav={onNav} onHome={goHome} />
+        <Footer brand={content.brand} onNav={onNav} onHome={goHome} lang={lang} />
       </div>
 
       {/* 어드민 에디터는 내부 도구 — SSG HTML 에서 제외(ClientOnly) */}
@@ -197,18 +257,25 @@ function Layout() {
 
 /* ------------------------- page route wrappers ------------------------- */
 function HomePage() {
-  const { content, isMobile } = useOutletContext();
+  const { content, lang } = useOutletContext();
   const navigate = useNavigate();
   const activeDepts = content.departments.filter((d) => d.active);
   const [activeDeptId, setActiveDeptId] = useState(activeDepts[0]?.id);
   const safeDeptId = activeDepts.find((d) => d.id === activeDeptId) ? activeDeptId : activeDepts[0]?.id;
+  const activeDept = activeDepts.find((d) => d.id === safeDeptId);
   return (
     <>
       <Seo path="/" jsonLd={orgJsonLd} />
-      <Hero hero={content.hero} isMobile={isMobile} />
-      <DeptChips depts={activeDepts} activeId={safeDeptId} onPick={setActiveDeptId} />
-      <Results dept={activeDepts.find((d) => d.id === safeDeptId)} onView={(h, d) => navigate(`/hospital/${d.id}/${h.id}`)} />
-      <TotalCare />
+      <LandingHero
+        hero={content.hero} lang={lang} depts={activeDepts} activeId={safeDeptId}
+        onPick={setActiveDeptId} onFind={() => navigate("/programs")} onHow={() => navigate("/how-it-works")}
+      />
+      <TrustStrip lang={lang} />
+      <Programs dept={activeDept} lang={lang} onView={(h, d) => navigate(`/hospital/${d.id}/${h.id}`)} onViewAll={() => navigate("/programs")} />
+      <Journey lang={lang} />
+      <Reviews lang={lang} />
+      <BeforeAfter lang={lang} />
+      <CtaBand lang={lang} insurer={content.brand.insurer} onCheck={() => navigate("/reservation")} onTalk={() => navigate("/contact")} />
       {/* 기획 모드 오버레이 (홈 전용, client-only) */}
       <ClientOnly>{() => <SpecOverlay />}</ClientOnly>
     </>
@@ -448,12 +515,13 @@ function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobi
   );
 }
 
-function InsurerBanner({ insurer }) {
+function InsurerBanner({ insurer, lang = "en" }) {
+  const L = LANDING[lang];
   return (
-    <div data-spec="1-2" style={{ background: TEAL, color: "#fff" }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "10px 20px", display: "flex", alignItems: "center", gap: 10, fontSize: 13, flexWrap: "wrap" }}>
-        <Shield size={15} />
-        <span style={{ opacity: .95 }}>You were referred by <b>{insurer}</b>. Covered programs are highlighted below.</span>
+    <div data-spec="1-2" style={{ background: NAVY, color: "#c7d6f5" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "9px 28px", display: "flex", alignItems: "center", gap: 9, fontSize: 13.5, flexWrap: "wrap" }}>
+        <span style={{ display: "inline-flex", width: 18, height: 18, borderRadius: "50%", background: TEAL, color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, flexShrink: 0 }}>✓</span>
+        <span>{L.bannerPre}<strong style={{ color: "#fff", fontWeight: 700 }}>{insurer}</strong>{L.bannerPost}</span>
       </div>
     </div>
   );
@@ -496,115 +564,263 @@ function OverlayImage({ image, height, radius = 16, textScale = 1 }) {
   );
 }
 
+/* =========================================================================
+   LANDING SECTIONS — KoreCare Landing.dc 디자인 구현 (풀블리드 홈)
+   기존 데이터(departments/CARE_STEPS/REVIEWS/BEFORE_AFTER) + theme 토큰 + lang 토글 연동.
+   data-spec 마커는 기획 오버레이(spec-overlay.jsx)와 호환되도록 유지/확장.
+   ========================================================================= */
+const WRAP = { maxWidth: 1180, margin: "0 auto", padding: "0 28px" };
+const deptLabel = (d, lang) => (lang === "ko" ? (DEPT_KO[d.id] || d.name) : d.name);
+
+function LandingStyles() {
+  return (
+    <style>{`
+      .kc-prog-grid,.kc-rev-grid,.kc-ba-grid{display:grid;gap:24px}
+      .kc-prog-grid{grid-template-columns:1fr 1fr}
+      .kc-rev-grid{grid-template-columns:repeat(3,1fr)}
+      .kc-ba-grid{grid-template-columns:1fr 1fr}
+      .kc-journey-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+      .kc-cta{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center}
+      @media(max-width:920px){
+        .kc-prog-grid,.kc-rev-grid,.kc-ba-grid,.kc-cta{grid-template-columns:1fr!important}
+        .kc-journey-grid{grid-template-columns:repeat(2,1fr)!important}
+        .kc-hero-title{font-size:38px!important}
+        .kc-hero{min-height:520px!important}
+      }
+      @media(max-width:560px){
+        .kc-wrap{padding-left:18px!important;padding-right:18px!important}
+        .kc-journey-grid{grid-template-columns:1fr!important}
+        .kc-hero-title{font-size:30px!important}
+      }
+    `}</style>
+  );
+}
+
 /* ------------------------------- Hero ----------------------------- */
-function Hero({ hero, isMobile }) {
+function LandingHero({ hero, lang, depts, activeId, onPick, onFind, onHow }) {
+  const L = LANDING[lang];
+  const heroImg = hero?.image?.url || "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1600&q=80";
   return (
-    <div data-spec="1-3" style={{ marginTop: isMobile ? 12 : 20 }}>
-      <OverlayImage image={hero.image} height={isMobile ? 380 : 300} textScale={isMobile ? 0.62 : 1} />
-      <div style={{ background: "#fff", padding: 8, borderRadius: 14, boxShadow: "0 6px 24px rgba(11,107,107,.12)", maxWidth: 720, marginTop: -28, marginLeft: isMobile ? 0 : 20, position: "relative" }}>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "0 14px", background: "#f6f8f9", borderRadius: 9, flex: 1, minWidth: 160, height: 50, color: MUTE }}>
-            <Search size={18} />
-            <input placeholder="Treatment, condition, or hospital" style={{ border: "none", background: "transparent", outline: "none", fontSize: 15, width: "100%", color: INK }} />
+    <>
+      <LandingStyles />
+      <div data-spec="1-3" className="kc-hero" style={{ position: "relative", minHeight: 580, display: "flex", alignItems: "center", overflow: "hidden" }}>
+        <img src={heroImg} alt="Modern hospital" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(100deg, rgba(8,18,40,0.92) 0%, rgba(8,18,40,0.74) 42%, rgba(8,18,40,0.30) 100%)" }} />
+        <div className="kc-wrap" style={{ ...WRAP, position: "relative", padding: "60px 28px", width: "100%" }}>
+          <div style={{ maxWidth: 620 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(27,89,250,0.18)", border: "1px solid rgba(122,160,255,0.4)", color: "#cfdcff", fontSize: 13, fontWeight: 700, padding: "7px 14px", borderRadius: 20, marginBottom: 24 }}>
+              <span style={{ width: 7, height: 7, borderRadius: "50%", background: GREEN }} />
+              {L.heroBadge}
+            </div>
+            <h1 className="kc-hero-title" style={{ fontFamily: DISPLAY, fontSize: 54, fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#fff", margin: "0 0 20px" }}>{L.heroTitle}</h1>
+            <p style={{ fontSize: 19, lineHeight: 1.6, color: "#cdd6e6", margin: "0 0 34px", maxWidth: 480 }}>{L.heroSub}</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 30, flexWrap: "wrap" }}>
+              <button onClick={onFind} style={{ ...btn(TEAL, "#fff"), fontSize: 16, padding: "16px 32px", borderRadius: 11, boxShadow: "0 10px 28px rgba(27,89,250,.4)" }}>{L.heroCta1}</button>
+              <button onClick={onHow} style={{ background: "transparent", border: "none", color: "#fff", fontSize: 16, fontWeight: 700, padding: "16px 8px", borderBottom: "2px solid rgba(255,255,255,.45)", cursor: "pointer" }}>{L.heroCta2}</button>
+            </div>
+            {/* 진료과 칩 — 선택 시 아래 프로그램 목록 필터 */}
+            <div data-spec="1-4" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+              {depts.map((d) => {
+                const on = d.id === activeId;
+                return (
+                  <button key={d.id} onClick={() => onPick(d.id)} style={{
+                    fontSize: 13.5, fontWeight: 600, color: "#fff", cursor: "pointer",
+                    background: on ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.07)",
+                    border: `1px solid rgba(255,255,255,${on ? 0.22 : 0.16})`,
+                    borderRadius: 22, padding: "9px 18px",
+                  }}>{deptLabel(d, lang)}</button>
+                );
+              })}
+            </div>
           </div>
-          <button style={{ ...btn(TEAL, "#fff"), padding: "0 28px", fontSize: 15, flex: isMobile ? 1 : "none" }}>Find programs</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* --------------------------- Trust strip --------------------------- */
+function TrustStrip({ lang }) {
+  const L = LANDING[lang];
+  return (
+    <div style={{ background: "#f6f8fc", borderBottom: `1px solid #eef1f6` }}>
+      <div className="kc-wrap" style={{ ...WRAP, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em" }}>{L.trustLabel}</span>
+          <span style={{ fontSize: 13, fontWeight: 800, color: TEAL, border: `1.5px solid ${TEAL}`, borderRadius: 5, padding: "4px 10px" }}>JCI</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#475569", border: "1.5px solid #d4dbe5", borderRadius: 5, padding: "4px 10px" }}>ISO 9001</span>
+          <span style={{ fontSize: 13.5, fontWeight: 600, color: "#475569" }}>{L.hipaa}</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 30, flexWrap: "wrap" }}>
+          <div><span style={{ fontSize: 19, fontWeight: 800, color: INK }}>2,400+</span> <span style={{ fontSize: 13.5, color: "#64748b" }}>{L.statPatients}</span></div>
+          <div><span style={{ fontSize: 19, fontWeight: 800, color: INK }}>4.9★</span> <span style={{ fontSize: 13.5, color: "#64748b" }}>{L.statRating}</span></div>
+          <div><span style={{ fontSize: 19, fontWeight: 800, color: INK }}>35+</span> <span style={{ fontSize: 13.5, color: "#64748b" }}>{L.statHospitals}</span></div>
         </div>
       </div>
     </div>
   );
 }
 
-/* --------------------------- Dept chips --------------------------- */
-function DeptChips({ depts, activeId, onPick }) {
+/* ----------------------------- Programs ----------------------------- */
+function Programs({ dept, lang, onView, onViewAll }) {
+  const L = LANDING[lang];
+  if (!dept) return null;
+  const n = dept.hospitals.length;
   return (
-    <div data-spec="1-4" style={{ display: "flex", gap: 8, marginTop: 22, flexWrap: "wrap" }}>
-      {depts.map((d) => {
-        const on = d.id === activeId;
-        return (
-          <button key={d.id} onClick={() => onPick(d.id)} style={{
-            border: on ? `1.5px solid ${TEAL}` : `1px solid ${LINE}`,
-            background: on ? TEAL_SOFT : "#fff", color: on ? TEAL : SUB,
-            borderRadius: 20, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer",
-          }}>{d.name}</button>
-        );
-      })}
+    <div data-spec="1-5" className="kc-wrap" style={{ ...WRAP, padding: "72px 28px" }}>
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 28, gap: 16, flexWrap: "wrap" }}>
+        <div>
+          <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: "0 0 8px", letterSpacing: "-0.02em" }}>{deptLabel(dept, lang)}{lang === "ko" ? " 프로그램" : " programs"}</h2>
+          <p style={{ fontSize: 15.5, color: "#64748b", margin: 0 }}>{n}{lang === "ko" ? "" : " "}{L.progSubMatched}</p>
+        </div>
+        <button onClick={onViewAll} style={{ background: "none", border: "none", fontSize: 14.5, fontWeight: 700, color: TEAL, cursor: "pointer", padding: 0 }}>{L.progViewAll}</button>
+      </div>
+      <div className="kc-prog-grid">
+        {dept.hospitals.map((h) => (
+          <div key={h.id} style={{ background: "#fff", border: "1px solid #eaedf3", borderRadius: 18, overflow: "hidden", boxShadow: "0 4px 20px rgba(15,23,42,.05)" }}>
+            <div style={{ position: "relative", height: 200 }}>
+              <img src={h.image?.url || ""} alt={h.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              {h.covered && (
+                <span style={{ position: "absolute", top: 14, left: 14, fontSize: 11, fontWeight: 800, color: "#fff", background: GREEN, borderRadius: 20, padding: "6px 13px" }}>{L.covered}</span>
+              )}
+              <span style={{ position: "absolute", top: 14, right: 14, fontSize: 11, fontWeight: 800, color: INK, background: "rgba(255,255,255,0.95)", borderRadius: 6, padding: "5px 9px" }}>{h.accred}</span>
+            </div>
+            <div style={{ padding: "24px 26px" }}>
+              <div style={{ fontSize: 12.5, fontWeight: 700, color: "#64748b", marginBottom: 8 }}>{h.name}</div>
+              <div style={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 800, color: INK, marginBottom: 6, letterSpacing: "-0.01em" }}>{h.program}</div>
+              <div style={{ fontSize: 14, color: "#64748b", marginBottom: 18, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                <span>{h.lead}</span>
+                <span>·</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 3 }}><Star size={13} fill={STAR} color={STAR} /><b style={{ color: INK }}>{h.rating}</b> ({h.reviews})</span>
+                <span>·</span><span>{h.city}</span><span>·</span><span>{h.weeks}</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, background: "#f6f8fc", borderRadius: 12, padding: "15px 18px", flexWrap: "wrap" }}>
+                <div><div style={{ fontSize: 11.5, color: "#94a3b8" }}>{L.usCost}</div><div style={{ fontSize: 15, fontWeight: 700, color: "#94a3b8", textDecoration: "line-through" }}>${h.us.toLocaleString()}</div></div>
+                <div><div style={{ fontSize: 11.5, color: "#94a3b8" }}>{L.krCost}</div><div style={{ fontSize: 15, fontWeight: 800, color: INK }}>${h.kr.toLocaleString()}</div></div>
+                <div><div style={{ fontSize: 11.5, color: GREEN }}>{L.save}</div><div style={{ fontSize: 15, fontWeight: 800, color: GREEN }}>${(h.us - h.kr).toLocaleString()}</div></div>
+                <button onClick={() => onView(h, dept)} style={{ marginLeft: "auto", ...btn(TEAL, "#fff"), fontSize: 14, padding: "11px 20px", borderRadius: 9 }}>{L.viewPlan}</button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
-/* ----------------------------- Results ----------------------------- */
-function Results({ dept, onView }) {
-  if (!dept) return <div style={{ marginTop: 30, color: MUTE }}>No active departments. Enable one in the admin panel.</div>;
+/* ----------------------------- Journey ----------------------------- */
+function Journey({ lang }) {
+  const L = LANDING[lang];
   return (
-    <div data-spec="1-5" style={{ marginTop: 24 }}>
-      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 14, flexWrap: "wrap", gap: 8 }}>
-        <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: 0 }}>{dept.name} programs</h2>
-        <span style={{ fontSize: 13, color: MUTE }}>{dept.hospitals.length} matched · sorted by your coverage</span>
+    <div data-spec="1-6" style={{ background: NAVY, color: "#fff" }}>
+      <div className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
+        <div style={{ marginBottom: 48, maxWidth: 620 }}>
+          <h2 style={{ fontFamily: DISPLAY, fontSize: 36, fontWeight: 800, color: "#fff", margin: "0 0 12px", letterSpacing: "-0.02em" }}>{L.journeyTitle}</h2>
+          <p style={{ fontSize: 17, color: "#aebdd8", margin: 0 }}>{L.journeySub}</p>
+        </div>
+        <div className="kc-journey-grid">
+          {CARE_STEPS.map((s, i) => {
+            const last = i === CARE_STEPS.length - 1;
+            const num = "0" + (i + 1);
+            return (
+              <div key={i}>
+                <div style={{ fontFamily: DISPLAY, fontSize: 15, fontWeight: 800, color: last ? "#5ce0a0" : "#5b8cff", marginBottom: 14 }}>{num}</div>
+                <div style={{ width: "100%", height: 3, background: `linear-gradient(90deg, ${last ? GREEN : TEAL}, transparent)`, borderRadius: 2, marginBottom: 18 }} />
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{lang === "ko" ? s.tk : s.t}</div>
+                <div style={{ fontSize: 14, lineHeight: 1.6, color: "#9fb1cf" }}>{lang === "ko" ? s.dk : s.d}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
+    </div>
+  );
+}
 
-      {dept.hospitals.map((h) => (
-        <div key={h.id} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, overflow: "hidden", marginBottom: 12, display: "flex", flexWrap: "wrap" }}>
-          <div style={{ width: 200, minWidth: 160, flexShrink: 0 }}>
-            <OverlayImage image={h.image} height={"100%"} radius={0} />
+/* ----------------------------- Reviews ----------------------------- */
+function Reviews({ lang }) {
+  const L = LANDING[lang];
+  const items = REVIEWS.slice(0, 3);
+  return (
+    <div data-spec="1-7" className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
+      <div style={{ textAlign: "center", marginBottom: 44 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: TEAL, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>{L.reviewsEyebrow}</div>
+        <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: 0, letterSpacing: "-0.02em" }}>{L.reviewsTitle}</h2>
+      </div>
+      <div className="kc-rev-grid">
+        {items.map((r) => (
+          <div key={r.id} style={{ background: "#fff", border: "1px solid #eaedf3", borderRadius: 16, padding: 28, boxShadow: "0 4px 20px rgba(15,23,42,.04)" }}>
+            <div style={{ color: STAR, fontSize: 15, marginBottom: 16 }}>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
+            <p style={{ fontSize: 15.5, lineHeight: 1.65, color: "#1e293b", margin: "0 0 24px", fontWeight: 500 }}>“{r.text}”</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <div style={{ width: 46, height: 46, borderRadius: "50%", background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", fontWeight: 800, fontSize: 16, flexShrink: 0 }}>{r.author.charAt(0)}</div>
+              <div>
+                <div style={{ fontSize: 14.5, fontWeight: 700, color: INK }}>{r.author}</div>
+                <div style={{ fontSize: 12.5, color: "#64748b" }}>{r.treatment} · {r.country}</div>
+              </div>
+            </div>
           </div>
-          <div style={{ flex: 1, minWidth: 220, padding: 20, display: "flex", gap: 16, flexWrap: "wrap" }}>
-            <div style={{ flex: 1, minWidth: 180 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                <span style={{ fontWeight: 700, color: INK, fontSize: 16 }}>{h.name}</span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "#eef6ff", color: "#2563a8", padding: "2px 8px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                  <Award size={11} /> {h.accred}
-                </span>
-                {h.covered && (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: TEAL_SOFT, color: TEAL, padding: "2px 8px", borderRadius: 20, fontSize: 11, fontWeight: 700 }}>
-                    <Check size={11} /> Covered
-                  </span>
-                )}
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* --------------------------- Before / After --------------------------- */
+function BeforeAfter({ lang }) {
+  const L = LANDING[lang];
+  const items = BEFORE_AFTER.slice(0, 2);
+  return (
+    <div data-spec="1-8" style={{ background: "#f6f8fc", borderTop: "1px solid #eef1f6", borderBottom: "1px solid #eef1f6" }}>
+      <div className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
+        <div style={{ textAlign: "center", marginBottom: 44 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: TEAL, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>{L.baEyebrow}</div>
+          <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: 0, letterSpacing: "-0.02em" }}>{L.baTitle}</h2>
+        </div>
+        <div className="kc-ba-grid">
+          {items.map((ba) => (
+            <div key={ba.id} style={{ background: "#fff", border: "1px solid #eaedf3", borderRadius: 16, padding: 22 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
+                <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 210 }}>
+                  <img src={ba.before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(0.25)" }} />
+                  <span style={{ position: "absolute", bottom: 10, left: 10, fontSize: 11, fontWeight: 800, color: INK, background: "#fff", padding: "4px 10px", borderRadius: 5 }}>{L.baBefore}</span>
+                </div>
+                <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 210 }}>
+                  <img src={ba.after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  <span style={{ position: "absolute", bottom: 10, left: 10, fontSize: 11, fontWeight: 800, color: "#fff", background: GREEN, padding: "4px 10px", borderRadius: 5 }}>{ba.weeks}</span>
+                </div>
               </div>
-              <div style={{ fontSize: 13.5, color: TEAL, fontWeight: 600, marginTop: 6 }}>{h.program}</div>
-              <div style={{ fontSize: 13, color: SUB, marginTop: 2 }}>{h.lead}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginTop: 8, fontSize: 13, color: SUB, flexWrap: "wrap" }}>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><Star size={13} fill="#f5a623" color="#f5a623" /><b style={{ color: INK }}>{h.rating}</b> ({h.reviews})</span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><MapPin size={13} /> {h.city}</span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><Clock size={13} /> {h.weeks}</span>
-              </div>
+              <div style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: INK, marginBottom: 6 }}>{ba.treatment}</div>
+              <div style={{ fontSize: 14, color: "#64748b", lineHeight: 1.5 }}>{ba.note?.[lang] ?? ba.note?.en}</div>
             </div>
-            <div style={{ textAlign: "right", minWidth: 130 }}>
-              <div style={{ fontSize: 11, color: MUTE }}>US cost</div>
-              <div style={{ fontSize: 13, color: MUTE, textDecoration: "line-through" }}>${h.us.toLocaleString()}</div>
-              <div style={{ fontSize: 11, color: MUTE, marginTop: 4 }}>Korea all-in</div>
-              <div style={{ fontSize: 22, fontWeight: 800, color: TEAL }}>${h.kr.toLocaleString()}</div>
-              <div style={{ fontSize: 11, color: "#1f9d6b", fontWeight: 700 }}>Save ${(h.us - h.kr).toLocaleString()}</div>
-              <button onClick={() => onView(h, dept)} style={{ ...btn(TEAL, "#fff"), marginTop: 10, fontSize: 13, display: "flex", alignItems: "center", gap: 6, justifyContent: "center", width: "100%" }}>
-                View plan <ChevronRight size={15} />
-              </button>
-            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ----------------------------- CTA band ----------------------------- */
+function CtaBand({ lang, insurer, onCheck, onTalk }) {
+  const L = LANDING[lang];
+  const logos = [insurer, "BlueRidge", "Anthem-X", "UnitedFirst"];
+  return (
+    <div data-spec="1-9" className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
+      <div className="kc-cta" style={{ background: `linear-gradient(115deg, ${TEAL} 0%, ${BLUE_DARK} 100%)`, borderRadius: 24, padding: 56, overflow: "hidden", position: "relative" }}>
+        <div>
+          <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: "#fff", margin: "0 0 14px", letterSpacing: "-0.02em" }}>{L.ctaTitle}</h2>
+          <p style={{ fontSize: 17, lineHeight: 1.6, color: "#d6e1ff", margin: "0 0 28px", maxWidth: 460 }}>{L.ctaSub}</p>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
+            <button onClick={onCheck} style={{ background: "#fff", color: TEAL, border: "none", fontSize: 16, fontWeight: 700, padding: "15px 30px", borderRadius: 11, cursor: "pointer" }}>{L.ctaBtn1}</button>
+            <button onClick={onTalk} style={{ background: "rgba(255,255,255,0.14)", color: "#fff", fontSize: 16, fontWeight: 700, padding: "15px 28px", borderRadius: 11, border: "1px solid rgba(255,255,255,0.3)", cursor: "pointer" }}>{L.ctaBtn2}</button>
           </div>
         </div>
-      ))}
-    </div>
-  );
-}
-
-/* ---------------------------- Total care --------------------------- */
-function TotalCare() {
-  return (
-    <div data-spec="1-6" style={{ marginTop: 30 }}>
-      <h2 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: "0 0 4px" }}>One team, the whole journey</h2>
-      <p style={{ fontSize: 14, color: SUB, margin: "0 0 20px" }}>You never coordinate a single vendor yourself.</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }} className="steps-grid">
-        {CARE_STEPS.map((s, i) => {
-          const Icon = s.icon;
-          return (
-            <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18, position: "relative" }}>
-              <div style={{ position: "absolute", top: 14, right: 14, fontSize: 12, fontWeight: 800, color: "#cfd8dd" }}>0{i + 1}</div>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", marginBottom: 12 }}><Icon size={20} /></div>
-              <div style={{ fontWeight: 700, color: INK, fontSize: 14, marginBottom: 4 }}>{s.t}</div>
-              <div style={{ fontSize: 12.5, color: SUB, lineHeight: 1.45 }}>{s.d}</div>
-            </div>
-          );
-        })}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          {logos.map((name, i) => (
+            <div key={i} style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: 16, textAlign: "center", fontWeight: 800, color: "#fff", fontSize: 14 }}>{name}</div>
+          ))}
+        </div>
       </div>
-      <style>{`@media(max-width:880px){.steps-grid{grid-template-columns:1fr 1fr!important}}`}</style>
     </div>
   );
 }
@@ -908,40 +1124,56 @@ function ContactRow({ icon, label, value, last }) {
 const contactInput = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 9, padding: "10px 12px", fontSize: 14, color: INK, outline: "none", boxSizing: "border-box" };
 
 /* ------------------------------- Footer ------------------------------- */
-function Footer({ brand, onNav, onHome }) {
-  return (
-    <div style={{ background: "#fff", borderTop: `1px solid ${LINE}`, marginTop: "auto" }}>
-      <div style={{ maxWidth: 1080, margin: "0 auto", padding: "24px 20px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 16, color: TEAL }}>
-            <Plane size={17} /> {brand.name}
-          </div>
-          <div style={{ display: "flex", gap: 18, fontSize: 13.5, flexWrap: "wrap" }}>
-            <button onClick={onHome} style={footerLink}>Programs</button>
-            <button onClick={() => onNav({ name: "howitworks" })} style={footerLink}>How It Works</button>
-            <button onClick={() => onNav({ name: "about" })} style={footerLink}>About</button>
-            <button onClick={() => onNav({ name: "faq" })} style={footerLink}>FAQ</button>
-            <button onClick={() => onNav({ name: "contact" })} style={footerLink}>Contact Us</button>
-          </div>
-        </div>
-        <div style={{ height: 1, background: LINE, margin: "16px 0" }} />
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          <div style={{ display: "flex", gap: 16, fontSize: 12.5, flexWrap: "wrap" }}>
-            <button onClick={() => onNav({ name: "legal", doc: "privacy" })} style={footerLink}>Privacy Policy</button>
-            <button onClick={() => onNav({ name: "legal", doc: "terms" })} style={footerLink}>Terms of Service</button>
-            <button onClick={() => onNav({ name: "legal", doc: "refund" })} style={footerLink}>Refund Policy</button>
-          </div>
-          <div style={{ fontSize: 12, color: MUTE, display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <a href="/admin" style={{ color: MUTE, textDecoration: "none" }}>운영자 어드민</a>
-            <a href="/hospital-admin" style={{ color: MUTE, textDecoration: "none" }}>병원 관리자</a>
-            <span>© {brand.name}. Prototype — not medical advice.</span>
-          </div>
-        </div>
+function Footer({ brand, onNav, onHome, lang = "en" }) {
+  const L = LANDING[lang];
+  // 컬럼 라벨 → 실제 라우트 이동 매핑 (디자인 라벨은 LANDING 사전, 동작은 기존 라우트)
+  const progNav = [() => onHome(), () => onNav({ name: "treatments" }), () => onNav({ name: "treatments" }), () => onNav({ name: "howitworks" })];
+  const companyNav = [() => onNav({ name: "about" }), () => onNav({ name: "faq" }), () => onNav({ name: "contact" }), () => onNav({ name: "blog" })];
+  const legalNav = [() => onNav({ name: "legal", doc: "privacy" }), () => onNav({ name: "legal", doc: "terms" }), () => onNav({ name: "legal", doc: "refund" })];
+  const col = (title, items, navs) => (
+    <div>
+      <div style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 14 }}>{title}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {items.map((label, i) => (
+          <button key={i} onClick={navs[i]} style={footerLink}>{label}</button>
+        ))}
       </div>
     </div>
   );
+  return (
+    <div style={{ background: NAVY, color: "#aebdd8", marginTop: "auto" }}>
+      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "52px 28px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: 32 }} className="kc-footer-grid">
+        <div>
+          <button onClick={onHome} style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
+            <span style={{ display: "inline-flex", width: 28, height: 28, borderRadius: 8, background: TEAL, color: "#fff", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontSize: 15, fontWeight: 800 }}>K</span>
+            <span style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 800, color: "#fff" }}>{brand.name}</span>
+          </button>
+          <p style={{ fontSize: 13.5, lineHeight: 1.6, margin: "0 0 16px", maxWidth: 280 }}>{L.footerBlurb}</p>
+          <div style={{ display: "flex", gap: 10 }}>
+            {["JCI", "ISO 9001", "HIPAA"].map((b) => (
+              <span key={b} style={{ fontSize: 11, fontWeight: 800, color: "#fff", border: `1.5px solid ${NAVY_LINE}`, borderRadius: 5, padding: "4px 8px" }}>{b}</span>
+            ))}
+          </div>
+        </div>
+        {col(L.footerPrograms, L.footProgItems, progNav)}
+        {col(L.footerCompany, L.footCompanyItems, companyNav)}
+        {col(L.footerLegal, L.footLegalItems, legalNav)}
+      </div>
+      <div style={{ borderTop: `1px solid ${NAVY_LINE}` }}>
+        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "18px 28px", display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", fontSize: 12.5, color: "#7d92b8" }}>
+          <span>{L.footNote}</span>
+          <span style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+            <a href="/admin" style={{ color: "#7d92b8", textDecoration: "none" }}>운영자 어드민</a>
+            <a href="/hospital-admin" style={{ color: "#7d92b8", textDecoration: "none" }}>병원 관리자</a>
+            <span>{L.footNote2}</span>
+          </span>
+        </div>
+      </div>
+      <style>{`@media(max-width:760px){.kc-footer-grid{grid-template-columns:1fr 1fr!important}}`}</style>
+    </div>
+  );
 }
-const footerLink = { border: "none", background: "transparent", cursor: "pointer", color: SUB, fontSize: 13.5, padding: 0, fontWeight: 500 };
+const footerLink = { border: "none", background: "transparent", cursor: "pointer", color: "#aebdd8", fontSize: 13.5, padding: 0, fontWeight: 500, textAlign: "left" };
 
 /* ========================================================================
    ABOUT  (mirrors SafeDoc "Company")
