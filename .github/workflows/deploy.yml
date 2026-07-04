@@ -21,12 +21,11 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
+          node-version: 22
+      - run: npm install --no-audit --no-fund
       - run: npm run build
-        # 값은 repo Secrets 에 등록 (미설정 시 빈 문자열 = 분석/폼 no-op, 빌드 무해)
-        # 자세한 내용: docs/SERVER-REQUEST.md
+        # VITE_BASE: github.io/korea-care 서브경로 배포용 (커스텀 도메인이면 "/")
+        # 그 외 값은 repo Secrets 에 등록(미설정 시 빈 문자열 = no-op)
         env:
           VITE_BASE: /korea-care/
           VITE_API_BASE: ${{ secrets.VITE_API_BASE }}

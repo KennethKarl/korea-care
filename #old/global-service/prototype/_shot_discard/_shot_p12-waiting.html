@@ -1,9 +1,0 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><title>p12-waiting</title></head><body>
-<script>
-const FULL = Object.assign({lang:'en',persona:'us_individual',signedIn:false,profile:null,bookings:{},couponCode:null,conflictChoice:null,cart:[]}, {signedIn:true,persona:'ka_enterprise',profile:{"name":"Sarah Kim","email":"sarah.kim@acme.example.com","citizenship":"KR","enterprise":"acme","enterpriseStatus":"verified"},bookings:{"SFD-DEMO1":{hospitalId:"samsung-mc",visitDate:"2026-06-17",items:[{serviceId:"smc-derm-laser",price:{base:480,entDiscount:58,couponDiscount:0,total:422,tier:"KR_RESIDENT"}}],form:{name:"Sarah Kim",email:"sarah.kim@acme.example.com",phone:"+1 (415) 555-0129",age:40,gender:"F",nationality:"Republic of Korea",passport:"M12345678",entryDate:"2026-06-15",exitDate:"2026-06-22",hotel:"Four Seasons Seoul",flight:"KE012",notes:"",addon_lodging:true,addon_flight:false,addon_tour:true,addon_notes:""},price:{base:480,entDiscount:58,couponDiscount:0,total:422,tier:"KR_RESIDENT",chosen:null,conflict:false},status:"waiting",hasAddons:true,createdAt:1715600000000}}});
-localStorage.setItem('safedoc_demo_v1', JSON.stringify(FULL));
-document.documentElement.lang = FULL.lang || 'en';
-location.replace('./demo.html#/booking/SFD-DEMO1');
-</script>
-</body></html>

@@ -1,734 +1,491 @@
 import React, { useState, useEffect } from "react";
+import { t as tr } from "./i18n.js";
 import {
-  Search, MapPin, Star, Shield, Clock, Check, Plane,
-  Building2, ChevronRight, Hotel, Languages, HeartPulse,
-  Stethoscope, Award, Image as ImageIcon,
-  Settings, Plus, Trash2, X, Eye, Type, Move, Palette,
-  ArrowLeft, Phone, Mail, Send, ChevronDown, HelpCircle,
-  Calendar, Users, CheckCircle2, MessageSquare, Globe, User, Newspaper,
+  Search, User, Globe, ChevronDown, ChevronRight, Menu, X,
+  Folder, CalendarDays, CalendarCheck, MessageSquare, MapPin,
+  Stethoscope, Sparkles, Car, Hotel, Map, Handshake, Check,
+  Phone, Mail, Send, Star, ArrowLeft, MessageCircle,
+  Heart, MapPinned, SlidersHorizontal, ArrowDownUp, ArrowRight, Shield,
 } from "lucide-react";
-import { treatments as TREATMENTS, reviews as REVIEWS, beforeAfter as BEFORE_AFTER, blogPosts as BLOG_POSTS, faqItems as FAQ_ITEMS, i18n as I18N } from "./site-data.js";
-import { TreatmentsPage, TreatmentDetail, ReviewsPage, BeforeAfterPage, BlogPage, BlogPostPage, ReservationPage, MyPage } from "./screens.jsx";
-import { Outlet, useNavigate, useLocation, useParams, useSearchParams, useOutletContext } from "react-router-dom";
+import { Outlet, useNavigate, useLocation, useParams, useOutletContext } from "react-router-dom";
 import { ClientOnly } from "vite-react-ssg";
-import { Seo, orgJsonLd, procedureJsonLd, faqJsonLd, breadcrumbJsonLd } from "./seo.jsx";
-import { initAnalytics, trackPageView, trackEvent } from "./analytics.js";
+import { Seo, orgJsonLd, faqJsonLd, breadcrumbJsonLd, procedureJsonLd, providersJsonLd, scanMenuJsonLd } from "./seo.jsx";
+import { initAnalytics, trackPageView } from "./analytics.js";
 import { submitLead } from "./api.js";
 import { SITE_URL } from "./config.js";
-import AccountHub from "./account.jsx";
-import { AdminApp, HospitalApp } from "./backoffice.jsx";
-import SpecOverlay from "./spec-overlay.jsx";
-import { BLUE as TEAL, BLUE_SOFT as TEAL_SOFT, BLUE_DARK, ACCENT, ACCENT_SOFT, INK, SUB, MUTE, LINE, SUCCESS, STAR, BG_SOFT, NAVY, NAVY_LINE, GREEN, GREEN_SOFT, DISPLAY, btn } from "./theme.js";
+import {
+  BLUE, BLUE_SOFT, BLUE_100, EDGE, INK, SUB, MUTE, FAINT, LINE, BG_SOFT, CLOUD, ACCENT, STAR, GREEN,
+  NAVY, NAVY_LINE, FOOTER_BG, FOOTER_LINE, BRAND_GRAD, SECTION_TINT, AQUA,
+  DISPLAY, btn, viewMoreBtn,
+} from "./theme.js";
+import {
+  BRAND, NAV, HERO, JOURNEY, CHECKUP, WHY, REVITAL, SERVICES,
+  REVIEWS, FAQ_CATS, FAQS, CERTS, BLOG, BLOG_CATS, UI, tx, PROCEDURES, usd, KRW_PER_USD, SCAN_MENU,
+  PROVIDERS, PROVIDER_DEPTS, PROVIDER_LANGS,
+} from "./data.js";
+import { TreatmentListPage, TreatmentDetailPage, BookingPage, CartPage, MyPage } from "./functional.jsx";
+import * as store from "./store.js";
+import { getCollection, useContent, hydrateContent } from "./content.js";
+import { getEnabledLangs, dirOf, langFromPath, withLang, stripLang, PREFIX_LANGS } from "./langs.js";
+import AdminPage from "./admin.jsx";
 
-/* =========================================================================
-   KoreCare — fully admin-controllable
-   Everything renders from `initialContent`. A future admin panel writes to
-   the same shape (load from your API instead of this constant). The built-in
-   editor on the right shows the exact controls the admin will expose:
-     - swap any image by URL
-     - overlay text on images (position / align / color / size / weight)
-     - add / edit / remove departments, hospitals, programs
-   ========================================================================= */
+const ICONS = { Folder, CalendarDays, CalendarCheck, MessageSquare, MapPin, Stethoscope, Sparkles, Car, Hotel, Map, Handshake };
+// 프로토타입 max-w-wide = 1280, 좌우 패딩 데스크톱40/모바일20(clamp)
+const WRAP = { maxWidth: 1280, margin: "0 auto", padding: "0 clamp(20px, 4vw, 40px)" };
 
-/* 디자인 토큰은 theme.js 로 중앙화 (TEAL=BLUE, TEAL_SOFT=BLUE_SOFT 별칭) */
-
-const initialContent = {
-  brand: { name: "KoreCare", insurer: "Meridian Health Insurance" },
-  hero: {
-    image: {
-      url: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1200&q=80",
-      alt: "Modern hospital",
-      overlays: [
-        { id: "h1", text: "World-class treatment in Korea — fully managed.", x: 6, y: 32, size: 36, weight: 800, color: "#ffffff", align: "left", maxWidth: 62 },
-        { id: "h2", text: "Your insurer covers the procedure. We handle everything else.", x: 6, y: 64, size: 16, weight: 500, color: "#e8f4f3", align: "left", maxWidth: 50 },
-      ],
-      overlayScrim: 0.45,
-    },
-  },
-  departments: [
-    {
-      id: "onco", name: "Oncology", active: true,
-      hospitals: [
-        { id: "snc", name: "Seoul National Cancer Center", city: "Seoul", rating: 4.9, reviews: 540, accred: "JCI", program: "Comprehensive Cancer Program", weeks: "3–5 wks", us: 145000, kr: 52000, covered: true, lead: "Proton therapy & robotic surgery",
-          image: { url: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=600&q=80", alt: "Cancer center", overlays: [{ id: "o1", text: "Proton Therapy Center", x: 8, y: 78, size: 15, weight: 700, color: "#ffffff", align: "left", maxWidth: 85 }], overlayScrim: 0.4 } },
-        { id: "asan", name: "Asan Medical Oncology Inst.", city: "Seoul", rating: 4.9, reviews: 612, accred: "JCI", program: "Targeted Therapy Track", weeks: "4–6 wks", us: 168000, kr: 61000, covered: true, lead: "Asia's largest cancer caseload",
-          image: { url: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?w=600&q=80", alt: "Hospital building", overlays: [], overlayScrim: 0.35 } },
-      ],
-    },
-    {
-      id: "ortho", name: "Orthopedics & Spine", active: true,
-      hospitals: [
-        { id: "wooridul", name: "Wooridul Spine Hospital", city: "Seoul", rating: 4.9, reviews: 720, accred: "JCI", program: "Minimally-Invasive Spine", weeks: "2–3 wks", us: 92000, kr: 28000, covered: true, lead: "Endoscopic spine pioneers",
-          image: { url: "https://images.unsplash.com/photo-1551076805-e1869033e561?w=600&q=80", alt: "Spine clinic", overlays: [], overlayScrim: 0.35 } },
-      ],
-    },
-    {
-      id: "cardiac", name: "Cardiac Surgery", active: true,
-      hospitals: [
-        { id: "samsung", name: "Samsung Heart Institute", city: "Seoul", rating: 4.9, reviews: 502, accred: "JCI", program: "Coronary Bypass Program", weeks: "3–4 wks", us: 158000, kr: 47000, covered: true, lead: "Hybrid cardiac suites",
-          image: { url: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80", alt: "Heart institute", overlays: [], overlayScrim: 0.35 } },
-      ],
-    },
-    {
-      id: "screen", name: "Full Health Screening", active: false,
-      hospitals: [
-        { id: "asanhp", name: "Asan Health Promotion Ctr.", city: "Seoul", rating: 4.9, reviews: 890, accred: "JCI", program: "Executive Deep Screening", weeks: "3–5 days", us: 8500, kr: 2200, covered: true, lead: "Whole-body MRI + PET-CT",
-          image: { url: "https://images.unsplash.com/photo-1631563019676-dade0dbdb8fc?w=600&q=80", alt: "Screening center", overlays: [], overlayScrim: 0.35 } },
-      ],
-    },
-  ],
-};
-
-/* ----------------------- shared: total-care steps ----------------------- */
-const CARE_STEPS = [
-  { icon: Stethoscope, t: "Care plan & match", tk: "케어 플랜 & 매칭", d: "We match a covered program to your records.", dk: "진료 기록에 맞는 보장 프로그램을 매칭합니다." },
-  { icon: Plane, t: "Travel arranged", tk: "이동 준비", d: "Flights, visa, pickup for you and a companion.", dk: "환자와 동반자 1인의 항공, 비자, 공항 영접을 준비합니다." },
-  { icon: Languages, t: "In-Korea support", tk: "한국 내 지원", d: "Dedicated English interpreter and coordinator.", dk: "전담 영어 통역사와 코디네이터가 함께합니다." },
-  { icon: Hotel, t: "Recovery stay", tk: "회복 숙소", d: "Hospital-adjacent accommodation booked.", dk: "병원 인근 숙소를 예약해 드립니다." },
-  { icon: HeartPulse, t: "US aftercare", tk: "미국 내 사후관리", d: "Follow-up coordinated with your home doctor.", dk: "미국 주치의와 후속 진료를 조율합니다." },
-];
-
-/* -----------------------------------------------------------------------
-   LANDING — KoreCare Landing.dc 디자인 카피(영/한). 기존 lang 토글과 연동.
-   디자인의 data-en/data-ko 페어를 그대로 옮긴 사전.
-   ----------------------------------------------------------------------- */
-const DEPT_KO = { onco: "암 치료", ortho: "정형외과 & 척추", cardiac: "심장 수술", screen: "건강검진" };
-const LANDING = {
-  en: {
-    bannerPre: "You were referred by ", bannerPost: ". Covered programs are highlighted below.",
-    heroBadge: "Covered by your plan",
-    heroTitle: "World-class treatment in Korea — fully managed.",
-    heroSub: "Your insurer covers the procedure. We handle everything else.",
-    heroCta1: "Find programs", heroCta2: "How it works →",
-    trustLabel: "ACCREDITED & VETTED", hipaa: "HIPAA-aligned data",
-    statPatients: "patients managed", statRating: "avg rating", statHospitals: "partner hospitals",
-    progSubMatched: "matched · sorted by your coverage", progViewAll: "View all programs →",
-    covered: "✓ COVERED", usCost: "US cost", krCost: "Korea all-in", save: "Save", viewPlan: "View plan",
-    journeyTitle: "One team, the whole journey", journeySub: "You never coordinate a single vendor yourself.",
-    reviewsEyebrow: "Reviews", reviewsTitle: "Real experiences from US members",
-    baEyebrow: "Before / After", baTitle: "Before treatment, and six months later", baBefore: "BEFORE",
-    ctaTitle: "Your plan may already cover this",
-    ctaSub: "We work directly with major US insurers to pre-verify costs. Check your coverage in 60 seconds.",
-    ctaBtn1: "Check my coverage", ctaBtn2: "Talk to a coordinator",
-    footerBlurb: "Connecting US insurance members to accredited Korean hospitals — fully managed, end to end.",
-    footerPrograms: "Programs", footerCompany: "Company", footerLegal: "Legal",
-    footProgItems: ["Oncology", "Orthopedics & Spine", "Cardiac", "How It Works"],
-    footCompanyItems: ["About", "FAQ", "Contact Us", "Blog"],
-    footLegalItems: ["Privacy Policy", "Terms of Service", "Refund Policy"],
-    footNote: "© KoreCare. Prototype — not medical advice.",
-    footNote2: "A coordination service — not a medical provider.",
-  },
-  ko: {
-    bannerPre: "", bannerPost: " 의 추천을 받으셨습니다. 보장되는 프로그램이 아래에 강조 표시됩니다.",
-    heroBadge: "플랜으로 보장됩니다",
-    heroTitle: "세계적 수준의 치료를 한국에서 — 전 과정 관리.",
-    heroSub: "보험사가 시술 비용을 보장합니다. 나머지 모든 것은 저희가 처리합니다.",
-    heroCta1: "프로그램 찾기", heroCta2: "이용 방법 →",
-    trustLabel: "인증 및 검증", hipaa: "HIPAA 준수 데이터",
-    statPatients: "환자 관리", statRating: "평균 평점", statHospitals: "제휴 병원",
-    progSubMatched: "건 매칭됨 · 회원님의 보장 기준 정렬", progViewAll: "전체 프로그램 보기 →",
-    covered: "✓ 보장됨", usCost: "미국 비용", krCost: "한국 올인", save: "절감", viewPlan: "플랜 보기",
-    journeyTitle: "하나의 팀이 모든 여정을 함께합니다", journeySub: "회원님이 직접 단 하나의 업체도 조율할 필요가 없습니다.",
-    reviewsEyebrow: "환자 후기", reviewsTitle: "실제 미국 회원들의 경험",
-    baEyebrow: "전후 사례", baTitle: "치료 전, 그리고 6개월 후", baBefore: "치료 전",
-    ctaTitle: "회원님의 플랜으로 이미 보장될 수 있습니다",
-    ctaSub: "대형 미국 보험사와 직접 협력하여 비용을 사전 확인합니다. 60초 만에 보장 여부를 확인하세요.",
-    ctaBtn1: "보장 확인하기", ctaBtn2: "코디네이터와 상담",
-    footerBlurb: "미국 보험 회원을 인증된 한국 병원과 연결하고, 전 과정을 관리합니다.",
-    footerPrograms: "프로그램", footerCompany: "회사", footerLegal: "법적 고지",
-    footProgItems: ["암 치료", "정형외과 & 척추", "심장", "이용 방법"],
-    footCompanyItems: ["소개", "자주 묻는 질문", "문의하기", "블로그"],
-    footLegalItems: ["개인정보 처리방침", "이용약관", "환불 정책"],
-    footNote: "© KoreCare. 프로토타입 — 의료 자문이 아닙니다.",
-    footNote2: "의료 서비스 제공 주체가 아닌 코디네이션 서비스입니다.",
-  },
-};
-
-/* ---------------------- responsive helper ---------------------- */
-function useIsMobile(maxWidth = 900) {
-  const [mobile, setMobile] = useState(
-    () => typeof window !== "undefined" && window.matchMedia(`(max-width:${maxWidth}px)`).matches
-  );
-  React.useEffect(() => {
+/* responsive helper */
+function useIsMobile(maxWidth = 960) {
+  const [m, setM] = useState(() => typeof window !== "undefined" && window.matchMedia(`(max-width:${maxWidth}px)`).matches);
+  useEffect(() => {
     const mq = window.matchMedia(`(max-width:${maxWidth}px)`);
-    const onChange = () => setMobile(mq.matches);
-    onChange();
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
+    const on = () => setM(mq.matches); on();
+    mq.addEventListener("change", on); return () => mq.removeEventListener("change", on);
   }, [maxWidth]);
-  return mobile;
+  return m;
 }
 
 /* ========================================================================
-   ROUTING — react-router 데이터 라우트 (vite-react-ssg 가 라우트별 정적 HTML 생성)
-   기존 페이지 컴포넌트(Hero/Results/HospitalDetail/…)는 그대로 두고, URL 라우트
-   래퍼가 useParams/useSearchParams + navigate 콜백으로 연결한다.
+   LAYOUT
    ======================================================================== */
-
-// {name,...} 라우트 의도 → URL 경로 (Nav/Footer 기존 콜백 호환)
-function navPath(next) {
-  if (typeof next === "string") return next;
-  const n = next.name;
-  if (n === "home") return "/";
-  if (n === "treatments") return "/programs";
-  if (n === "treatment") return `/treatment/${next.treatmentId}`;
-  if (n === "detail") return `/hospital/${next.deptId}/${next.hospitalId}`;
-  if (n === "reviews") return "/reviews";
-  if (n === "beforeafter") return "/before-after";
-  if (n === "blog") return "/blog";
-  if (n === "blogpost") return `/blog/${next.postId}`;
-  if (n === "reservation") return next.treatmentId ? `/reservation?treatment=${next.treatmentId}` : "/reservation";
-  if (n === "contact") return (next.deptId && next.hospitalId) ? `/contact?dept=${next.deptId}&hospital=${next.hospitalId}` : "/contact";
-  if (n === "about") return "/about";
-  if (n === "howitworks") return "/how-it-works";
-  if (n === "faq") return "/faq";
-  if (n === "legal") return `/legal/${next.doc}`;
-  if (n === "mypage") return "/mypage";
-  return "/";
-}
-
-// URL → Nav 활성표시용 route 이름
-function pathToRoute(pathname) {
-  const p = (pathname || "/").replace(/\/+$/, "") || "/";
-  if (p === "/") return { name: "home" };
-  if (p.startsWith("/programs")) return { name: "treatments" };
-  if (p.startsWith("/treatment")) return { name: "treatment" };
-  if (p.startsWith("/hospital")) return { name: "detail" };
-  if (p.startsWith("/reviews")) return { name: "reviews" };
-  if (p.startsWith("/before-after")) return { name: "beforeafter" };
-  if (p.startsWith("/blog")) return { name: p.split("/").length > 2 ? "blogpost" : "blog" };
-  if (p.startsWith("/reservation")) return { name: "reservation" };
-  if (p.startsWith("/contact")) return { name: "contact" };
-  if (p.startsWith("/about")) return { name: "about" };
-  if (p.startsWith("/how-it-works")) return { name: "howitworks" };
-  if (p.startsWith("/faq")) return { name: "faq" };
-  if (p.startsWith("/legal")) return { name: "legal" };
-  if (p.startsWith("/mypage")) return { name: "mypage" };
-  return { name: "home" };
-}
-
-/* ------------------------------ Layout ------------------------------ */
 function Layout() {
-  const isMobile = useIsMobile(900);
-  const [content, setContent] = useState(initialContent);
-  const [showEditor, setShowEditor] = useState(false);
-  const [editorDeptId, setEditorDeptId] = useState(initialContent.departments[0].id);
-  const [lang, setLang] = useState("en");
-  const t = I18N[lang];
-  const navigate = useNavigate();
+  const isMobile = useIsMobile(960);
   const location = useLocation();
-  const route = pathToRoute(location.pathname);
-  const isHome = route.name === "home";
-  const onNav = (next) => navigate(navPath(next));
-  const goHome = () => navigate("/");
-
-  useEffect(() => { initAnalytics(); }, []);
+  const lang = langFromPath(location.pathname);          // 언어 = URL 접두어에서 파생
+  const rawNavigate = useNavigate();
+  // 내부 이동은 현재 언어 접두어를 자동 유지(전 링크 lang-aware)
+  const navigate = (to, opts) => rawNavigate(typeof to === "string" ? withLang(to, lang) : to, opts);
+  // 언어 전환 = 같은 페이지의 다른 언어 URL 로 이동(쿼리 보존)
+  const switchLang = (code) => rawNavigate(withLang(stripLang(location.pathname), code) + (location.search || ""));
+  useEffect(() => { initAnalytics(); hydrateContent(); }, []);
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = dirOf(lang);
+  }, [lang]);
   useEffect(() => {
     trackPageView(location.pathname);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "auto" });
   }, [location.pathname]);
-
   return (
-    <div style={{ fontFamily: "Pretendard, system-ui, sans-serif", background: BG_SOFT, minHeight: "100vh", display: "flex" }}>
-      <div style={{ flex: 1, minWidth: 0, overflowX: "hidden", display: "flex", flexDirection: "column" }}>
-        <Nav content={content} route={route} onNav={onNav} onHome={goHome} onToggleEditor={() => setShowEditor((s) => !s)} editorOpen={showEditor} isMobile={isMobile} lang={lang} onToggleLang={() => setLang((l) => (l === "en" ? "ko" : "en"))} t={t} />
-        <InsurerBanner insurer={content.brand.insurer} lang={lang} />
-        {/* 홈(랜딩)은 풀블리드 — 자체 max-width/다크 섹션 관리. 그 외 페이지는 1080 컨테이너. */}
-        <main style={isHome
-          ? { width: "100%", flex: 1 }
-          : { maxWidth: 1080, margin: "0 auto", padding: "0 20px 60px", width: "100%", boxSizing: "border-box", flex: 1 }}>
-          <Outlet context={{ content, setContent, lang, t, isMobile, onNav }} />
-        </main>
-        <Footer brand={content.brand} onNav={onNav} onHome={goHome} lang={lang} />
-      </div>
-
-      {/* 어드민 에디터는 내부 도구 — SSG HTML 에서 제외(ClientOnly) */}
-      <ClientOnly>
-        {() => (showEditor ? (
-          <>
-            {isMobile && <div onClick={() => setShowEditor(false)} style={{ position: "fixed", inset: 0, background: "rgba(8,20,24,.45)", zIndex: 40 }} />}
-            <AdminEditor content={content} setContent={setContent} activeDeptId={editorDeptId} setActiveDeptId={setEditorDeptId} onClose={() => setShowEditor(false)} isMobile={isMobile} />
-          </>
-        ) : null)}
-      </ClientOnly>
+    <div style={{ fontFamily: "Pretendard, system-ui, sans-serif", background: "#fff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+      <LandingStyles />
+      <Nav lang={lang} onLang={switchLang} isMobile={isMobile} navigate={navigate} pathname={location.pathname} />
+      <PromoBanner lang={lang} navigate={navigate} />
+      <main style={{ flex: 1 }}>
+        <Outlet context={{ lang, isMobile, navigate }} />
+      </main>
+      <Footer lang={lang} navigate={navigate} />
+      {/* 전역 문의하기 플로팅 버튼 (Figma: 모든 화면 상시 노출) */}
+      <ClientOnly>{() => <FloatingInquiry lang={lang} />}</ClientOnly>
+      <ClientOnly>{() => <PromoPopup lang={lang} navigate={navigate} />}</ClientOnly>
     </div>
   );
 }
 
-/* ------------------------- page route wrappers ------------------------- */
-function HomePage() {
-  const { content, lang } = useOutletContext();
-  const navigate = useNavigate();
-  const activeDepts = content.departments.filter((d) => d.active);
-  const [activeDeptId, setActiveDeptId] = useState(activeDepts[0]?.id);
-  const safeDeptId = activeDepts.find((d) => d.id === activeDeptId) ? activeDeptId : activeDepts[0]?.id;
-  const activeDept = activeDepts.find((d) => d.id === safeDeptId);
+/* 전역 문의 플로팅 버튼 + 상담 접수 모달 (Figma 문의) */
+function FloatingInquiry({ lang }) {
+  const [open, setOpen] = useState(false);
   return (
     <>
-      <Seo path="/" jsonLd={orgJsonLd} />
-      <LandingHero
-        hero={content.hero} lang={lang} depts={activeDepts} activeId={safeDeptId}
-        onPick={setActiveDeptId} onFind={() => navigate("/programs")} onHow={() => navigate("/how-it-works")}
-      />
-      <TrustStrip lang={lang} />
-      <Programs dept={activeDept} lang={lang} onView={(h, d) => navigate(`/hospital/${d.id}/${h.id}`)} onViewAll={() => navigate("/programs")} />
-      <Journey lang={lang} />
-      <Reviews lang={lang} />
-      <BeforeAfter lang={lang} />
-      <CtaBand lang={lang} insurer={content.brand.insurer} onCheck={() => navigate("/reservation")} onTalk={() => navigate("/contact")} />
-      {/* 기획 모드 오버레이 (홈 전용, client-only) */}
-      <ClientOnly>{() => <SpecOverlay />}</ClientOnly>
+      <button onClick={() => setOpen(true)} style={{ position: "fixed", right: 22, bottom: 22, zIndex: 50, display: "inline-flex", alignItems: "center", gap: 8, background: BRAND_GRAD, color: "#fff", border: "none", borderRadius: 999, padding: "13px 20px", fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 24px rgba(27,89,250,.4)" }}>
+        <MessageCircle size={18} /> {tr("Contact", lang)}
+      </button>
+      {open && <InquiryModal lang={lang} onClose={() => setOpen(false)} />}
     </>
   );
 }
-
-function TreatmentsRoute() {
-  const { content, lang, t } = useOutletContext();
-  const navigate = useNavigate();
+function InquiryModal({ lang, onClose }) {
+  const profile = store.getProfile();
+  const [sent, setSent] = useState(false);
+  const cats = lang === "ko"
+    ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과"]
+    : ["Health check-up", "General hospital", "Dermatology", "Plastic surgery", "Ophthalmology", "Dental", "Obstetrics", "Urology", "Orthopedics"];
+  const inp = { width: "100%", padding: "11px 13px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 13.5, boxSizing: "border-box", fontFamily: "inherit" };
   return (
-    <>
-      <Seo title="Programs & Treatments" description="Browse covered treatments in Korea — oncology, orthopedics, cardiac surgery and full health screening — matched to your US insurance referral." path="/programs" jsonLd={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Programs", path: "/programs" }])} />
-      <TreatmentsPage treatments={TREATMENTS} departments={content.departments} lang={lang} t={t} onOpen={(id) => navigate(`/treatment/${id}`)} />
-    </>
-  );
-}
-
-function TreatmentRoute() {
-  const { content, lang, t } = useOutletContext();
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const tr = TREATMENTS.find((x) => x.id === id);
-  const name = tr ? (tr.name?.[lang] ?? tr.name?.en ?? tr.name) : "Treatment";
-  const desc = tr ? (tr.summary?.[lang] ?? tr.summary?.en) : undefined;
-  const path = `/treatment/${id}`;
-  return (
-    <>
-      <Seo title={typeof name === "string" ? name : "Treatment"} description={desc} type="article" path={path}
-        jsonLd={tr ? [procedureJsonLd({ name, description: desc || name, url: SITE_URL + path }), breadcrumbJsonLd([{ name: "Programs", path: "/programs" }, { name, path }])] : undefined} />
-      <TreatmentDetail treatment={tr} departments={content.departments} lang={lang} t={t} onBack={() => navigate("/programs")} onBook={(tid) => navigate(`/reservation?treatment=${tid}`)} />
-    </>
-  );
-}
-
-function HospitalDetailRoute() {
-  const { content } = useOutletContext();
-  const { deptId, hospitalId } = useParams();
-  const navigate = useNavigate();
-  const dept = content.departments.find((d) => d.id === deptId);
-  const hospital = dept?.hospitals.find((h) => h.id === hospitalId);
-  const path = `/hospital/${deptId}/${hospitalId}`;
-  return (
-    <>
-      <Seo
-        title={hospital ? `${hospital.program} — ${hospital.name}` : "Program"}
-        description={hospital ? `${hospital.program} at ${hospital.name} (${hospital.city}). Korea all-in $${hospital.kr.toLocaleString()} vs US $${hospital.us.toLocaleString()} — covered, fully managed by KoreCare.` : undefined}
-        path={path}
-        jsonLd={hospital ? [procedureJsonLd({ name: `${hospital.program} — ${hospital.name}`, description: hospital.lead || hospital.program, url: SITE_URL + path }), breadcrumbJsonLd([{ name: "Programs", path: "/" }, { name: dept?.name || "Program", path: "/" }, { name: hospital.name, path }])] : undefined}
-      />
-      <HospitalDetail hospital={hospital} dept={dept} insurer={content.brand.insurer} onBack={() => navigate("/")} onContact={() => navigate(`/contact?dept=${deptId}&hospital=${hospitalId}`)} />
-    </>
-  );
-}
-
-function ReviewsRoute() {
-  const { lang, t } = useOutletContext();
-  return (<><Seo title="Patient Reviews" description="Real patient reviews of KoreCare-managed treatment journeys in Korea." path="/reviews" /><ReviewsPage reviews={REVIEWS} lang={lang} t={t} /></>);
-}
-
-function BeforeAfterRoute() {
-  const { lang, t } = useOutletContext();
-  return (<><Seo title="Before & After" description="Before-and-after outcomes from KoreCare partner hospitals in Korea." path="/before-after" /><BeforeAfterPage beforeAfter={BEFORE_AFTER} lang={lang} t={t} /></>);
-}
-
-function BlogRoute() {
-  const { lang, t } = useOutletContext();
-  const navigate = useNavigate();
-  return (<><Seo title="Blog" description="Guides on medical travel to Korea — coverage, hospitals, recovery and aftercare." path="/blog" /><BlogPage blogPosts={BLOG_POSTS} lang={lang} t={t} onOpen={(id) => navigate(`/blog/${id}`)} /></>);
-}
-
-function BlogPostRoute() {
-  const { lang, t } = useOutletContext();
-  const { id } = useParams();
-  const navigate = useNavigate();
-  let post = BLOG_POSTS.find((p) => p.id === id);
-  // 어드민 블로그 CMS 로 추가된 글(프리렌더 안 됨)은 클라이언트 localStorage 에서 탐색
-  if (!post && typeof window !== "undefined") { try { post = JSON.parse(localStorage.getItem("korecare_blogposts") || "[]").find((p) => p.id === id); } catch (_) {} }
-  const title = post ? (post.title?.[lang] ?? post.title?.en ?? post.title) : "Article";
-  return (<><Seo title={typeof title === "string" ? title : "Article"} type="article" path={`/blog/${id}`} /><BlogPostPage post={post} lang={lang} t={t} onBack={() => navigate("/blog")} /></>);
-}
-
-function ReservationRoute() {
-  const { lang, t } = useOutletContext();
-  const [sp] = useSearchParams();
-  return (<><Seo title="Book a Consultation" description="Request your treatment consultation with KoreCare — coverage confirmed after a short records review." path="/reservation" /><ReservationPage treatments={TREATMENTS} lang={lang} t={t} prefillTreatmentId={sp.get("treatment") || ""} /></>);
-}
-
-function ContactRoute() {
-  const { content } = useOutletContext();
-  const [sp] = useSearchParams();
-  const prefillHospital = content.departments.find((d) => d.id === sp.get("dept"))?.hospitals.find((h) => h.id === sp.get("hospital"));
-  return (<><Seo title="Contact a Coordinator" description="Talk to a KoreCare care coordinator — coverage check and program questions, no obligation." path="/contact" /><ContactPage depts={content.departments} prefillHospital={prefillHospital} /></>);
-}
-
-function AboutRoute() {
-  const { content } = useOutletContext();
-  const navigate = useNavigate();
-  return (<><Seo title="About KoreCare" description="KoreCare manages medical treatment in Korea for US insurance members — the insurer covers the procedure, we handle everything around it." path="/about" /><AboutPage insurer={content.brand.insurer} onContact={() => navigate("/contact")} onPrograms={() => navigate("/")} /></>);
-}
-
-function HowItWorksRoute() {
-  const navigate = useNavigate();
-  return (<><Seo title="How It Works" description="From care-plan matching to US aftercare — the 5-step KoreCare journey." path="/how-it-works" /><HowItWorksPage onPrograms={() => navigate("/")} onContact={() => navigate("/contact")} /></>);
-}
-
-function FaqRoute() {
-  const navigate = useNavigate();
-  return (<><Seo title="FAQ" description="Answers about insurer coverage, hospitals, travel, language and aftercare for treatment in Korea." path="/faq" jsonLd={faqJsonLd(FAQ_ITEMS)} /><FAQPage onContact={() => navigate("/contact")} /></>);
-}
-
-function LegalRoute() {
-  const { doc } = useParams();
-  const navigate = useNavigate();
-  const titles = { privacy: "Privacy Policy", terms: "Terms of Service", refund: "Refund Policy" };
-  return (<><Seo title={titles[doc] || "Legal"} path={`/legal/${doc}`} noindex /><LegalPage doc={doc} onContact={() => navigate("/contact")} /></>);
-}
-
-function MyPageRoute() {
-  const navigate = useNavigate();
-  return (<><Seo title="My Page" path="/mypage" noindex /><ClientOnly>{() => <AccountHub onBook={() => navigate("/reservation")} />}</ClientOnly></>);
-}
-
-function NotFound() {
-  const navigate = useNavigate();
-  return (
-    <>
-      <Seo title="Not found" noindex />
-      <div style={{ marginTop: 60, textAlign: "center" }}>
-        <h1 style={{ fontSize: 26, color: INK }}>Page not found</h1>
-        <button onClick={() => navigate("/")} style={{ ...btn(TEAL, "#fff"), marginTop: 16 }}>Back to home</button>
-      </div>
-    </>
-  );
-}
-
-/* 운영자 어드민 / 병원 관리자 (별도 셸, noindex, client-only mock) */
-function AdminRoute() {
-  return (<><Seo title="Operator Admin" path="/admin" noindex /><ClientOnly>{() => <AdminApp />}</ClientOnly></>);
-}
-function HospitalRoute() {
-  return (<><Seo title="Hospital Manager" path="/hospital-admin" noindex /><ClientOnly>{() => <HospitalApp />}</ClientOnly></>);
-}
-
-/* ------------------------------- routes ------------------------------- */
-export const routes = [
-  { path: "/admin", element: <AdminRoute /> },
-  { path: "/hospital-admin", element: <HospitalRoute /> },
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: "programs", element: <TreatmentsRoute /> },
-      { path: "treatment/:id", element: <TreatmentRoute />, getStaticPaths: () => TREATMENTS.map((x) => `treatment/${x.id}`) },
-      { path: "hospital/:deptId/:hospitalId", element: <HospitalDetailRoute />, getStaticPaths: () => initialContent.departments.flatMap((d) => d.hospitals.map((h) => `hospital/${d.id}/${h.id}`)) },
-      { path: "reviews", element: <ReviewsRoute /> },
-      { path: "before-after", element: <BeforeAfterRoute /> },
-      { path: "blog", element: <BlogRoute /> },
-      { path: "blog/:id", element: <BlogPostRoute />, getStaticPaths: () => BLOG_POSTS.map((p) => `blog/${p.id}`) },
-      { path: "reservation", element: <ReservationRoute /> },
-      { path: "contact", element: <ContactRoute /> },
-      { path: "about", element: <AboutRoute /> },
-      { path: "how-it-works", element: <HowItWorksRoute /> },
-      { path: "faq", element: <FaqRoute /> },
-      { path: "legal/:doc", element: <LegalRoute />, getStaticPaths: () => ["privacy", "terms", "refund"].map((d) => `legal/${d}`) },
-      { path: "mypage", element: <MyPageRoute /> },
-      { path: "*", element: <NotFound /> },
-    ],
-  },
-];
-
-/* ------------------------------ Nav ------------------------------ */
-function Nav({ content, route, onNav, onHome, onToggleEditor, editorOpen, isMobile, lang, onToggleLang, t }) {
-  // primary menu = 요구사항정의서 상단 메뉴 (시술·병원·리뷰·비포/애프터·블로그·FAQ)
-  const links = [
-    { id: "treatments", label: t.nav.treatments, on: () => onNav({ name: "treatments" }) },
-    { id: "home", label: t.nav.hospitals, on: () => onHome() },
-    { id: "reviews", label: t.nav.reviews, on: () => onNav({ name: "reviews" }) },
-    { id: "beforeafter", label: t.nav.beforeafter, on: () => onNav({ name: "beforeafter" }) },
-    { id: "blog", label: t.nav.blog, on: () => onNav({ name: "blog" }) },
-    { id: "faq", label: t.nav.faq, on: () => onNav({ name: "faq" }) },
-  ];
-  const LinkButtons = () => links.map((l) => {
-    const active = route?.name === l.id || (l.id === "blog" && route?.name === "blogpost") || (l.id === "treatments" && route?.name === "treatment");
-    return (
-      <button key={l.id} onClick={l.on} style={{
-        border: "none", background: "transparent", cursor: "pointer", whiteSpace: "nowrap",
-        padding: "8px 10px", borderRadius: 8, fontSize: 14,
-        fontWeight: active ? 700 : 500, color: active ? TEAL : SUB,
-      }}>{l.label}</button>
-    );
-  });
-  const langBtn = (
-    <button onClick={onToggleLang} title="Language" style={{ border: `1px solid ${LINE}`, background: "#fff", color: SUB, cursor: "pointer", borderRadius: 8, padding: "8px 10px", fontSize: 13, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
-      <Globe size={14} /> {lang === "en" ? "EN" : "한"}
-    </button>
-  );
-  const loginBtn = (
-    <button onClick={() => onNav({ name: "mypage" })} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, padding: "9px 14px" }}>
-      <User size={15} /> {t.nav.login}
-    </button>
-  );
-  const adminBtn = (
-    <button onClick={onToggleEditor} title="Admin" style={{ border: `1px solid ${LINE}`, background: editorOpen ? TEAL : "#fff", color: editorOpen ? "#fff" : MUTE, cursor: "pointer", borderRadius: 8, padding: "8px 10px", display: "inline-flex", alignItems: "center", gap: 5, flexShrink: 0 }}>
-      <Settings size={15} />
-    </button>
-  );
-  const brand = (
-    <button onClick={onHome} style={{ border: "none", background: "transparent", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 800, fontSize: 20, color: TEAL, padding: 0 }}>
-      <Plane size={20} /> {content.brand.name}
-    </button>
-  );
-
-  return (
-    <div data-spec="1-1" style={{ background: "#fff", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 5 }}>
-      {isMobile ? (
-        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "12px 16px" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
-            {brand}
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>{langBtn}{loginBtn}{adminBtn}</div>
-          </div>
-          {/* horizontally scrollable link row */}
-          <div style={{ display: "flex", gap: 2, marginTop: 8, overflowX: "auto", WebkitOverflowScrolling: "touch", marginLeft: -4 }}>
-            <LinkButtons />
-          </div>
+    <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,15,44,.5)", zIndex: 60, display: "grid", placeItems: "center", padding: 20 }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, width: "100%", maxWidth: 460, maxHeight: "90vh", overflow: "auto", padding: 26 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <h3 style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 800, color: INK, margin: 0 }}>{tr("Get in touch", lang)}</h3>
+          <button onClick={onClose} style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE }}><X size={20} /></button>
         </div>
-      ) : (
-        <div style={{ maxWidth: 1080, margin: "0 auto", padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
-          {brand}
-          <div style={{ display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>
-            <LinkButtons />
-            <span style={{ display: "inline-flex", gap: 6, marginLeft: 6 }}>{langBtn}{loginBtn}{adminBtn}</span>
+        {sent ? (
+          <div style={{ textAlign: "center", padding: "30px 0" }}>
+            <div style={{ width: 52, height: 52, borderRadius: "50%", background: SECTION_TINT, color: BLUE, display: "grid", placeItems: "center", margin: "0 auto 14px" }}><Check size={26} /></div>
+            <div style={{ fontSize: 16, fontWeight: 800, color: INK }}>{tr("Received", lang)}</div>
+            <p style={{ fontSize: 13, color: SUB }}>{tr("A confirmation email was sent and our global team was notified.", lang)}</p>
           </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function InsurerBanner({ insurer, lang = "en" }) {
-  const L = LANDING[lang];
-  return (
-    <div data-spec="1-2" style={{ background: NAVY, color: "#c7d6f5" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "9px 28px", display: "flex", alignItems: "center", gap: 9, fontSize: 13.5, flexWrap: "wrap" }}>
-        <span style={{ display: "inline-flex", width: 18, height: 18, borderRadius: "50%", background: TEAL, color: "#fff", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 800, flexShrink: 0 }}>✓</span>
-        <span>{L.bannerPre}<strong style={{ color: "#fff", fontWeight: 700 }}>{insurer}</strong>{L.bannerPost}</span>
+        ) : (
+          <form onSubmit={(e) => { e.preventDefault(); submitLead({ source: "inquiry" }).catch(() => {}); setSent(true); }} style={{ display: "grid", gap: 12 }}>
+            <input style={inp} required placeholder={tr("Name", lang)} defaultValue={profile?.fullName || ""} />
+            <input style={inp} required type="email" placeholder="Email" defaultValue={profile?.email || ""} />
+            <input type="tel" style={inp} placeholder={tr("Phone (with country code)", lang)} defaultValue={profile?.phone || ""} />
+            <select style={inp} required defaultValue=""><option value="" disabled>{tr("Select category", lang)}</option>{cats.map((c) => <option key={c}>{c}</option>)}</select>
+            <textarea style={inp} rows={3} placeholder={tr("Tell us about the treatment you're considering", lang)} />
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: SUB }}><input type="checkbox" required /> {tr("I'm not a robot", lang)}</label>
+            <button type="submit" style={{ ...btn(BLUE, "#fff"), width: "100%" }}>{UI[lang].send}</button>
+            {/* 자동화: 접수 시 고객 이메일 + 글로벌팀 슬랙 알림 (백엔드 연동 필요) */}
+          </form>
+        )}
       </div>
     </div>
   );
 }
-
-/* --------------- reusable: image with text overlays --------------- */
-function OverlayImage({ image, height, radius = 16, textScale = 1 }) {
-  if (!image || !image.url) {
-    return (
-      <div style={{ height: height === "100%" ? "100%" : height, minHeight: 120, borderRadius: radius, background: "#dfe6e9", display: "grid", placeItems: "center", color: MUTE }}>
-        <ImageIcon size={28} />
-      </div>
-    );
-  }
-  const scrim = image.overlayScrim ?? 0;
-  return (
-    <div style={{ position: "relative", height, minHeight: 120, borderRadius: radius, overflow: "hidden", background: "#dfe6e9" }}>
-      <img src={image.url} alt={image.alt || ""} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-      {scrim > 0 && (
-        <div style={{ position: "absolute", inset: 0, background: `linear-gradient(0deg, rgba(8,20,24,${scrim}) 0%, rgba(8,20,24,${scrim * 0.4}) 60%, rgba(8,20,24,0) 100%)` }} />
-      )}
-      {(image.overlays || []).map((o) => (
-        <div key={o.id} style={{
-          position: "absolute",
-          left: o.align === "center" ? 0 : `${o.x}%`,
-          right: o.align === "center" ? 0 : "auto",
-          top: `${o.y}%`,
-          transform: "translateY(-50%)",
-          maxWidth: o.align === "center" ? "100%" : `${o.maxWidth || 80}%`,
-          padding: o.align === "center" ? "0 6%" : 0,
-          color: o.color, fontSize: Math.round(o.size * textScale), fontWeight: o.weight,
-          textAlign: o.align, lineHeight: 1.15,
-          textShadow: "0 1px 8px rgba(0,0,0,.35)",
-          pointerEvents: "none",
-        }}>
-          {o.text}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* =========================================================================
-   LANDING SECTIONS — KoreCare Landing.dc 디자인 구현 (풀블리드 홈)
-   기존 데이터(departments/CARE_STEPS/REVIEWS/BEFORE_AFTER) + theme 토큰 + lang 토글 연동.
-   data-spec 마커는 기획 오버레이(spec-overlay.jsx)와 호환되도록 유지/확장.
-   ========================================================================= */
-const WRAP = { maxWidth: 1180, margin: "0 auto", padding: "0 28px" };
-const deptLabel = (d, lang) => (lang === "ko" ? (DEPT_KO[d.id] || d.name) : d.name);
 
 function LandingStyles() {
   return (
     <style>{`
-      .kc-prog-grid,.kc-rev-grid,.kc-ba-grid{display:grid;gap:24px}
-      .kc-prog-grid{grid-template-columns:1fr 1fr}
-      .kc-rev-grid{grid-template-columns:repeat(3,1fr)}
-      .kc-ba-grid{grid-template-columns:1fr 1fr}
-      .kc-journey-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
-      .kc-cta{display:grid;grid-template-columns:1.3fr .7fr;gap:40px;align-items:center}
-      @media(max-width:920px){
-        .kc-prog-grid,.kc-rev-grid,.kc-ba-grid,.kc-cta{grid-template-columns:1fr!important}
-        .kc-journey-grid{grid-template-columns:repeat(2,1fr)!important}
-        .kc-hero-title{font-size:38px!important}
-        .kc-hero{min-height:520px!important}
+      .g-journey{display:flex;align-items:stretch;gap:0}
+      .g-step{flex:1;min-width:0}
+      .g-chev{display:flex;align-items:center;color:#bcd0ff;flex:0 0 auto;padding:0 4px}
+      .g-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+      .g-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+      .g-rev-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+      .g-rev-bento .span2{grid-column:span 2}
+      .g-hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:stretch}
+      .g-svc{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+      .g-list{display:grid;grid-template-columns:1fr 1fr;gap:30px 44px}
+      .g-dd{opacity:0;visibility:hidden;transform:translateY(6px);transition:all .15s ease}
+      .g-nav-item:hover .g-dd{opacity:1;visibility:visible;transform:translateY(0)}
+      /* RTL(아랍어 등): 방향성 아이콘(chevron/arrow)만 좌우 미러. 체크·별·핀 등 비방향 아이콘은 유지 */
+      [dir="rtl"] .lucide-chevron-right,[dir="rtl"] .lucide-chevron-left,[dir="rtl"] .lucide-arrow-right,[dir="rtl"] .lucide-arrow-left{transform:scaleX(-1)}
+      [dir="rtl"] .lb-nav .lucide-chevron-right{transform:none}  /* 이미지 갤러리 좌우 nav는 공간(좌=이전) 기준 유지 */
+      /* RTL: 본질적으로 LTR인 값(전화·이메일·비밀번호·숫자·URL·날짜)은 왼쪽부터 LTR 표시 */
+      [dir="rtl"] input[type="tel"],[dir="rtl"] input[type="email"],[dir="rtl"] input[type="password"],[dir="rtl"] input[type="number"],[dir="rtl"] input[type="url"],[dir="rtl"] input[type="date"],[dir="rtl"] input[inputmode="numeric"],[dir="rtl"] input[inputmode="tel"]{direction:ltr;text-align:left}
+      .h-row{display:flex;gap:20px;overflow-x:auto;padding:6px 2px 16px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+      .h-row::-webkit-scrollbar{height:8px}
+      .h-row::-webkit-scrollbar-track{background:transparent}
+      .h-row::-webkit-scrollbar-thumb{background:#dde3ec;border-radius:999px}
+      .h-card{flex:0 0 300px;max-width:300px;scroll-snap-align:start}
+      .h-card-lg{flex:0 0 330px;max-width:330px;scroll-snap-align:start}
+      @media(max-width:560px){.h-card{flex-basis:80%;max-width:80%}.h-card-lg{flex-basis:84%;max-width:84%}}
+      /* Creatrip식 병원 사진 모자이크 (큰 메인 + 2x2 썸네일) */
+      .gal-mosaic{position:relative;display:grid;grid-template-columns:1.6fr 1fr 1fr;grid-template-rows:repeat(2,minmax(0,1fr));gap:10px;height:440px}
+      .gal-cell{position:relative;overflow:hidden;border-radius:14px;cursor:pointer;background:#eef2f8;border:1px solid #e7ecf5}
+      .gal-cell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+      .gal-cell:hover img{transform:scale(1.05)}
+      .gal-cell.main{grid-row:1 / span 2}
+      .gal-viewall{position:absolute;right:14px;bottom:14px;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.95);color:#0b1f3a;border:none;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(15,23,42,.18);z-index:2}
+      .gal-more{position:absolute;inset:0;display:grid;place-items:center;background:rgba(7,18,38,.52);color:#fff;font-size:20px;font-weight:800;letter-spacing:.02em}
+      @media(max-width:760px){
+        .gal-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:190px repeat(2,108px);height:auto}
+        .gal-cell.main{grid-column:1 / -1;grid-row:1}
       }
-      @media(max-width:560px){
-        .kc-wrap{padding-left:18px!important;padding-right:18px!important}
-        .kc-journey-grid{grid-template-columns:1fr!important}
-        .kc-hero-title{font-size:30px!important}
+      /* 라이트박스(전체 보기) */
+      .lb-ov{position:fixed;inset:0;z-index:1000;background:rgba(6,12,26,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+      .lb-stage{position:relative;max-width:1000px;width:100%;display:flex;align-items:center;justify-content:center}
+      .lb-stage img{max-width:100%;max-height:72vh;border-radius:12px;object-fit:contain;background:#0b1426}
+      .lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;cursor:pointer}
+      .lb-nav:hover{background:rgba(255,255,255,.3)}
+      .lb-thumbs{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap;justify-content:center;max-width:880px}
+      .lb-thumb{width:74px;height:54px;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;opacity:.55;transition:opacity .15s}
+      .lb-thumb.on{opacity:1;border-color:#fff}
+      .lb-thumb img{width:100%;height:100%;object-fit:cover}
+      .lb-close{position:fixed;top:18px;right:18px;width:42px;height:42px;border-radius:50%;border:none;background:rgba(255,255,255,.16);color:#fff;display:grid;place-items:center;cursor:pointer}
+      /* ---- Blog (ListeningMind식 리스트 + 아티클) ---- */
+      /* 히어로 내 카테고리 탭 */
+      .blog-htabs{display:flex;gap:24px;flex-wrap:wrap;margin-top:24px}
+      .blog-htab{background:none;border:none;padding:6px 0;font-size:15px;font-weight:700;color:rgba(255,255,255,.6);cursor:pointer;position:relative;transition:color .14s ease;font-family:inherit}
+      .blog-htab:hover{color:#fff;transform:none}
+      .blog-htab.on{color:#fff}
+      .blog-htab.on::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:2px;background:#fff;border-radius:2px}
+      /* 인기 상위 카드 그리드 */
+      .blog-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:30px 24px}
+      .blog-gcard{text-align:start;background:#fff;border:1px solid #E5E7EC;border-radius:16px;overflow:hidden;cursor:pointer;box-shadow:0 6px 22px rgba(15,23,42,.05);display:flex;flex-direction:column;padding:0;transition:box-shadow .18s ease,transform .18s ease}
+      .blog-gcard:hover{box-shadow:0 12px 34px rgba(15,23,42,.10);transform:translateY(-3px)}
+      .blog-gcard .thumb{aspect-ratio:4/3;width:100%;overflow:hidden;background:#EEF2F8;position:relative}
+      .blog-gcard .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+      .blog-gcard:hover .thumb img{transform:scale(1.06)}
+      .blog-gcard .ex{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+      /* 하단 리스트 */
+      .blog-list{border-top:2px solid #000F2C}
+      .blog-lrow{display:grid;grid-template-columns:132px 1fr auto;align-items:center;gap:18px;padding:19px 4px;border:none;border-bottom:1px dashed #D8DEE8;background:none;width:100%;text-align:start;cursor:pointer;transition:background .14s ease}
+      .blog-lrow:hover{background:#F7F8FA;transform:none}
+      .blog-lrow:hover .lr-title{color:#1B59FA}
+      /* 최신순/인기순 토글 */
+      .blog-sort{display:inline-flex;background:#F2F3F6;border-radius:999px;padding:3px}
+      .blog-sort button{border:none;background:none;padding:7px 16px;border-radius:999px;font-size:13px;font-weight:700;color:#6A7896;cursor:pointer}
+      .blog-sort button:hover{transform:none}
+      .blog-sort button.on{background:#000F2C;color:#fff}
+      /* 뉴스레터 신청 */
+      .blog-news{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:center;background:linear-gradient(118deg,#EEF3FF 0%,#DCE8FF 100%);border:1px solid #D7E2FF;border-radius:22px;padding:clamp(26px,3.4vw,44px);color:#000F2C;margin:12px 0 8px}
+      .blog-news .illus{width:150px;height:150px;flex:0 0 auto}
+      /* 아티클 페이지 */
+      .blog-art{display:grid;grid-template-columns:230px 1fr;gap:52px;align-items:start}
+      .blog-toc{position:sticky;top:96px}
+      .blog-toc a{display:block;padding:7px 0 7px 14px;border-left:2px solid #E5E7EC;color:#6A7896;font-size:13.5px;text-decoration:none;line-height:1.4;transition:all .14s ease}
+      .blog-toc a:hover{border-left-color:#1B59FA;color:#1B59FA}
+      .blog-body h2{scroll-margin-top:92px}
+      @media(max-width:960px){
+        .g-3,.g-2,.g-rev-bento,.g-svc,.g-list{grid-template-columns:1fr!important}
+        .g-rev-bento .span2{grid-column:auto}
+        .g-hero{grid-template-columns:1fr!important}
+        .g-journey{flex-wrap:wrap}.g-step{flex:1 1 45%}.g-chev{display:none}
+        .blog-cards{grid-template-columns:1fr 1fr}
+        .blog-news{grid-template-columns:1fr;text-align:center;gap:18px}.blog-news .illus{margin:0 auto}
+        .blog-art{grid-template-columns:1fr;gap:0}.blog-toc{display:none}
       }
+      @media(max-width:640px){
+        .blog-cards{grid-template-columns:1fr}
+        .blog-lrow{grid-template-columns:1fr;gap:6px;align-items:start}
+      }
+      @media(max-width:560px){.g-step{flex:1 1 100%}}
     `}</style>
   );
 }
 
-/* ------------------------------- Hero ----------------------------- */
-function LandingHero({ hero, lang, depts, activeId, onPick, onFind, onHow }) {
-  const L = LANDING[lang];
-  const heroImg = hero?.image?.url || "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1600&q=80";
+/* --------- logo --------- */
+function SafedocLogo({ onClick, dark = false }) {
   return (
-    <>
-      <LandingStyles />
-      <div data-spec="1-3" className="kc-hero" style={{ position: "relative", minHeight: 580, display: "flex", alignItems: "center", overflow: "hidden" }}>
-        <img src={heroImg} alt="Modern hospital" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(100deg, rgba(8,18,40,0.92) 0%, rgba(8,18,40,0.74) 42%, rgba(8,18,40,0.30) 100%)" }} />
-        <div className="kc-wrap" style={{ ...WRAP, position: "relative", padding: "60px 28px", width: "100%" }}>
-          <div style={{ maxWidth: 620 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(27,89,250,0.18)", border: "1px solid rgba(122,160,255,0.4)", color: "#cfdcff", fontSize: 13, fontWeight: 700, padding: "7px 14px", borderRadius: 20, marginBottom: 24 }}>
-              <span style={{ width: 7, height: 7, borderRadius: "50%", background: GREEN }} />
-              {L.heroBadge}
-            </div>
-            <h1 className="kc-hero-title" style={{ fontFamily: DISPLAY, fontSize: 54, fontWeight: 800, lineHeight: 1.08, letterSpacing: "-0.03em", color: "#fff", margin: "0 0 20px" }}>{L.heroTitle}</h1>
-            <p style={{ fontSize: 19, lineHeight: 1.6, color: "#cdd6e6", margin: "0 0 34px", maxWidth: 480 }}>{L.heroSub}</p>
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 30, flexWrap: "wrap" }}>
-              <button onClick={onFind} style={{ ...btn(TEAL, "#fff"), fontSize: 16, padding: "16px 32px", borderRadius: 11, boxShadow: "0 10px 28px rgba(27,89,250,.4)" }}>{L.heroCta1}</button>
-              <button onClick={onHow} style={{ background: "transparent", border: "none", color: "#fff", fontSize: 16, fontWeight: 700, padding: "16px 8px", borderBottom: "2px solid rgba(255,255,255,.45)", cursor: "pointer" }}>{L.heroCta2}</button>
-            </div>
-            {/* 진료과 칩 — 선택 시 아래 프로그램 목록 필터 */}
-            <div data-spec="1-4" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {depts.map((d) => {
-                const on = d.id === activeId;
-                return (
-                  <button key={d.id} onClick={() => onPick(d.id)} style={{
-                    fontSize: 13.5, fontWeight: 600, color: "#fff", cursor: "pointer",
-                    background: on ? "rgba(255,255,255,0.14)" : "rgba(255,255,255,0.07)",
-                    border: `1px solid rgba(255,255,255,${on ? 0.22 : 0.16})`,
-                    borderRadius: 22, padding: "9px 18px",
-                  }}>{deptLabel(d, lang)}</button>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    <button onClick={onClick} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 9, padding: 0 }} aria-label="SafeDoc Global home">
+      <span style={{ position: "relative", width: 30, height: 30, borderRadius: 9, background: BRAND_GRAD, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 8px rgba(27,89,250,.35)" }}>
+        <span style={{ position: "absolute", width: 13, height: 3.4, borderRadius: 2, background: "#fff" }} />
+        <span style={{ position: "absolute", width: 3.4, height: 13, borderRadius: 2, background: "#fff" }} />
+      </span>
+      <span style={{ display: "inline-flex", flexDirection: "column", lineHeight: 1, gap: 3 }}>
+        <span style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 800, letterSpacing: "-0.02em", color: dark ? "#fff" : INK }}>SafeDoc</span>
+        <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: dark ? "rgba(255,255,255,.6)" : MUTE }}>GLOBAL SERVICE</span>
+      </span>
+    </button>
   );
 }
 
-/* --------------------------- Trust strip --------------------------- */
-function TrustStrip({ lang }) {
-  const L = LANDING[lang];
+/* --------- Nav --------- */
+function Nav({ lang, onLang, isMobile, navigate, pathname }) {
+  const u = UI[lang] || UI.en;
+  const [open, setOpen] = useState(false);
+  store.useStore();
+  useContent();                       // 언어 레지스트리 발행/편집 시 드롭다운 리렌더
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const user = mounted ? store.getUser() : null;
+  const cartCount = mounted ? store.getCart().reduce((s, c) => s + (c.qty || 1), 0) : 0;
+  const active = (p) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
+  const go = (p) => { navigate(p); setOpen(false); };
+  // 언어 드롭다운 (레지스트리 LANGS 구동 — 언어 추가 시 자동 반영)
+  const langBtn = (
+    <div style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+      <Globe size={14} color={SUB} style={{ position: "absolute", left: 11, pointerEvents: "none" }} />
+      <select
+        value={lang}
+        onChange={(e) => onLang(e.target.value)}
+        aria-label="Language"
+        style={{ appearance: "none", WebkitAppearance: "none", background: CLOUD, border: `1px solid ${LINE}`, borderRadius: 999, padding: "7px 30px 7px 30px", fontSize: 12.5, fontWeight: 700, color: INK, cursor: "pointer", fontFamily: "inherit", direction: "ltr", textAlign: "start" }}
+      >
+        {getEnabledLangs().map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
+      </select>
+      <ChevronDown size={14} color={SUB} style={{ position: "absolute", right: 10, pointerEvents: "none" }} />
+    </div>
+  );
+  const consultBtn = (
+    <button onClick={() => go("/contact")} style={{ ...btn(BLUE, "#fff"), padding: "11px 18px", fontSize: 13.5 }}>{tr("Start Consultation", lang)} <ChevronRight size={15} /></button>
+  );
+  const signin = (
+    <button onClick={() => go(user ? "/mypage" : "/account")} style={{ border: "none", background: "transparent", color: INK, cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}>
+      <User size={15} /> {user ? u.myaccount : u.signin}
+    </button>
+  );
+  const cartBtn = (
+    <button onClick={() => go("/cart")} title={u.cart} style={{ position: "relative", border: `1px solid ${LINE}`, background: "#fff", color: INK, cursor: "pointer", borderRadius: 9, width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+      <Heart size={16} />
+      {cartCount > 0 && <span style={{ position: "absolute", top: -6, right: -6, background: ACCENT, color: "#fff", fontSize: 10, fontWeight: 800, borderRadius: 999, minWidth: 16, height: 16, display: "grid", placeItems: "center", padding: "0 4px" }}>{cartCount}</span>}
+    </button>
+  );
+  const searchBtn = (
+    <button onClick={() => go("/treatments")} title="Browse treatments" style={{ border: "none", background: BLUE, color: "#fff", cursor: "pointer", borderRadius: 9, width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+      <Search size={16} />
+    </button>
+  );
   return (
-    <div style={{ background: "#f6f8fc", borderBottom: `1px solid #eef1f6` }}>
-      <div className="kc-wrap" style={{ ...WRAP, padding: "20px 28px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, flexWrap: "wrap" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 18, flexWrap: "wrap" }}>
-          <span style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.08em" }}>{L.trustLabel}</span>
-          <span style={{ fontSize: 13, fontWeight: 800, color: TEAL, border: `1.5px solid ${TEAL}`, borderRadius: 5, padding: "4px 10px" }}>JCI</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#475569", border: "1.5px solid #d4dbe5", borderRadius: 5, padding: "4px 10px" }}>ISO 9001</span>
-          <span style={{ fontSize: 13.5, fontWeight: 600, color: "#475569" }}>{L.hipaa}</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 30, flexWrap: "wrap" }}>
-          <div><span style={{ fontSize: 19, fontWeight: 800, color: INK }}>2,400+</span> <span style={{ fontSize: 13.5, color: "#64748b" }}>{L.statPatients}</span></div>
-          <div><span style={{ fontSize: 19, fontWeight: 800, color: INK }}>4.9★</span> <span style={{ fontSize: 13.5, color: "#64748b" }}>{L.statRating}</span></div>
-          <div><span style={{ fontSize: 19, fontWeight: 800, color: INK }}>35+</span> <span style={{ fontSize: 13.5, color: "#64748b" }}>{L.statHospitals}</span></div>
+    <div style={{ background: "rgba(255,255,255,0.92)", backdropFilter: "saturate(180%) blur(8px)", borderBottom: `1px solid ${LINE}`, position: "sticky", top: 0, zIndex: 30 }}>
+      <div style={{ ...WRAP, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "12px 28px" }}>
+        <SafedocLogo onClick={() => go("/")} />
+        {!isMobile && (
+          <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            {NAV.map((n) => (
+              <div key={n.id} className="g-nav-item" style={{ position: "relative" }}>
+                <button onClick={() => go(n.path)} style={{
+                  border: "none", background: "transparent", cursor: "pointer", padding: "8px 12px", borderRadius: 8,
+                  fontSize: 14, fontWeight: active(n.path) ? 700 : 500, color: active(n.path) ? BLUE : SUB,
+                  display: "inline-flex", alignItems: "center", gap: 4,
+                }}>{tx(n, lang)}{n.children && <ChevronDown size={14} />}</button>
+                {n.children && (
+                  <div className="g-dd" style={{ position: "absolute", top: "100%", left: 0, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, boxShadow: "0 12px 32px rgba(15,23,42,.12)", padding: 8, minWidth: 210, zIndex: 40 }}>
+                    {n.children.map((c) => (
+                      <button key={c.id} onClick={() => go(c.path)} style={{ display: "block", width: "100%", textAlign: "start", border: "none", background: "transparent", cursor: "pointer", padding: "9px 12px", borderRadius: 8, fontSize: 13.5, fontWeight: 600, color: SUB }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = SECTION_TINT; e.currentTarget.style.color = BLUE; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = SUB; }}>{tx(c, lang)}</button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </nav>
+        )}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          {!isMobile && signin}{!isMobile && langBtn}{cartBtn}{!isMobile && consultBtn}
+          {isMobile && <button onClick={() => setOpen((o) => !o)} style={{ border: `1px solid ${LINE}`, background: "#fff", borderRadius: 9, padding: 7, cursor: "pointer", color: INK }}>{open ? <X size={18} /> : <Menu size={18} />}</button>}
         </div>
       </div>
+      {isMobile && open && (
+        <div style={{ borderTop: `1px solid ${LINE}`, background: "#fff", padding: "8px 20px 16px" }}>
+          {NAV.map((n) => (
+            <div key={n.id}>
+              <button onClick={() => go(n.path)} style={{ display: "block", width: "100%", textAlign: "start", border: "none", background: "transparent", padding: "11px 4px", fontSize: 15, fontWeight: 700, color: INK, cursor: "pointer" }}>{tx(n, lang)}</button>
+              {n.children && <div style={{ paddingLeft: 12, marginBottom: 4 }}>{n.children.map((c) => (
+                <button key={c.id} onClick={() => go(c.path)} style={{ display: "block", width: "100%", textAlign: "start", border: "none", background: "transparent", padding: "7px 4px", fontSize: 13.5, color: SUB, cursor: "pointer" }}>{tx(c, lang)}</button>
+              ))}</div>}
+            </div>
+          ))}
+          <button onClick={() => go(user ? "/mypage" : "/account")} style={{ ...btn(BLUE, "#fff"), marginTop: 8, width: "100%" }}>{user ? UI[lang].myaccount : UI[lang].signin}</button>
+        </div>
+      )}
     </div>
   );
 }
 
-/* ----------------------------- Programs ----------------------------- */
-function Programs({ dept, lang, onView, onViewAll }) {
-  const L = LANDING[lang];
-  if (!dept) return null;
-  const n = dept.hospitals.length;
+/* --------- Footer --------- */
+function Footer({ lang, navigate }) {
+  const cols = [
+    { title: { en: "Service", ko: "서비스" }, items: NAV.find((n) => n.id === "service").children },
+    { title: { en: "Company", ko: "회사" }, items: [{ path: "/company", en: "About", ko: "회사소개" }, { path: "/pricing", en: "Pricing", ko: "가격 안내", ar: "الأسعار", ja: "料金" }, { path: "/contact", en: "Contact", ko: "문의" }, { path: "/faq", en: "FAQ", ko: "FAQ" }, { path: "/blog", en: "Blog", ko: "블로그" }] },
+    { title: { en: "Legal", ko: "법적 고지" }, items: [{ path: "/legal/privacy", en: "Privacy Policy", ko: "개인정보처리방침" }, { path: "/legal/terms", en: "Terms of Service", ko: "이용약관" }, { path: "/legal/refund", en: "Refund Policy", ko: "환불정책" }] },
+  ];
+  const info = lang === "ko"
+    ? [`${BRAND.name} · 대표 ${BRAND.ceo}`, `사업자등록번호 ${BRAND.bizNo}`, BRAND.email, BRAND.addrKo]
+    : [`${BRAND.name} Inc. · CEO ${BRAND.ceo}`, `Business Reg. ${BRAND.bizNo}`, BRAND.email, BRAND.addrEn];
   return (
-    <div data-spec="1-5" className="kc-wrap" style={{ ...WRAP, padding: "72px 28px" }}>
-      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 28, gap: 16, flexWrap: "wrap" }}>
+    <div style={{ background: FOOTER_BG, color: "#9fb0cf" }}>
+      <div style={{ ...WRAP, padding: "52px 28px", display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr", gap: 32 }} className="g-footer">
         <div>
-          <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: "0 0 8px", letterSpacing: "-0.02em" }}>{deptLabel(dept, lang)}{lang === "ko" ? " 프로그램" : " programs"}</h2>
-          <p style={{ fontSize: 15.5, color: "#64748b", margin: 0 }}>{n}{lang === "ko" ? "" : " "}{L.progSubMatched}</p>
+          <div style={{ marginBottom: 16 }}><SafedocLogo onClick={() => navigate("/")} dark /></div>
+          <p style={{ fontSize: 13.5, lineHeight: 1.6, margin: "0 0 18px", maxWidth: 300 }}>{tx(HERO.sub, lang)}</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5, fontSize: 12.5, color: "#7d8eb0" }}>
+            {info.map((l, i) => <span key={i}>{l}</span>)}
+          </div>
         </div>
-        <button onClick={onViewAll} style={{ background: "none", border: "none", fontSize: 14.5, fontWeight: 700, color: TEAL, cursor: "pointer", padding: 0 }}>{L.progViewAll}</button>
-      </div>
-      <div className="kc-prog-grid">
-        {dept.hospitals.map((h) => (
-          <div key={h.id} style={{ background: "#fff", border: "1px solid #eaedf3", borderRadius: 18, overflow: "hidden", boxShadow: "0 4px 20px rgba(15,23,42,.05)" }}>
-            <div style={{ position: "relative", height: 200 }}>
-              <img src={h.image?.url || ""} alt={h.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-              {h.covered && (
-                <span style={{ position: "absolute", top: 14, left: 14, fontSize: 11, fontWeight: 800, color: "#fff", background: GREEN, borderRadius: 20, padding: "6px 13px" }}>{L.covered}</span>
-              )}
-              <span style={{ position: "absolute", top: 14, right: 14, fontSize: 11, fontWeight: 800, color: INK, background: "rgba(255,255,255,0.95)", borderRadius: 6, padding: "5px 9px" }}>{h.accred}</span>
-            </div>
-            <div style={{ padding: "24px 26px" }}>
-              <div style={{ fontSize: 12.5, fontWeight: 700, color: "#64748b", marginBottom: 8 }}>{h.name}</div>
-              <div style={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 800, color: INK, marginBottom: 6, letterSpacing: "-0.01em" }}>{h.program}</div>
-              <div style={{ fontSize: 14, color: "#64748b", marginBottom: 18, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                <span>{h.lead}</span>
-                <span>·</span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 3 }}><Star size={13} fill={STAR} color={STAR} /><b style={{ color: INK }}>{h.rating}</b> ({h.reviews})</span>
-                <span>·</span><span>{h.city}</span><span>·</span><span>{h.weeks}</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 16, background: "#f6f8fc", borderRadius: 12, padding: "15px 18px", flexWrap: "wrap" }}>
-                <div><div style={{ fontSize: 11.5, color: "#94a3b8" }}>{L.usCost}</div><div style={{ fontSize: 15, fontWeight: 700, color: "#94a3b8", textDecoration: "line-through" }}>${h.us.toLocaleString()}</div></div>
-                <div><div style={{ fontSize: 11.5, color: "#94a3b8" }}>{L.krCost}</div><div style={{ fontSize: 15, fontWeight: 800, color: INK }}>${h.kr.toLocaleString()}</div></div>
-                <div><div style={{ fontSize: 11.5, color: GREEN }}>{L.save}</div><div style={{ fontSize: 15, fontWeight: 800, color: GREEN }}>${(h.us - h.kr).toLocaleString()}</div></div>
-                <button onClick={() => onView(h, dept)} style={{ marginLeft: "auto", ...btn(TEAL, "#fff"), fontSize: 14, padding: "11px 20px", borderRadius: 9 }}>{L.viewPlan}</button>
-              </div>
+        {cols.map((c, i) => (
+          <div key={i}>
+            <div style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 14 }}>{tx(c.title, lang)}</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {c.items.map((it, j) => (
+                <button key={j} onClick={() => navigate(it.path)} style={{ border: "none", background: "transparent", cursor: "pointer", color: "#9fb0cf", fontSize: 13.5, padding: 0, fontWeight: 500, textAlign: "start" }}>{tx(it, lang)}</button>
+              ))}
             </div>
           </div>
         ))}
       </div>
+      <div style={{ borderTop: `1px solid ${FOOTER_LINE}` }}>
+        <div style={{ ...WRAP, padding: "18px 28px", display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", fontSize: 12.5, color: "#6f82a6" }}>
+          <span>© 2026. {BRAND.name} Inc. All rights reserved.</span>
+          <span>{tr("Comprehensive medical travel to Korea", lang)}</span>
+        </div>
+      </div>
+      <style>{`@media(max-width:760px){.g-footer{grid-template-columns:1fr 1fr!important}}`}</style>
     </div>
   );
 }
 
-/* ----------------------------- Journey ----------------------------- */
-function Journey({ lang }) {
-  const L = LANDING[lang];
+/* shared section heading */
+function Eyebrow({ children }) {
+  return <div style={{ fontSize: 12.5, fontWeight: 700, color: BLUE, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{children}</div>;
+}
+function H2({ children, center }) {
+  return <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: "0 0 10px", letterSpacing: "-0.02em", textAlign: center ? "center" : "start" }}>{children}</h2>;
+}
+function Lead({ children, center }) {
+  return <p style={{ fontSize: 16, color: "#5a6b86", margin: 0, textAlign: center ? "center" : "start", maxWidth: center ? 640 : 620, marginInlineStart: center ? "auto" : 0, marginInlineEnd: center ? "auto" : 0 }}>{children}</p>;
+}
+
+/* ========================================================================
+   HOME
+   ======================================================================== */
+function Home() {
+  const { lang, navigate } = useOutletContext();
   return (
-    <div data-spec="1-6" style={{ background: NAVY, color: "#fff" }}>
-      <div className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
-        <div style={{ marginBottom: 48, maxWidth: 620 }}>
-          <h2 style={{ fontFamily: DISPLAY, fontSize: 36, fontWeight: 800, color: "#fff", margin: "0 0 12px", letterSpacing: "-0.02em" }}>{L.journeyTitle}</h2>
-          <p style={{ fontSize: 17, color: "#aebdd8", margin: 0 }}>{L.journeySub}</p>
+    <>
+      <Seo path="/" jsonLd={orgJsonLd} />
+      <Hero lang={lang} navigate={navigate} />
+      <Journey lang={lang} />
+      <ProvidersHomeSection lang={lang} navigate={navigate} />
+      <RevitalSection lang={lang} navigate={navigate} />
+      <CheckupSection lang={lang} navigate={navigate} />
+      <WhyKorea lang={lang} />
+      <Reviews lang={lang} />
+      <FaqSection lang={lang} navigate={navigate} preview />
+      <Certifications lang={lang} />
+    </>
+  );
+}
+
+function Hero({ lang, navigate }) {
+  useContent();
+  const chips = getCollection("procedures").slice(0, 5);
+  return (
+    <div style={{ background: "#fff" }}>
+      <div className="g-hero" style={{ ...WRAP, padding: "64px clamp(20px, 4vw, 40px) 76px", display: "grid", gridTemplateColumns: "1.08fr .92fr", gap: 56, alignItems: "center" }}>
+        {/* 좌: 텍스트 + 검색 */}
+        <div style={{ maxWidth: 640 }}>
+          <div style={{ fontSize: 11, letterSpacing: "0.20em", textTransform: "uppercase", fontWeight: 700, color: BLUE, display: "inline-flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
+            <span style={{ width: 36, height: 2, background: BLUE, borderRadius: 2 }} />{tr("Curated by SafeDoc", lang)}
+          </div>
+          <h1 className="g-hero-title" style={{ fontFamily: DISPLAY, fontSize: "clamp(40px, 6.4vw, 84px)", fontWeight: 800, lineHeight: 1.04, letterSpacing: "-0.035em", color: INK, margin: "0 0 24px" }}>
+            {tx(HERO.title1, lang)} {tx(HERO.title2, lang)}<br /><span style={{ color: BLUE }}>{tx(HERO.accent, lang)}</span>
+          </h1>
+          <p style={{ fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.6, color: SUB, margin: "0 0 30px", maxWidth: 520 }}>{tx(HERO.sub, lang)}</p>
+          {/* 검색바 (prototype sd-search) */}
+          <div style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", marginBottom: 18, maxWidth: 520 }}>
+            <Search size={17} color={MUTE} />
+            <input onKeyDown={(e) => e.key === "Enter" && navigate("/treatments")} placeholder={tr("Search treatments, clinics, or concerns", lang)} style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
+            <button onClick={() => navigate("/treatments")} style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, letterSpacing: "0.05em", cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
+            <button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff"), fontSize: 14.5, padding: "14px 26px" }}>{tx(HERO.cta1, lang)}</button>
+            <button onClick={() => navigate("/service")} style={{ ...btn("#fff", INK), border: `1px solid ${INK}`, fontSize: 14.5, padding: "13px 26px" }}>{tx(HERO.cta2, lang)}</button>
+          </div>
+          {/* 전문분야 칩 */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            {chips.map((p) => (
+              <button key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} style={{ background: "#fff", color: INK, border: `1px solid ${LINE}`, borderRadius: 999, padding: "7px 14px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" }}>{tx(p.name, lang)}</button>
+            ))}
+          </div>
         </div>
-        <div className="kc-journey-grid">
-          {CARE_STEPS.map((s, i) => {
-            const last = i === CARE_STEPS.length - 1;
-            const num = "0" + (i + 1);
+        {/* 우: 포토 + 오버레이 캡션 + 플로팅 배지 */}
+        <div style={{ position: "relative", borderRadius: 16, overflow: "hidden", minHeight: 540, alignSelf: "stretch" }}>
+          <img src={HERO.image} alt="Medical care in Korea" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,15,44,0) 45%, rgba(0,15,44,.55) 100%)" }} />
+          <div style={{ position: "absolute", left: 22, bottom: 20, right: 22, color: "#fff" }}>
+            <div style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 700, letterSpacing: "-0.01em" }}>{tr("One journey. One coordinator. One call.", lang)}</div>
+          </div>
+          <div style={{ position: "absolute", top: 16, right: 16, display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,.94)", backdropFilter: "blur(8px)", borderRadius: 999, padding: "8px 13px", fontSize: 12, fontWeight: 700, color: INK }}>
+            <span style={{ width: 7, height: 7, borderRadius: "50%", background: GREEN }} />{tx(HERO.badge, lang)}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Journey({ lang }) {
+  useContent();
+  const JOURNEY = getCollection("journey");
+  return (
+    <div style={{ background: SECTION_TINT }}>
+      <div style={{ ...WRAP, padding: "72px 28px" }}>
+        <div style={{ textAlign: "center", marginBottom: 44 }}>
+          <Eyebrow>{tx(JOURNEY.eyebrow, lang)}</Eyebrow><H2 center>{tx(JOURNEY.title, lang)}</H2><Lead center>{tx(JOURNEY.sub, lang)}</Lead>
+        </div>
+        <div className="g-journey">
+          {JOURNEY.steps.map((s, i) => {
+            const Icon = ICONS[s.icon] || Folder; const last = i === JOURNEY.steps.length - 1;
             return (
-              <div key={i}>
-                <div style={{ fontFamily: DISPLAY, fontSize: 15, fontWeight: 800, color: last ? "#5ce0a0" : "#5b8cff", marginBottom: 14 }}>{num}</div>
-                <div style={{ width: "100%", height: 3, background: `linear-gradient(90deg, ${last ? GREEN : TEAL}, transparent)`, borderRadius: 2, marginBottom: 18 }} />
-                <div style={{ fontSize: 17, fontWeight: 700, color: "#fff", marginBottom: 8 }}>{lang === "ko" ? s.tk : s.t}</div>
-                <div style={{ fontSize: 14, lineHeight: 1.6, color: "#9fb1cf" }}>{lang === "ko" ? s.dk : s.d}</div>
-              </div>
+              <React.Fragment key={i}>
+                <div className="g-step" style={{ background: "#fff", border: "1px solid #dbe5fb", borderRadius: 16, padding: "26px 18px", textAlign: "center", boxShadow: "0 4px 16px rgba(27,89,250,.06)" }}>
+                  <div style={{ width: 46, height: 46, borderRadius: 12, background: SECTION_TINT, color: BLUE, display: "grid", placeItems: "center", margin: "0 auto 14px", border: `1.5px solid ${BLUE}` }}><Icon size={22} /></div>
+                  <div style={{ fontSize: 12, fontWeight: 800, color: BLUE, marginBottom: 7 }}>{lang === "ko" ? `${i + 1}단계` : `Step ${i + 1}`}</div>
+                  <div style={{ fontSize: 13, lineHeight: 1.5, color: "#475569", fontWeight: 500 }}>{tx(s, lang)}</div>
+                </div>
+                {!last && <div className="g-chev"><ChevronRight size={22} /></div>}
+              </React.Fragment>
             );
           })}
         </div>
@@ -737,61 +494,153 @@ function Journey({ lang }) {
   );
 }
 
-/* ----------------------------- Reviews ----------------------------- */
-function Reviews({ lang }) {
-  const L = LANDING[lang];
-  const items = REVIEWS.slice(0, 3);
+function PriceTag({ p, lang }) {
+  const val = typeof p === "object" ? tx(p, lang) : p;
+  return <span style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 800, color: BLUE }}>{val}</span>;
+}
+
+/* ---------------- 상담 채널 버튼 (외국인 유치: 지역별 메신저) ---------------- */
+const CHANNEL_LINK = (type, value) => {
+  const v = (value || "").trim();
+  switch (type) {
+    case "whatsapp": return `https://wa.me/${v.replace(/[^0-9]/g, "")}`;
+    case "line": return v.startsWith("http") ? v : `https://line.me/R/ti/p/${encodeURIComponent(v)}`;
+    case "telegram": return v.startsWith("http") ? v : `https://t.me/${v.replace(/^@/, "")}`;
+    case "kakao": return v.startsWith("http") ? v : `https://pf.kakao.com/${v}`;
+    case "wechat": return null;                       // WeChat: 딥링크 없음 → ID 복사
+    case "email": return `mailto:${v}`;
+    case "phone": return `tel:${v.replace(/[^0-9+]/g, "")}`;
+    default: return v.startsWith("http") ? v : null;
+  }
+};
+const CHANNEL_STYLE = { whatsapp: ["#25D366", "#fff"], line: ["#06C755", "#fff"], wechat: ["#07C160", "#fff"], kakao: ["#FEE500", "#191600"], telegram: ["#229ED9", "#fff"], email: [BLUE, "#fff"], phone: [BLUE, "#fff"] };
+const CHANNEL_ICON = { phone: Phone, email: Mail };
+
+function ChannelButtons({ lang, compact }) {
+  useContent();
+  const all = getCollection("channels") || [];
+  const list = all.filter((c) => c && c.enabled !== false && (!Array.isArray(c.langs) || c.langs.length === 0 || c.langs.includes(lang)));
+  if (!list.length) return null;
   return (
-    <div data-spec="1-7" className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
-      <div style={{ textAlign: "center", marginBottom: 44 }}>
-        <div style={{ fontSize: 13, fontWeight: 700, color: TEAL, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>{L.reviewsEyebrow}</div>
-        <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: 0, letterSpacing: "-0.02em" }}>{L.reviewsTitle}</h2>
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+      {list.map((c) => {
+        const [bg, fg] = CHANNEL_STYLE[c.type] || [BLUE, "#fff"];
+        const href = CHANNEL_LINK(c.type, c.value);
+        const Ic = CHANNEL_ICON[c.type] || MessageCircle;
+        const label = tx(c.label, lang) || c.type;
+        const style = { display: "inline-flex", alignItems: "center", gap: 8, background: bg, color: fg, border: "none", borderRadius: 999, padding: "10px 16px", fontSize: 13.5, fontWeight: 700, textDecoration: "none", cursor: "pointer" };
+        const inner = <><Ic size={16} /> <span>{label}</span>{!compact && <span dir="ltr" style={{ opacity: .85, fontSize: 12, unicodeBidi: "isolate" }}>{c.value}</span>}</>;
+        return href
+          ? <a key={c.id} href={href} target="_blank" rel="noreferrer" style={style}>{inner}</a>
+          : <button key={c.id} type="button" onClick={() => { try { navigator.clipboard?.writeText(c.value); } catch { /* */ } }} style={style} title={c.value}>{inner}</button>;
+      })}
+    </div>
+  );
+}
+
+/* ---------------- 프로모션·배너·팝업 (유치 캠페인) ---------------- */
+function usePromo(placement, lang) {
+  useContent();
+  const all = getCollection("promos") || [];
+  return all.find((p) => p && p.enabled !== false && p.placement === placement && (!Array.isArray(p.langs) || p.langs.length === 0 || p.langs.includes(lang)));
+}
+function PromoBanner({ lang, navigate }) {
+  const promo = usePromo("banner", lang);
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => { if (promo) { try { setHidden(sessionStorage.getItem("kc2_promo_" + promo.id) === "1"); } catch { /* */ } } }, [promo?.id]);
+  if (!promo || hidden) return null;
+  const dismiss = () => { setHidden(true); try { sessionStorage.setItem("kc2_promo_" + promo.id, "1"); } catch { /* */ } };
+  return (
+    <div style={{ background: BRAND_GRAD, color: "#fff", padding: "10px 44px", display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap", position: "relative", fontSize: 13.5, fontWeight: 600 }}>
+      <span>{tx(promo.text, lang)}</span>
+      {promo.link && promo.cta ? <button onClick={() => navigate(promo.link)} style={{ background: "#fff", color: BLUE, border: "none", borderRadius: 999, padding: "5px 14px", fontSize: 12.5, fontWeight: 800, cursor: "pointer", whiteSpace: "nowrap" }}>{tx(promo.cta, lang)}</button> : null}
+      <button onClick={dismiss} aria-label="close" style={{ position: "absolute", insetInlineEnd: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", color: "#fff", cursor: "pointer", opacity: .85, display: "grid", placeItems: "center" }}><X size={16} /></button>
+    </div>
+  );
+}
+function PromoPopup({ lang, navigate }) {
+  const promo = usePromo("popup", lang);
+  const [open, setOpen] = useState(false);
+  useEffect(() => { if (promo) { try { if (sessionStorage.getItem("kc2_promo_" + promo.id) !== "1") setOpen(true); } catch { setOpen(true); } } }, [promo?.id]);
+  if (!promo || !open) return null;
+  const close = () => { setOpen(false); try { sessionStorage.setItem("kc2_promo_" + promo.id, "1"); } catch { /* */ } };
+  return (
+    <div onClick={close} style={{ position: "fixed", inset: 0, zIndex: 900, background: "rgba(6,12,26,.55)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}>
+      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, padding: "32px 30px", maxWidth: 440, width: "100%", position: "relative", boxShadow: "0 20px 60px rgba(6,12,26,.35)" }}>
+        <button onClick={close} aria-label="close" style={{ position: "absolute", insetInlineEnd: 14, top: 14, background: "transparent", border: "none", cursor: "pointer", color: MUTE }}><X size={20} /></button>
+        <p style={{ fontSize: 16, lineHeight: 1.6, color: INK, fontWeight: 600, margin: "6px 0 20px" }}>{tx(promo.text, lang)}</p>
+        {promo.link && promo.cta ? <button onClick={() => { close(); navigate(promo.link); }} style={{ ...btn(BLUE, "#fff"), width: "100%" }}>{tx(promo.cta, lang)}</button> : null}
       </div>
-      <div className="kc-rev-grid">
-        {items.map((r) => (
-          <div key={r.id} style={{ background: "#fff", border: "1px solid #eaedf3", borderRadius: 16, padding: 28, boxShadow: "0 4px 20px rgba(15,23,42,.04)" }}>
-            <div style={{ color: STAR, fontSize: 15, marginBottom: 16 }}>{"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}</div>
-            <p style={{ fontSize: 15.5, lineHeight: 1.65, color: "#1e293b", margin: "0 0 24px", fontWeight: 500 }}>“{r.text}”</p>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ width: 46, height: 46, borderRadius: "50%", background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", fontWeight: 800, fontSize: 16, flexShrink: 0 }}>{r.author.charAt(0)}</div>
-              <div>
-                <div style={{ fontSize: 14.5, fontWeight: 700, color: INK }}>{r.author}</div>
-                <div style={{ fontSize: 12.5, color: "#64748b" }}>{r.treatment} · {r.country}</div>
-              </div>
+    </div>
+  );
+}
+
+/* 가로 카드 리스트용 미디어 카드 (이미지 + 제목 + 부제 + 화살표) — Revital·Providers 공용 */
+function MediaCard({ image, title, subtitle, badge, onClick }) {
+  return (
+    <button onClick={onClick} className="h-card" style={{ textAlign: "start", padding: 0, border: "1px solid #e7ecf5", borderRadius: 18, overflow: "hidden", background: "#fff", cursor: "pointer", boxShadow: "0 6px 22px rgba(15,23,42,.05)", display: "flex", flexDirection: "column" }}>
+      <div style={{ position: "relative", height: 160 }}>
+        <img src={image} alt={title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(6,20,58,0.35), rgba(6,20,58,0) 60%)" }} />
+        {badge && <span style={{ position: "absolute", top: 12, right: 12, fontSize: 11.5, fontWeight: 800, color: INK, background: "rgba(255,255,255,.95)", borderRadius: 999, padding: "4px 10px" }}>{badge}</span>}
+      </div>
+      <div style={{ padding: "15px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, flex: 1 }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontFamily: DISPLAY, fontSize: 16.5, fontWeight: 800, color: INK, marginBottom: 3, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{title}</div>
+          <div style={{ fontSize: 12.5, color: "#7587a3", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{subtitle}</div>
+        </div>
+        <span style={{ ...viewMoreBtn, padding: "8px 10px", flexShrink: 0 }}><ChevronRight size={16} /></span>
+      </div>
+    </button>
+  );
+}
+
+function CheckupSection({ lang, navigate }) {
+  useContent();
+  const CHECKUP = getCollection("checkup");
+  // MRI & CT Scan 이 맨 앞에 오도록 정렬
+  const pkgs = CHECKUP.packages.slice().sort((a, b) => (b.id === "mri-scan") - (a.id === "mri-scan"));
+  return (
+    <div style={{ ...WRAP, padding: "76px 28px" }}>
+      <div style={{ marginBottom: 22 }}>
+        <Eyebrow>{tx(CHECKUP.eyebrow, lang)}</Eyebrow><H2>{tx(CHECKUP.title, lang)}</H2><Lead>{tx(CHECKUP.sub, lang)}</Lead>
+      </div>
+      <div className="h-row">
+        {pkgs.map((p) => (
+          <button key={p.id} onClick={() => navigate(`/service/health-checkup/${p.id}`)} className="h-card-lg" style={{ textAlign: "start", padding: 0, background: "#fff", border: "1px solid #e7ecf5", borderRadius: 18, overflow: "hidden", boxShadow: "0 6px 22px rgba(15,23,42,.06)", display: "flex", flexDirection: "column", cursor: "pointer" }}>
+            <div style={{ position: "relative", height: 170 }}>
+              <img src={p.image} alt={tx(p.name, lang)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              {p.tag && <span style={{ position: "absolute", top: 12, left: 12, fontSize: 10.5, fontWeight: 800, color: "#fff", background: BLUE, borderRadius: 999, padding: "5px 11px" }}>{tx(p.tag, lang)}</span>}
             </div>
-          </div>
+            <div style={{ padding: "18px 20px", display: "flex", flexDirection: "column", flex: 1 }}>
+              <div style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 800, color: INK, marginBottom: 6 }}>{tx(p.name, lang)}</div>
+              <PriceTag p={p.price} lang={lang} />
+              <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.55, margin: "10px 0 16px" }}>{tx(p.desc, lang)}</p>
+              <span style={{ ...viewMoreBtn, marginTop: "auto", alignSelf: "flex-start" }}>{UI[lang].viewMore} <ChevronRight size={15} /></span>
+            </div>
+          </button>
         ))}
       </div>
     </div>
   );
 }
 
-/* --------------------------- Before / After --------------------------- */
-function BeforeAfter({ lang }) {
-  const L = LANDING[lang];
-  const items = BEFORE_AFTER.slice(0, 2);
+function WhyKorea({ lang }) {
+  useContent();
+  const WHY = getCollection("why");
   return (
-    <div data-spec="1-8" style={{ background: "#f6f8fc", borderTop: "1px solid #eef1f6", borderBottom: "1px solid #eef1f6" }}>
-      <div className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
-        <div style={{ textAlign: "center", marginBottom: 44 }}>
-          <div style={{ fontSize: 13, fontWeight: 700, color: TEAL, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 12 }}>{L.baEyebrow}</div>
-          <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: 0, letterSpacing: "-0.02em" }}>{L.baTitle}</h2>
+    <div style={{ background: NAVY, color: "#fff" }}>
+      <div style={{ ...WRAP, padding: "72px 28px" }}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <h2 style={{ fontFamily: DISPLAY, fontSize: 32, fontWeight: 800, color: "#fff", margin: "0 0 10px", letterSpacing: "-0.02em" }}>{tx(WHY.title, lang)}</h2>
+          <p style={{ fontSize: 16, color: "#a9bbdc", margin: 0 }}>{tx(WHY.sub, lang)}</p>
         </div>
-        <div className="kc-ba-grid">
-          {items.map((ba) => (
-            <div key={ba.id} style={{ background: "#fff", border: "1px solid #eaedf3", borderRadius: 16, padding: 22 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
-                <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 210 }}>
-                  <img src={ba.before} alt="Before" style={{ width: "100%", height: "100%", objectFit: "cover", filter: "grayscale(0.25)" }} />
-                  <span style={{ position: "absolute", bottom: 10, left: 10, fontSize: 11, fontWeight: 800, color: INK, background: "#fff", padding: "4px 10px", borderRadius: 5 }}>{L.baBefore}</span>
-                </div>
-                <div style={{ position: "relative", borderRadius: 12, overflow: "hidden", height: 210 }}>
-                  <img src={ba.after} alt="After" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  <span style={{ position: "absolute", bottom: 10, left: 10, fontSize: 11, fontWeight: 800, color: "#fff", background: GREEN, padding: "4px 10px", borderRadius: 5 }}>{ba.weeks}</span>
-                </div>
-              </div>
-              <div style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: INK, marginBottom: 6 }}>{ba.treatment}</div>
-              <div style={{ fontSize: 14, color: "#64748b", lineHeight: 1.5 }}>{ba.note?.[lang] ?? ba.note?.en}</div>
+        <div className="g-3">
+          {WHY.stats.map((s, i) => (
+            <div key={i} style={{ background: "rgba(255,255,255,0.05)", border: `1px solid ${NAVY_LINE}`, borderRadius: 18, padding: "30px 26px", textAlign: "center" }}>
+              <div style={{ fontFamily: DISPLAY, fontSize: 44, fontWeight: 800, color: "#7eaaff", lineHeight: 1, marginBottom: 12 }}>{s.big}</div>
+              <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 7 }}>{tx(s.label, lang)}</div>
+              <div style={{ fontSize: 13, lineHeight: 1.55, color: "#9fb1cf" }}>{tx(s.sub, lang)}</div>
             </div>
           ))}
         </div>
@@ -800,24 +649,140 @@ function BeforeAfter({ lang }) {
   );
 }
 
-/* ----------------------------- CTA band ----------------------------- */
-function CtaBand({ lang, insurer, onCheck, onTalk }) {
-  const L = LANDING[lang];
-  const logos = [insurer, "BlueRidge", "Anthem-X", "UnitedFirst"];
+/* /providers 와 동일 형식(가로 카드 리스트)으로 홈에 노출 — Revital 위 */
+function ProvidersHomeSection({ lang, navigate }) {
+  useContent();
+  const PROVIDERS = getCollection("providers");
   return (
-    <div data-spec="1-9" className="kc-wrap" style={{ ...WRAP, padding: "76px 28px" }}>
-      <div className="kc-cta" style={{ background: `linear-gradient(115deg, ${TEAL} 0%, ${BLUE_DARK} 100%)`, borderRadius: 24, padding: 56, overflow: "hidden", position: "relative" }}>
+    <div style={{ ...WRAP, padding: "76px 28px 0" }}>
+      <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, marginBottom: 22, flexWrap: "wrap" }}>
         <div>
-          <h2 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: "#fff", margin: "0 0 14px", letterSpacing: "-0.02em" }}>{L.ctaTitle}</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.6, color: "#d6e1ff", margin: "0 0 28px", maxWidth: 460 }}>{L.ctaSub}</p>
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap" }}>
-            <button onClick={onCheck} style={{ background: "#fff", color: TEAL, border: "none", fontSize: 16, fontWeight: 700, padding: "15px 30px", borderRadius: 11, cursor: "pointer" }}>{L.ctaBtn1}</button>
-            <button onClick={onTalk} style={{ background: "rgba(255,255,255,0.14)", color: "#fff", fontSize: 16, fontWeight: 700, padding: "15px 28px", borderRadius: 11, border: "1px solid rgba(255,255,255,0.3)", cursor: "pointer" }}>{L.ctaBtn2}</button>
-          </div>
+          <Eyebrow>{tr("Providers", lang)}</Eyebrow>
+          <H2>{tr("Find trusted Korean providers", lang)}</H2>
+          <Lead>{tr("Verified hospitals and clinics with international patient support.", lang)}</Lead>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          {logos.map((name, i) => (
-            <div key={i} style={{ background: "rgba(255,255,255,0.12)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: 10, padding: 16, textAlign: "center", fontWeight: 800, color: "#fff", fontSize: 14 }}>{name}</div>
+        <button onClick={() => navigate("/providers")} style={{ ...viewMoreBtn, padding: "9px 16px" }}>{tr("View all", lang)} <ChevronRight size={15} /></button>
+      </div>
+      <div className="h-row">
+        {PROVIDERS.map((p) => (
+          <MediaCard key={p.id} image={p.image} title={tx(p.name, lang)} subtitle={tx(p.area, lang)} badge={`${p.rating}★`} onClick={() => navigate("/providers")} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RevitalSection({ lang, navigate }) {
+  useContent();
+  const REVITAL = getCollection("revital");
+  return (
+    <div style={{ ...WRAP, padding: "76px 28px" }}>
+      <div style={{ marginBottom: 22 }}>
+        <Eyebrow>{tx(REVITAL.eyebrow, lang)}</Eyebrow><H2>{tx(REVITAL.title, lang)}</H2><Lead>{tx(REVITAL.sub, lang)}</Lead>
+      </div>
+      <div className="h-row">
+        {REVITAL.items.map((it) => (
+          <MediaCard key={it.id} image={it.image} title={tx(it, lang)} subtitle={tx(it.lead, lang)} onClick={() => navigate("/service/revital")} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Reviews({ lang }) {
+  useContent();
+  const REVIEWS = getCollection("reviews");
+  return (
+    <div style={{ background: BG_SOFT }}>
+      <div style={{ ...WRAP, padding: "76px 28px" }}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <Eyebrow>{tr("Reviews", lang)}</Eyebrow>
+          <H2 center>{tr("What Our Visitors Say", lang)}</H2>
+        </div>
+        <div className="g-3">
+          {REVIEWS.map((r) => (
+            <div key={r.id} style={{ background: "#fff", border: "1px solid #e7ecf5", borderRadius: 16, padding: 26, boxShadow: "0 4px 20px rgba(15,23,42,.04)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+                <img src={r.image} alt={tx(r.author, lang)} style={{ width: 44, height: 44, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: INK }}>{tx(r.author, lang)}</div>
+                  <div style={{ color: ACCENT, fontSize: 13, letterSpacing: 1 }}>{"★".repeat(r.rating)}</div>
+                </div>
+              </div>
+              <p style={{ fontSize: 14.5, lineHeight: 1.65, color: "#1e293b", margin: "0 0 16px", fontWeight: 500 }}>"{tx(r.text, lang)}"</p>
+              <span style={{ display: "inline-block", fontSize: 11.5, fontWeight: 700, color: BLUE, background: SECTION_TINT, borderRadius: 999, padding: "5px 12px" }}>{tx(r.source, lang)} · {tx(r.treatment, lang)}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FaqSection({ lang, navigate, preview }) {
+  useContent();
+  const FAQS = getCollection("faqs");
+  const u = UI[lang] || UI.en;
+  const [cat, setCat] = useState("all");
+  const [open, setOpen] = useState(0);
+  const [q, setQ] = useState("");
+  let items = FAQS.filter((f) => cat === "all" || f.cat === cat);
+  if (q) items = items.filter((f) => tx(f.q, lang).toLowerCase().includes(q.toLowerCase()));
+  const shown = preview ? items.slice(0, 5) : items;
+  return (
+    <div style={{ ...WRAP, padding: "76px 28px", maxWidth: 860 }}>
+      <H2 center>FAQ</H2>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, margin: "28px 0 18px", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {FAQ_CATS.map((c) => {
+            const on = cat === c.id;
+            return <button key={c.id} onClick={() => { setCat(c.id); setOpen(0); }} style={{ fontSize: 13, fontWeight: 700, cursor: "pointer", borderRadius: 999, padding: "7px 15px", background: on ? INK : "#fff", color: on ? "#fff" : SUB, border: `1px solid ${on ? INK : LINE}` }}>{tx(c, lang)}</button>;
+          })}
+        </div>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: 6, border: `1px solid ${LINE}`, borderRadius: 999, padding: "7px 14px", background: "#fff" }}>
+          <Search size={14} color={MUTE} />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tr("Search", lang)} style={{ border: "none", outline: "none", fontSize: 13, width: 120 }} />
+        </div>
+      </div>
+      <div style={{ display: "grid", gap: 10 }}>
+        {shown.map((f, i) => {
+          const isOpen = open === i;
+          return (
+            <div key={i} style={{ background: "#fff", border: `1px solid ${isOpen ? BLUE : LINE}`, borderRadius: 12, overflow: "hidden" }}>
+              <button onClick={() => setOpen(isOpen ? -1 : i)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "16px 18px", border: "none", background: isOpen ? SECTION_TINT : "#fff", cursor: "pointer", textAlign: "start" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: MUTE, textTransform: "capitalize", minWidth: 56 }}>{tx(FAQ_CATS.find((c) => c.id === f.cat) || {}, lang)}</span>
+                  <span style={{ fontSize: 14.5, fontWeight: 700, color: INK }}>{tx(f.q, lang)}</span>
+                </span>
+                <ChevronDown size={18} color={isOpen ? BLUE : MUTE} style={{ flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
+              </button>
+              {isOpen && <div style={{ padding: "0 18px 16px 84px", fontSize: 14, color: SUB, lineHeight: 1.65 }}>{tx(f.a, lang)}</div>}
+            </div>
+          );
+        })}
+      </div>
+      {preview && (
+        <div style={{ textAlign: "center", marginTop: 28 }}>
+          <button onClick={() => navigate("/faq")} style={{ ...viewMoreBtn }}>{u.viewMore} <ChevronRight size={15} /></button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Certifications({ lang }) {
+  useContent();
+  const CERTS = getCollection("certs");
+  return (
+    <div style={{ background: BG_SOFT, borderTop: "1px solid #eef1f6" }}>
+      <div style={{ ...WRAP, padding: "48px 28px", textAlign: "center" }}>
+        <div style={{ fontSize: 14, fontWeight: 700, color: "#7587a3", marginBottom: 24 }}>{tx(CERTS.title, lang)}</div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
+          {CERTS.orgs.map((o) => (
+            <div key={o.mark} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, minWidth: 150, padding: "16px 20px", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12 }}>
+              <span style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: "#5a6b86" }}>{o.mark}</span>
+              <span style={{ fontSize: 11.5, color: "#9aa7bd" }}>{tx(o.sub, lang)}</span>
+            </div>
           ))}
         </div>
       </div>
@@ -826,797 +791,1218 @@ function CtaBand({ lang, insurer, onCheck, onTalk }) {
 }
 
 /* ========================================================================
-   HOSPITAL DETAIL  (shown on "View plan")
+   INNER PAGES
    ======================================================================== */
-function HospitalDetail({ hospital, dept, insurer, onBack, onContact }) {
-  if (!hospital) {
+function PageHeader({ eyebrow, title, sub }) {
+  return (
+    <div style={{ background: BRAND_GRAD, color: "#fff" }}>
+      <div style={{ ...WRAP, padding: "56px 28px" }}>
+        {eyebrow && <div style={{ fontSize: 12.5, fontWeight: 700, color: "#cfdcff", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>{eyebrow}</div>}
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 38, fontWeight: 800, margin: "0 0 10px", letterSpacing: "-0.02em" }}>{title}</h1>
+        {sub && <p style={{ fontSize: 16, color: "#d6e1ff", margin: 0, maxWidth: 620 }}>{sub}</p>}
+      </div>
+    </div>
+  );
+}
+
+function ServiceHub() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const SERVICES = getCollection("services");
+  return (
+    <>
+      <Seo title={tr("Service", lang)} description={tx(HERO.sub, lang)} path="/service" jsonLd={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Service", path: "/service" }])} />
+      <PageHeader eyebrow={tr("Service", lang)} title={tr("One visit, complete care", lang)} sub={tr("From checkups to procedures, transport, stay and tours — SafeDoc Global arranges it all.", lang)} />
+      <div style={{ ...WRAP, padding: "60px 28px" }}>
+        <div className="g-svc">
+          {SERVICES.map((s) => {
+            const Icon = ICONS[s.icon] || Stethoscope;
+            return (
+              <button key={s.id} onClick={() => navigate(s.path)} style={{ textAlign: "start", background: "#fff", border: "1px solid #e7ecf5", borderRadius: 18, padding: 26, cursor: "pointer", boxShadow: "0 6px 22px rgba(15,23,42,.05)" }}>
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: SECTION_TINT, color: BLUE, display: "grid", placeItems: "center", marginBottom: 16 }}><Icon size={24} /></div>
+                <div style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 800, color: INK, marginBottom: 6 }}>{tx(s, lang)}</div>
+                <p style={{ fontSize: 14, color: "#64748b", lineHeight: 1.55, margin: "0 0 14px" }}>{tx(s.desc, lang)}</p>
+                <span style={{ fontSize: 13.5, fontWeight: 700, color: BLUE, display: "inline-flex", alignItems: "center", gap: 4 }}>{UI[lang].learnMore} <ChevronRight size={15} /></span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function CheckupPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const CHECKUP = getCollection("checkup");
+  return (
+    <>
+      <Seo title={tx(CHECKUP.title, lang)} description={tx(CHECKUP.sub, lang)} path="/service/health-checkup"
+        jsonLd={[breadcrumbJsonLd([{ name: "Service", path: "/service" }, { name: "Health Check-up", path: "/service/health-checkup" }]), ...CHECKUP.packages.map((p) => procedureJsonLd({ name: tx(p.name, lang), description: tx(p.desc, lang), url: SITE_URL + `/service/health-checkup/${p.id}` }))]} />
+      <PageHeader eyebrow={tx(CHECKUP.eyebrow, lang)} title={tx(CHECKUP.title, lang)} sub={tx(CHECKUP.sub, lang)} />
+      <div style={{ ...WRAP, padding: "60px 28px" }}>
+        <div className="g-3">
+          {CHECKUP.packages.map((p) => (
+            <button key={p.id} onClick={() => navigate(`/service/health-checkup/${p.id}`)} style={{ textAlign: "start", padding: 0, background: "#fff", border: "1px solid #e7ecf5", borderRadius: 18, overflow: "hidden", boxShadow: "0 6px 22px rgba(15,23,42,.06)", display: "flex", flexDirection: "column", cursor: "pointer" }}>
+              <div style={{ position: "relative", height: 180 }}>
+                <img src={p.image} alt={tx(p.name, lang)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                {p.tag && <span style={{ position: "absolute", top: 12, left: 12, fontSize: 10.5, fontWeight: 800, color: "#fff", background: BLUE, borderRadius: 999, padding: "5px 11px" }}>{tx(p.tag, lang)}</span>}
+              </div>
+              <div style={{ padding: "20px 22px", display: "flex", flexDirection: "column", flex: 1 }}>
+                <div style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 800, color: INK, marginBottom: 6 }}>{tx(p.name, lang)}</div>
+                <PriceTag p={p.price} lang={lang} />
+                <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.55, margin: "10px 0 16px" }}>{tx(p.desc, lang)}</p>
+                <span style={{ ...viewMoreBtn, marginTop: "auto", alignSelf: "flex-start" }}>{UI[lang].viewMore} <ChevronRight size={15} /></span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
+  );
+}
+
+/* /service/health-checkup/:id — 패키지 상세. mri-scan 은 Ezra식 스캔 메뉴(ScanMenu)로 분기 */
+function CheckupDetailPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const CHECKUP = getCollection("checkup");
+  const SCAN_MENU = getCollection("scanMenu");
+  const { id } = useParams();
+  const p = CHECKUP.packages.find((x) => x.id === id);
+  if (!p) {
     return (
-      <div style={{ marginTop: 40, textAlign: "center", color: MUTE }}>
-        <p>This program is no longer available.</p>
-        <button onClick={onBack} style={{ ...btn(TEAL, "#fff"), marginTop: 8 }}>Back to programs</button>
+      <div style={{ ...WRAP, padding: "100px 28px", textAlign: "center" }}>
+        <p style={{ color: MUTE }}>{tr("Check-up not found.", lang)}</p>
+        <button onClick={() => navigate("/service/health-checkup")} style={{ ...btn(BLUE, "#fff"), marginTop: 12 }}>{tr("Back to Health Check-up", lang)}</button>
       </div>
     );
   }
-  const save = hospital.us - hospital.kr;
-  const savePct = hospital.us > 0 ? Math.round((save / hospital.us) * 100) : 0;
-  const programIncludes = [
-    "Specialist consultation & second-opinion review",
-    `${dept?.name || "Treatment"} procedure at ${hospital.name}`,
-    "Pre-op diagnostics and imaging",
-    "Inpatient stay & nursing care",
-    "Post-op check-ups before discharge",
-  ];
-
+  const crumb = (
+    <button onClick={() => navigate("/service/health-checkup")} style={{ border: "none", background: "transparent", cursor: "pointer", color: SUB, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, marginBottom: 18 }}>
+      <ArrowLeft size={16} /> {tx(CHECKUP.title, lang)}
+    </button>
+  );
   return (
-    <div style={{ marginTop: 20 }}>
-      <button onClick={onBack} style={{ border: "none", background: "transparent", cursor: "pointer", color: SUB, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, padding: "6px 0", marginBottom: 8 }}>
-        <ArrowLeft size={16} /> Back to {dept?.name || "programs"}
-      </button>
-
-      <OverlayImage image={hospital.image} height={280} />
-
-      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", marginTop: 20, alignItems: "flex-start" }}>
-        {/* main column */}
-        <div style={{ flex: 1, minWidth: 280 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <h1 style={{ fontSize: 26, fontWeight: 800, color: INK, margin: 0 }}>{hospital.name}</h1>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "#eef6ff", color: "#2563a8", padding: "3px 9px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
-              <Award size={12} /> {hospital.accred}
-            </span>
-            {hospital.covered && (
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: TEAL_SOFT, color: TEAL, padding: "3px 9px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}>
-                <Check size={12} /> Covered
-              </span>
-            )}
+    <>
+      <Seo title={tx(p.name, lang)} description={tx(p.desc, lang)} path={`/service/health-checkup/${p.id}`}
+        jsonLd={[
+          breadcrumbJsonLd([{ name: "Service", path: "/service" }, { name: "Health Check-up", path: "/service/health-checkup" }, { name: tx(p.name, lang), path: `/service/health-checkup/${p.id}` }]),
+          procedureJsonLd({ name: tx(p.name, lang), description: tx(p.desc, lang), url: SITE_URL + `/service/health-checkup/${p.id}` }),
+          ...(p.id === "mri-scan" ? [scanMenuJsonLd(SCAN_MENU.groups.flatMap((g) => g.items).map((it) => ({ name: tx(it.name, "en"), description: tx(it.desc, "en"), price: Number(String(it.price).replace(/[^0-9]/g, "")) || null })), SITE_URL + "/service/health-checkup/mri-scan")] : []),
+        ]} />
+      <PageHeader eyebrow={tx(CHECKUP.eyebrow, lang)} title={tx(p.name, lang)} sub={tx(p.desc, lang)} />
+      {p.id === "mri-scan"
+        ? <ScanMenu lang={lang} navigate={navigate} crumb={crumb} />
+        : (
+          <div style={{ ...WRAP, padding: "48px 28px" }}>
+            {crumb}
+            <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 28, alignItems: "center", background: "#fff", border: "1px solid #e7ecf5", borderRadius: 20, overflow: "hidden", boxShadow: "0 6px 22px rgba(15,23,42,.05)" }} className="g-2">
+              <img src={p.image} alt={tx(p.name, lang)} style={{ width: "100%", height: 320, objectFit: "cover" }} />
+              <div style={{ padding: "28px 30px" }}>
+                {p.tag && <span style={{ fontSize: 10.5, fontWeight: 800, color: "#fff", background: BLUE, borderRadius: 999, padding: "5px 11px" }}>{tx(p.tag, lang)}</span>}
+                <div style={{ fontFamily: DISPLAY, fontSize: 24, fontWeight: 800, color: INK, margin: "12px 0 6px" }}>{tx(p.name, lang)}</div>
+                <PriceTag p={p.price} lang={lang} />
+                <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: "12px 0 16px" }}>{tx(p.desc, lang)}</p>
+                <div style={{ display: "grid", gap: 8, marginBottom: 20 }}>
+                  {tx(p.includes, lang).map((x, j) => (
+                    <div key={j} style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 13.5, color: SUB }}><Check size={16} color={BLUE} /> {x}</div>
+                  ))}
+                </div>
+                <button onClick={() => navigate("/contact")} style={{ ...btn(BLUE, "#fff") }}>{UI[lang].book}</button>
+              </div>
+            </div>
           </div>
-          <div style={{ fontSize: 16, color: TEAL, fontWeight: 700, marginTop: 8 }}>{hospital.program}</div>
-          {hospital.lead && <div style={{ fontSize: 14.5, color: SUB, marginTop: 4 }}>{hospital.lead}</div>}
+        )}
+    </>
+  );
+}
 
-          <div style={{ display: "flex", alignItems: "center", gap: 18, marginTop: 14, fontSize: 14, color: SUB, flexWrap: "wrap" }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><Star size={15} fill="#f5a623" color="#f5a623" /><b style={{ color: INK }}>{hospital.rating}</b> ({hospital.reviews} reviews)</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><MapPin size={15} /> {hospital.city}</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><Clock size={15} /> {hospital.weeks} in Korea</span>
+/* MRI·CT 스캔 메뉴 (Ezra식) — 현재 디자인 시스템(SafeDoc 블루·Pretendard·카드)으로 변환 */
+function ScanMenu({ lang, navigate, crumb }) {
+  useContent();
+  const SCAN_MENU = getCollection("scanMenu");
+  return (
+    <div style={{ ...WRAP, padding: "48px 28px 80px" }}>
+      {crumb}
+      {SCAN_MENU.groups.map((g) => (
+        <div key={g.id} style={{ marginBottom: 44 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 22px" }}>
+            <span style={{ fontSize: 12.5, fontWeight: 800, color: BLUE, letterSpacing: "0.12em", textTransform: "uppercase", whiteSpace: "nowrap" }}>{tx(g.label, lang)}</span>
+            <span style={{ flex: 1, height: 1, background: LINE }} />
           </div>
-
-          <SectionDivider />
-
-          <h3 style={{ fontSize: 17, fontWeight: 800, color: INK, margin: "0 0 12px" }}>What this program includes</h3>
-          <div style={{ display: "grid", gap: 10 }}>
-            {programIncludes.map((p, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 14, color: SUB }}>
-                <CheckCircle2 size={18} color={TEAL} style={{ flexShrink: 0, marginTop: 1 }} /> {p}
+          <div className="g-2" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 24 }}>
+            {g.items.map((it) => (
+              <div key={it.id} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 18, padding: "26px 26px 24px", boxShadow: "0 6px 22px rgba(15,23,42,.05)", display: "flex", flexDirection: "column" }}>
+                <span style={{ alignSelf: "flex-start", fontSize: 11, fontWeight: 700, color: BLUE, background: SECTION_TINT, border: `1px solid ${LINE}`, borderRadius: 999, padding: "4px 11px", marginBottom: 14 }}>{tx(it.tag, lang)}</span>
+                <div style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 800, color: INK, lineHeight: 1.3, marginBottom: 12 }}>{tx(it.name, lang)}</div>
+                <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.65, margin: "0 0 18px" }}>{tx(it.desc, lang)}</p>
+                <div style={{ fontFamily: DISPLAY, fontSize: 28, fontWeight: 800, color: INK, marginBottom: 4 }}>{it.price}</div>
+                <button onClick={() => navigate("/contact")} style={{ ...btn(BLUE, "#fff"), alignSelf: "flex-start", padding: "11px 22px", margin: "10px 0 18px" }}>{tr("Book this scan", lang)}</button>
+                <div style={{ fontSize: 12.5, fontWeight: 700, color: MUTE, marginBottom: 12 }}>{tr("Time", lang)}: {tx(it.time, lang)}</div>
+                <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, marginBottom: 10 }}>{tr("What's included", lang)}</div>
+                <div style={{ display: "grid", gap: 8, marginBottom: it.note ? 16 : 0 }}>
+                  {tx(it.includes, lang).map((x, j) => (
+                    <div key={j} style={{ display: "flex", alignItems: "flex-start", gap: 9, fontSize: 13.5, color: SUB }}><Check size={16} color={BLUE} style={{ flexShrink: 0, marginTop: 2 }} /> {x}</div>
+                  ))}
+                </div>
+                {it.note && <p style={{ fontSize: 12.5, color: MUTE, lineHeight: 1.6, margin: 0, paddingTop: 14, borderTop: `1px solid ${LINE}` }}>{tx(it.note, lang)}</p>}
               </div>
             ))}
           </div>
+        </div>
+      ))}
+      {/* Why our members choose MRI and CT scans */}
+      <div style={{ background: SECTION_TINT, border: `1px solid ${LINE}`, borderRadius: 20, padding: "40px clamp(24px,4vw,44px)" }}>
+        <h3 style={{ fontFamily: DISPLAY, fontSize: 24, fontWeight: 800, color: INK, textAlign: "center", margin: "0 0 6px" }}>{tx(SCAN_MENU.why.title, lang)}</h3>
+        <p style={{ fontSize: 13.5, color: SUB, textAlign: "center", display: "flex", alignItems: "center", justifyContent: "center", gap: 7, margin: "0 0 30px" }}><Check size={16} color={BLUE} /> {tx(SCAN_MENU.why.note, lang)}</p>
+        <div className="g-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "22px 32px" }}>
+          {SCAN_MENU.why.points.map((pt, i) => (
+            <div key={i} style={{ display: "flex", gap: 14 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: "#fff", color: BLUE, display: "grid", placeItems: "center", flexShrink: 0, border: `1px solid ${LINE}` }}><Sparkles size={18} /></div>
+              <div>
+                <div style={{ fontSize: 15, fontWeight: 800, color: INK, marginBottom: 4 }}>{tx(pt.t, lang)}</div>
+                <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.6, margin: 0 }}>{tx(pt.d, lang)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
 
-          <SectionDivider />
-
-          <h3 style={{ fontSize: 17, fontWeight: 800, color: INK, margin: "0 0 6px" }}>End-to-end, handled by KoreCare</h3>
-          <p style={{ fontSize: 14, color: SUB, margin: "0 0 16px" }}>Beyond the procedure itself, your full journey is coordinated for you.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }} className="detail-care-grid">
-            {CARE_STEPS.map((s, i) => {
-              const Icon = s.icon;
-              return (
-                <div key={i} style={{ display: "flex", gap: 12, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 14 }}>
-                  <div style={{ width: 36, height: 36, borderRadius: 9, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", flexShrink: 0 }}><Icon size={18} /></div>
-                  <div>
-                    <div style={{ fontWeight: 700, color: INK, fontSize: 13.5 }}>{s.t}</div>
-                    <div style={{ fontSize: 12.5, color: SUB, lineHeight: 1.45, marginTop: 2 }}>{s.d}</div>
-                  </div>
-                </div>
-              );
+/* /service/revital — Creatrip 스타일 의료 리스팅 (카테고리 패널·필터바·2열 가로카드) */
+function RevitalPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const REVITAL = getCollection("revital");
+  const PROCEDURES = getCollection("procedures");
+  const won = (n) => "₩" + Number(n).toLocaleString();
+  // 카테고리 = 진료과(목업 데이터 기준)
+  const cats = [{ id: "all", label: { en: "All", ko: "전체" } }, ...Array.from(new Set(PROCEDURES.map((p) => p.category))).map((c) => ({ id: c, label: PROCEDURES.find((p) => p.category === c).dept }))];
+  const [cat, setCat] = useState("all");
+  const [engOnly, setEngOnly] = useState(false);   // English Available 토글(데모: 전 항목 가능)
+  const [sortBest, setSortBest] = useState(true);
+  // 카드 메타(평점/리뷰/조회) — 목업 결정값
+  const meta = (i) => ({ rating: [5.0, 4.8, 4.9, 4.7, 4.9, 4.8][i % 6], reviews: [120, 1121, 99, 78, 16, 1196][i % 6], views: ["40K+", "32K+", "18K+", "10K+", "18K+", "23K+"][i % 6], deal: [true, false, true, false, false, true][i % 6] });
+  let list = PROCEDURES.map((p, i) => ({ p, i, ...meta(i) })).filter((x) => cat === "all" || x.p.category === cat);
+  if (sortBest) list = [...list].sort((a, b) => b.reviews - a.reviews);
+  return (
+    <>
+      <Seo title={tx(REVITAL.title, lang)} description={tx(REVITAL.sub, lang)} path="/service/revital"
+        jsonLd={[breadcrumbJsonLd([{ name: "Service", path: "/service" }, { name: "Revital", path: "/service/revital" }]), ...PROCEDURES.map((p) => procedureJsonLd({ name: tx(p.name, lang), description: tx(p.summary, lang), url: SITE_URL + `/treatments/${p.id}` }))]} />
+      <div style={{ ...WRAP, padding: "28px clamp(20px,4vw,40px) 70px" }}>
+        {/* 브레드크럼 + MAP */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+          <div style={{ fontSize: 14, color: MUTE, display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <button onClick={() => navigate("/service")} style={{ border: "none", background: "transparent", color: MUTE, cursor: "pointer", padding: 0, fontSize: 14 }}>{tr("Service", lang)}</button>
+            <ChevronRight size={14} /> <span style={{ color: INK, fontWeight: 600 }}>{tx(REVITAL.title, lang)}</span>
+          </div>
+          <button style={{ ...viewMoreBtn, color: BLUE, borderColor: BLUE, padding: "8px 14px" }}><MapPinned size={15} /> MAP</button>
+        </div>
+        {/* 카테고리 패널 */}
+        <div style={{ border: `1px solid ${LINE}`, borderRadius: 14, padding: "22px 26px", marginBottom: 22 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(180px,1fr))", gap: "14px 24px" }}>
+            {cats.map((c) => {
+              const on = cat === c.id;
+              return <button key={c.id} onClick={() => setCat(c.id)} style={{ textAlign: "start", border: "none", background: "transparent", cursor: "pointer", fontSize: 16, fontWeight: on ? 700 : 500, color: on ? BLUE : INK_OR_SUB(on), padding: "2px 0" }}>{tx(c.label, lang)}</button>;
             })}
           </div>
         </div>
-
-        {/* price / cta column */}
-        <div style={{ width: 320, flexShrink: 0, position: "sticky", top: 80 }} className="detail-aside">
-          <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22, boxShadow: "0 6px 24px rgba(11,107,107,.08)" }}>
-            <div style={{ fontSize: 12, color: MUTE }}>Typical US cost</div>
-            <div style={{ fontSize: 15, color: MUTE, textDecoration: "line-through" }}>${hospital.us.toLocaleString()}</div>
-            <div style={{ fontSize: 12, color: MUTE, marginTop: 8 }}>Korea all-in price</div>
-            <div style={{ fontSize: 32, fontWeight: 800, color: TEAL, lineHeight: 1.1 }}>${hospital.kr.toLocaleString()}</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eafaf2", color: "#1f9d6b", padding: "5px 10px", borderRadius: 8, fontSize: 13, fontWeight: 700, marginTop: 10 }}>
-              Save ${save.toLocaleString()} ({savePct}% less)
-            </div>
-
-            {hospital.covered && (
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginTop: 14, fontSize: 12.5, color: SUB, background: TEAL_SOFT, borderRadius: 10, padding: "10px 12px" }}>
-                <Shield size={15} color={TEAL} style={{ flexShrink: 0, marginTop: 1 }} />
-                <span>Covered under your <b>{insurer}</b> referral. Final out-of-pocket confirmed after records review.</span>
-              </div>
-            )}
-
-            <div style={{ display: "grid", gap: 8, marginTop: 16 }}>
-              <button onClick={onContact} style={{ ...btn(TEAL, "#fff"), display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                <Send size={16} /> Request this plan
+        {/* 필터 바 */}
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 24 }}>
+          {[tr("Region", lang), tr("Date", lang)].map((f) => (
+            <button key={f} style={fpill(false)}>{f} <ChevronDown size={14} /></button>
+          ))}
+          <button onClick={() => setEngOnly((v) => !v)} style={fpill(engOnly)}>{tr("English Available", lang)}</button>
+          <button style={{ ...fpill(true) }}>{tr("Except sold out", lang)}</button>
+          <button style={fpill(false)}><SlidersHorizontal size={14} /> {tr("Filter", lang)} <ChevronDown size={14} /></button>
+        </div>
+        {/* 카운트 + 정렬 */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: INK }}>{lang === "ko" ? `총 ${list.length}건` : `Total ${list.length}`}</span>
+          <button onClick={() => setSortBest((v) => !v)} style={{ border: "none", background: "transparent", cursor: "pointer", color: INK, fontSize: 14, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 7 }}><ArrowDownUp size={15} /> {sortBest ? (tr("Monthly Best", lang)) : (tr("Default", lang))}</button>
+        </div>
+        {/* 리스팅 (2열 가로카드) */}
+        <div className="g-list">
+          {list.map(({ p, i, rating, reviews, views, deal }) => {
+            const dc = Math.round((1 - p.price / p.listPrice) * 100);
+            return (
+              <button key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} style={{ textAlign: "start", display: "flex", gap: 16, background: "#fff", border: "none", padding: 0, cursor: "pointer", alignItems: "flex-start" }}>
+                <div style={{ position: "relative", flexShrink: 0, width: 168, height: 168, borderRadius: 14, overflow: "hidden" }}>
+                  <img src={p.before || p.hero} alt={tx(p.name, lang)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                  {dc > 0 && <span style={{ position: "absolute", top: 0, left: 0, background: BLUE, color: "#fff", fontSize: 12, fontWeight: 800, padding: "4px 9px", borderRadius: "0 0 10px 0" }}>{dc}%</span>}
+                  <span style={{ position: "absolute", bottom: 8, right: 8, width: 26, height: 26, borderRadius: "50%", background: "rgba(255,255,255,.92)", display: "grid", placeItems: "center" }}><Heart size={15} color={MUTE} /></span>
+                </div>
+                <div style={{ flex: 1, minWidth: 0, paddingTop: 2 }}>
+                  <div style={{ fontSize: 13, color: MUTE, marginBottom: 4 }}>{tx(p.hospital.city, lang)}</div>
+                  <div style={{ fontSize: 15.5, fontWeight: 600, color: INK, lineHeight: 1.35, marginBottom: 8, display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden" }}>{tx(p.name, lang)} | {tx(p.hospital.name, lang)}</div>
+                  <div style={{ fontSize: 16, fontWeight: 800, color: BLUE, marginBottom: 8 }}>{tr("Deposit ", lang)}${usd(Math.round(p.price * 0.5)).toLocaleString()} <span style={{ fontSize: 13, fontWeight: 600, color: SUB }}>≈ {won(Math.round(p.price * 0.5))}</span></div>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13, color: SUB, marginBottom: 10 }}>
+                    <Star size={14} fill={STAR} color={STAR} /><b style={{ color: INK }}>{rating.toFixed(1)}</b> <span style={{ color: MUTE }}>({reviews})</span> <span style={{ color: MUTE }}>{views}</span>
+                  </div>
+                  <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
+                    {deal && <span style={{ fontSize: 12, fontWeight: 700, color: "#6b3fd4", background: "#f0ebfc", borderRadius: 6, padding: "4px 9px" }}>{tr("Earn 10% Back", lang)}</span>}
+                    <span style={{ fontSize: 12, fontWeight: 600, color: BLUE, background: BLUE_SOFT, borderRadius: 6, padding: "4px 9px" }}>{tr("Instant Book", lang)}</span>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: SUB, background: CLOUD, borderRadius: 6, padding: "4px 9px" }}>{tr("English Available", lang)}</span>
+                  </div>
+                </div>
               </button>
-              <button onClick={onContact} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}`, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                <Phone size={16} /> Talk to a coordinator
-              </button>
-            </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
+function INK_OR_SUB(on) { return on ? "#1B59FA" : "#000F2C"; }
+const fpill = (on) => ({ display: "inline-flex", alignItems: "center", gap: 6, padding: "9px 16px", borderRadius: 999, fontSize: 13.5, fontWeight: 600, cursor: "pointer", background: "#fff", color: on ? "#1B59FA" : "#2B3858", border: `1px solid ${on ? "#1B59FA" : "#E5E7EC"}` });
 
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 14, fontSize: 12, color: MUTE }}>
-              <Calendar size={14} /> Estimated stay: {hospital.weeks}
-            </div>
+/* /providers — 파트너 병원 리스트 (스펙 1~13 반영) */
+function deptLabel(id, lang) { const d = PROVIDER_DEPTS.find((x) => x.id === id); return d ? tx(d, lang) : id; }
+function langLabel(id, lang) { const l = PROVIDER_LANGS.find((x) => x.id === id); return l ? tx(l, lang) : id; }
+function ratingStr(p) { return (p.reviews ? p.rating : 0).toFixed(1); }   // #8 리뷰 없으면 0.0
+function ProvidersPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const PROVIDERS = getCollection("providers");
+  const [spec, setSpec] = useState("all");
+  const [loc, setLoc] = useState("all");
+  const [plang, setPlang] = useState("all");   // #3 언어 필터
+  const locations = Array.from(new Set(PROVIDERS.map((p) => p.area.en)));   // #2 등록된 병원 조합만
+  const list = PROVIDERS.filter((p) =>
+    (spec === "all" || p.departments.includes(spec)) &&
+    (loc === "all" || p.area.en === loc) &&
+    (plang === "all" || (p.languages || []).includes(plang)));
+  const sel = { padding: "11px 13px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 13.5, background: "#fff", color: INK, minWidth: 190, fontFamily: "inherit" };
+  const lbl = { fontSize: 11, fontWeight: 700, color: MUTE, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 7, display: "block" };
+  return (
+    <>
+      <Seo title={tr("Providers", lang)} description={tr("Verified Korean hospitals and clinics with multilingual interpreter support — Samsung Medical Center, Asan, Severance and more, JCI-accredited.", lang)} path="/providers"
+        jsonLd={[
+          breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Providers", path: "/providers" }]),
+          providersJsonLd(PROVIDERS.map((p) => ({ id: p.id, name: p.name.en, area: p.area.en, specialties: p.departments.map((d) => deptLabel(d, "en")), rating: p.reviews ? p.rating : 0, reviews: p.reviews }))),
+        ]} />
+      {/* 헤더 */}
+      <div style={{ ...WRAP, padding: "44px 28px 8px" }}>
+        <button onClick={() => navigate("/")} style={{ border: "none", background: "transparent", cursor: "pointer", color: SUB, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, padding: 0, marginBottom: 16 }}><ArrowLeft size={16} /> {tr("Back", lang)}</button>
+        <Eyebrow>{tr("Providers", lang)}</Eyebrow>
+        <h1 style={{ fontFamily: DISPLAY, fontSize: "clamp(32px, 4.4vw, 52px)", fontWeight: 800, color: INK, margin: "0 0 12px", letterSpacing: "-0.025em" }}>{tr("Find trusted Korean providers", lang)}</h1>
+        <p style={{ fontSize: 16, color: SUB, margin: 0, maxWidth: 620 }}>{tr("Explore verified hospitals and clinics with international patient support.", lang)}</p>
+      </div>
+      {/* 필터 바 — #1 전문영역 · #2 지역 · #3 언어 (#4 국제환자지원 체크박스 제거) */}
+      <div style={{ background: BG_SOFT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}`, margin: "24px 0 0" }}>
+        <div style={{ ...WRAP, padding: "22px 28px", display: "flex", alignItems: "flex-end", gap: 24, flexWrap: "wrap" }}>
+          <div><span style={lbl}>{tr("Specialty", lang)}</span>
+            <select style={sel} value={spec} onChange={(e) => setSpec(e.target.value)}>
+              <option value="all">{tr("All specialties", lang)}</option>
+              {PROVIDER_DEPTS.map((d) => <option key={d.id} value={d.id}>{tx(d, lang)}</option>)}
+            </select>
+          </div>
+          <div><span style={lbl}>{tr("Location", lang)}</span>
+            <select style={sel} value={loc} onChange={(e) => setLoc(e.target.value)}>
+              <option value="all">{tr("All locations", lang)}</option>
+              {locations.map((a) => <option key={a} value={a}>{lang === "ko" ? (PROVIDERS.find((p) => p.area.en === a)?.area.ko || a) : a}</option>)}
+            </select>
+          </div>
+          <div><span style={lbl}>{tr("Languages", lang)}</span>
+            <select style={sel} value={plang} onChange={(e) => setPlang(e.target.value)}>
+              <option value="all">{tr("All languages", lang)}</option>
+              {PROVIDER_LANGS.map((l) => <option key={l.id} value={l.id}>{tx(l, lang)}</option>)}
+            </select>
           </div>
         </div>
       </div>
-      <style>{`@media(max-width:760px){.detail-aside{width:100%!important;position:static!important}.detail-care-grid{grid-template-columns:1fr!important}}`}</style>
-    </div>
-  );
-}
-
-function SectionDivider() {
-  return <div style={{ height: 1, background: LINE, margin: "24px 0" }} />;
-}
-
-/* ========================================================================
-   FAQ  (FAQ_ITEMS 는 site-data.js 로 이동 — 어드민 CMS 와 공유)
-   ======================================================================== */
-
-function FAQPage({ onContact }) {
-  const [open, setOpen] = useState(0);
-  // SSG 는 정적 FAQ_ITEMS(SEO). 클라이언트에서 어드민 CMS 오버레이(korecare_faqs) 반영.
-  const [items, setItems] = useState(FAQ_ITEMS);
-  useEffect(() => { try { const o = JSON.parse(localStorage.getItem("korecare_faqs") || "null"); if (o?.length) setItems(o); } catch (_) {} }, []);
-  return (
-    <div style={{ marginTop: 28, maxWidth: 760 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
-        <HelpCircle size={15} /> Frequently asked questions
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>Everything you might be wondering</h1>
-      <p style={{ fontSize: 15, color: SUB, margin: "0 0 24px" }}>Can't find your answer? Our coordinators are one message away.</p>
-
-      <div style={{ display: "grid", gap: 10 }}>
-        {items.map((item, i) => {
-          const isOpen = open === i;
-          return (
-            <div key={i} style={{ background: "#fff", border: `1px solid ${isOpen ? TEAL : LINE}`, borderRadius: 12, overflow: "hidden" }}>
-              <button onClick={() => setOpen(isOpen ? -1 : i)} style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, padding: "16px 18px", border: "none", background: isOpen ? TEAL_SOFT : "#fff", cursor: "pointer", textAlign: "left" }}>
-                <span style={{ fontSize: 15, fontWeight: 700, color: INK }}>{item.q}</span>
-                <ChevronDown size={18} color={isOpen ? TEAL : MUTE} style={{ flexShrink: 0, transform: isOpen ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
-              </button>
-              {isOpen && (
-                <div style={{ padding: "0 18px 16px", fontSize: 14, color: SUB, lineHeight: 1.6 }}>{item.a}</div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={{ marginTop: 26, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-        <div>
-          <div style={{ fontSize: 16, fontWeight: 800, color: INK }}>Still have a question?</div>
-          <div style={{ fontSize: 13.5, color: SUB, marginTop: 2 }}>Talk to a KoreCare coordinator — no obligation.</div>
+      {/* #5 필터에 따른 결과 숫자 + 카드 그리드 */}
+      <div style={{ ...WRAP, padding: "30px 28px 80px" }}>
+        <div style={{ fontSize: 12, fontWeight: 700, color: MUTE, letterSpacing: ".08em", textTransform: "uppercase", marginBottom: 20 }}>
+          {lang === "ko" ? `${list.length}개 병원` : `${list.length} providers matched`}
         </div>
-        <button onClick={onContact} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 8 }}>
-          <MessageSquare size={16} /> Contact us
-        </button>
+        <div className="g-3">
+          {list.map((p) => {
+            const badges = [
+              ...(p.english_support ? [tr("English support", lang)] : []),
+              ...(p.international_ward ? [tr("International ward", lang)] : []),
+              ...p.accreditation,
+            ];
+            const shownDepts = p.departments.slice(0, 4);
+            const extra = p.departments.length - shownDepts.length;
+            const reviewTxt = lang === "ko" ? `리뷰 ${p.reviews.toLocaleString()}개` : `${p.reviews.toLocaleString()} reviews`;
+            return (
+              <button key={p.id} onClick={() => navigate(`/providers/${p.id}`)} style={{ textAlign: "start", cursor: "pointer", background: "#fff", border: "1px solid #e7ecf5", borderRadius: 16, padding: "22px 24px", boxShadow: "0 4px 18px rgba(15,23,42,.05)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+                {/* #5 병원 섬네일 (admin: providers[].image 로 제어) — 풀블리드 배너 */}
+                {p.image ? (
+                  <img src={p.image} alt={tx(p.name, lang)} loading="lazy"
+                    style={{ width: "calc(100% + 48px)", height: 150, objectFit: "cover", margin: "-22px -24px 16px", display: "block", background: CLOUD }} />
+                ) : null}
+                {/* #6 병원명 · #8 평점+리뷰수 */}
+                <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
+                  <h3 style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 800, color: INK, margin: 0, lineHeight: 1.25 }}>{tx(p.name, lang)}</h3>
+                  <div style={{ flexShrink: 0, textAlign: "right" }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: INK, border: `1px solid ${LINE}`, borderRadius: 7, padding: "3px 8px", whiteSpace: "nowrap" }}>{ratingStr(p)}★</span>
+                    <div style={{ fontSize: 11.5, color: MUTE, marginTop: 4 }}>{reviewTxt}</div>
+                  </div>
+                </div>
+                {/* #7 병원 위치 */}
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12.5, color: MUTE, margin: "7px 0 12px" }}><MapPin size={13} /> {tx(p.area, lang)}</div>
+                {/* #9 병원 설명 */}
+                <p style={{ fontSize: 13.5, color: "#64748b", lineHeight: 1.6, margin: "0 0 16px" }}>{tx(p.blurb, lang)}</p>
+                {/* #10 진료과 (앞 4개 + +N) */}
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 14 }}>
+                  {shownDepts.map((d) => <span key={d} style={{ fontSize: 12, fontWeight: 600, color: SUB, background: CLOUD, borderRadius: 999, padding: "5px 11px" }}>{deptLabel(d, lang)}</span>)}
+                  {extra > 0 && <span style={{ fontSize: 12, fontWeight: 700, color: MUTE, background: CLOUD, borderRadius: 999, padding: "5px 11px" }}>+{extra}</span>}
+                </div>
+                {/* #11 병원 태그 (인증·지원) */}
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 18 }}>
+                  {badges.map((b, i) => <span key={i} style={{ fontSize: 11.5, fontWeight: 600, color: BLUE, background: BLUE_SOFT, borderRadius: 999, padding: "5px 11px" }}>{b}</span>)}
+                </div>
+                {/* #12 리뷰 수 · #13 상세 이동 */}
+                <div style={{ marginTop: "auto", paddingTop: 16, borderTop: `1px solid ${LINE}`, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: 12.5, color: MUTE }}>{reviewTxt}</span>
+                  <span style={{ color: INK, fontSize: 12.5, fontWeight: 800, letterSpacing: ".04em", display: "inline-flex", alignItems: "center", gap: 6, textDecoration: "underline", textUnderlineOffset: 4 }}>{tr("VIEW PROVIDER", lang)} <ArrowRight size={14} /></span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        {list.length === 0 && <div style={{ textAlign: "center", padding: "50px 0", color: MUTE }}>{tr("No providers match your filters.", lang)}</div>}
       </div>
-    </div>
+    </>
   );
 }
 
-/* ========================================================================
-   CONTACT
-   ======================================================================== */
-function ContactPage({ depts, prefillHospital }) {
-  const [form, setForm] = useState({
-    name: "", email: "", phone: "",
-    interest: prefillHospital ? `${prefillHospital.name} — ${prefillHospital.program}` : "",
-    message: prefillHospital ? `I'd like to know more about the ${prefillHospital.program} at ${prefillHospital.name}.` : "",
-  });
-  const [sent, setSent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [err, setErr] = useState("");
-  const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
-  const valid = form.name.trim() && /\S+@\S+\.\S+/.test(form.email);
-
-  const submit = async (e) => {
-    e.preventDefault();
-    if (!valid || submitting) return;
-    setSubmitting(true); setErr("");
-    try {
-      await submitLead({ ...form, source: "contact", page: typeof window !== "undefined" ? window.location.href : "" });
-      trackEvent("lead_submit", { form: "contact" });
-      setSent(true);
-    } catch (_) {
-      setErr("Something went wrong. Please try again or email us directly.");
-    } finally {
-      setSubmitting(false);
-    }
+/* #13 /providers/:id — 병원 상세 (prototype demo.html#/providers/:id 구성) */
+function PvEyebrow({ children }) {
+  return (
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 12.5, fontWeight: 700, color: BLUE, letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 14 }}>
+      <span style={{ width: 24, height: 2, background: BLUE, borderRadius: 2 }} />{children}
+    </div>
+  );
+}
+const CAT_TO_DEPT = { ophthalmology: "ophth", dental: "dental", dermatology: "derm", "hair-loss": "hair", checkup: "screen" };
+const krw = (n) => "₩" + Number(n).toLocaleString();
+// 병원 사진 갤러리용 이미지 풀 (다중 병원 사진은 어드민 데이터 필요 — 현재는 큐레이션 풀에서 병원별로 회전)
+const GALLERY_POOL = [
+  "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80",
+  "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80",
+  "https://images.unsplash.com/photo-1516069677018-378515003435?w=800&q=80",
+  "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&q=80",
+  "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&q=80",
+  "https://images.unsplash.com/photo-1581595219315-a187dd40c322?w=800&q=80",
+  "https://images.unsplash.com/photo-1551076805-e1869033e561?w=800&q=80",
+  "https://images.unsplash.com/photo-1504439468489-c8920a796a52?w=800&q=80",
+];
+function galleryFor(p, idx) {
+  // 어드민/데이터에 실제 병원 사진·GIF가 등록되면 그대로 사용 (img 태그가 .gif도 자동 재생)
+  if (Array.isArray(p.gallery) && p.gallery.length) {
+    return [...new Set([p.image, ...p.gallery])];
+  }
+  const rot = GALLERY_POOL.slice(idx).concat(GALLERY_POOL.slice(0, idx));
+  return [...new Set([p.image, ...rot])].slice(0, 8);
+}
+function ProviderDetailPage() {
+  const { lang, navigate } = useOutletContext();
+  store.useStore();
+  useContent();
+  const PROVIDERS = getCollection("providers");
+  const PROCEDURES = getCollection("procedures");
+  const { id } = useParams();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const [openProc, setOpenProc] = useState(null);
+  const [lb, setLb] = useState(null); // 라이트박스에서 보는 사진 index (null = 닫힘)
+  const p = PROVIDERS.find((x) => x.id === id);
+  const gallery = p ? galleryFor(p, PROVIDERS.findIndex((x) => x.id === p.id)) : [];
+  // 라이트박스 키보드 조작 + 배경 스크롤 잠금
+  useEffect(() => {
+    if (lb === null || !gallery.length) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setLb(null);
+      else if (e.key === "ArrowRight") setLb((i) => (i + 1) % gallery.length);
+      else if (e.key === "ArrowLeft") setLb((i) => (i - 1 + gallery.length) % gallery.length);
+    };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [lb, gallery.length]);
+  if (!p) {
+    return (
+      <div style={{ ...WRAP, padding: "100px 28px", textAlign: "center" }}>
+        <p style={{ color: MUTE }}>{tr("Provider not found.", lang)}</p>
+        <button onClick={() => navigate("/providers")} style={{ ...btn(BLUE, "#fff"), marginTop: 12 }}>{tr("Back to Providers", lang)}</button>
+      </div>
+    );
+  }
+  const reviewsLabel = tr("reviews", lang);
+  // 병원 전문영역에 해당하는 시술 매칭 (PROVIDERS↔PROCEDURES 병원이 달라 진료과 기준 매칭)
+  const procs = PROCEDURES.filter((pr) => p.departments.includes(CAT_TO_DEPT[pr.category]));
+  // 신뢰·안전 항목 (prototype pvd_trust)
+  const trust = [
+    [p.english_support, tr("English support", lang)],
+    [p.international_ward, tr("International ward", lang)],
+    [p.accreditation.length > 0, p.accreditation.join(" · ") || (tr("Accreditation", lang))],
+    [true, tr("SafeDoc coordinator", lang)],
+  ];
+  const hospitalLd = {
+    "@context": "https://schema.org", "@type": ["Hospital", "MedicalOrganization"],
+    name: tx(p.name, "en"), description: tx(p.blurb, "en"), url: SITE_URL + `/providers/${p.id}`, image: p.image,
+    address: { "@type": "PostalAddress", addressLocality: p.area.en, addressRegion: "Seoul", addressCountry: "KR" },
+    medicalSpecialty: p.departments.map((d) => deptLabel(d, "en")),
+    availableLanguage: (p.languages || []).map((l) => langLabel(l, "en")),
+    ...(p.reviews ? { aggregateRating: { "@type": "AggregateRating", ratingValue: p.rating, reviewCount: p.reviews, bestRating: 5, worstRating: 1 } } : {}),
   };
-
-  const interestOptions = [];
-  depts.forEach((d) => d.hospitals.forEach((h) => interestOptions.push(`${h.name} — ${h.program}`)));
-
-  return (
-    <div style={{ marginTop: 28 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
-        <Mail size={15} /> Contact us
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>Talk to a care coordinator</h1>
-      <p style={{ fontSize: 15, color: SUB, margin: "0 0 24px" }}>Tell us a little about what you need. A coordinator replies within one business day.</p>
-
-      <div style={{ display: "flex", gap: 20, flexWrap: "wrap", alignItems: "flex-start" }}>
-        {/* form */}
-        <div style={{ flex: 1, minWidth: 300 }}>
-          {sent ? (
-            <div style={{ background: "#fff", border: `1px solid ${TEAL}`, borderRadius: 16, padding: 32, textAlign: "center" }}>
-              <div style={{ width: 56, height: 56, borderRadius: "50%", background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", margin: "0 auto 14px" }}>
-                <CheckCircle2 size={30} />
-              </div>
-              <h3 style={{ fontSize: 20, fontWeight: 800, color: INK, margin: "0 0 6px" }}>Thanks, {form.name.split(" ")[0] || "there"}!</h3>
-              <p style={{ fontSize: 14, color: SUB, margin: "0 0 18px", lineHeight: 1.6 }}>Your request has been received. A KoreCare coordinator will reach out to <b>{form.email}</b> within one business day.</p>
-              <button onClick={() => { setSent(false); setForm({ name: "", email: "", phone: "", interest: "", message: "" }); }} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}` }}>Send another message</button>
-            </div>
-          ) : (
-            <form onSubmit={submit} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
-              <Field label="Full name *">
-                <input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Jane Doe" style={contactInput} />
-              </Field>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="contact-row">
-                <Field label="Email *">
-                  <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="jane@email.com" style={contactInput} />
-                </Field>
-                <Field label="Phone">
-                  <input value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+1 555 000 0000" style={contactInput} />
-                </Field>
-              </div>
-              <Field label="Program of interest">
-                <select value={form.interest} onChange={(e) => set("interest", e.target.value)} style={{ ...contactInput, background: "#fff" }}>
-                  <option value="">— Select a program (optional) —</option>
-                  {interestOptions.map((o) => <option key={o} value={o}>{o}</option>)}
-                </select>
-              </Field>
-              <Field label="Message">
-                <textarea value={form.message} onChange={(e) => set("message", e.target.value)} rows={5} placeholder="Tell us about your condition, timing, or questions…" style={{ ...contactInput, resize: "vertical", fontFamily: "inherit" }} />
-              </Field>
-              {err && <div style={{ fontSize: 13, color: ACCENT, background: ACCENT_SOFT, borderRadius: 8, padding: "8px 12px", marginBottom: 4 }}>{err}</div>}
-              <button type="submit" disabled={!valid || submitting} style={{ ...btn(valid && !submitting ? TEAL : "#cfd8dd", "#fff"), width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, cursor: valid && !submitting ? "pointer" : "not-allowed", marginTop: 4 }}>
-                <Send size={16} /> {submitting ? "Sending…" : "Send request"}
-              </button>
-              <div style={{ fontSize: 11.5, color: MUTE, textAlign: "center", marginTop: 10 }}>By sending, you agree to be contacted about your inquiry. We never share your information.</div>
-            </form>
-          )}
-        </div>
-
-        {/* contact info */}
-        <div style={{ width: 300, flexShrink: 0 }} className="contact-aside">
-          <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
-            <h3 style={{ fontSize: 15, fontWeight: 800, color: INK, margin: "0 0 14px" }}>Reach us directly</h3>
-            <ContactRow icon={<Mail size={16} />} label="Email" value="care@korecare.example" />
-            <ContactRow icon={<Phone size={16} />} label="Coordinator line" value="+1 (888) 555-0142" />
-            <ContactRow icon={<MessageSquare size={16} />} label="Hours" value="Mon–Fri, 9am–6pm ET" />
-            <ContactRow icon={<Users size={16} />} label="In Korea" value="Seoul international patient desk" last />
-          </div>
-          <div style={{ background: TEAL_SOFT, borderRadius: 16, padding: 18, marginTop: 12, fontSize: 13, color: TEAL, display: "flex", gap: 10 }}>
-            <Shield size={18} style={{ flexShrink: 0 }} />
-            <span>Referred by your insurer? Mention it and we'll fast-track your coverage check.</span>
-          </div>
-        </div>
-      </div>
-      <style>{`@media(max-width:760px){.contact-aside{width:100%!important}.contact-row{grid-template-columns:1fr!important}}`}</style>
-    </div>
-  );
-}
-
-function Field({ label, children }) {
-  return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{ fontSize: 12.5, fontWeight: 700, color: SUB, marginBottom: 6 }}>{label}</div>
+  const Block = ({ eyebrow, children, mt = 48 }) => (
+    <div style={{ marginTop: mt }}>
+      <PvEyebrow>{eyebrow}</PvEyebrow>
       {children}
     </div>
   );
-}
-function ContactRow({ icon, label, value, last }) {
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 12, paddingBottom: last ? 0 : 14, marginBottom: last ? 0 : 14, borderBottom: last ? "none" : `1px solid ${LINE}` }}>
-      <span style={{ color: TEAL, marginTop: 1 }}>{icon}</span>
-      <div>
-        <div style={{ fontSize: 11.5, color: MUTE }}>{label}</div>
-        <div style={{ fontSize: 14, color: INK, fontWeight: 600 }}>{value}</div>
+    <>
+      <Seo title={tx(p.name, lang)} description={tx(p.blurb, lang)} path={`/providers/${p.id}`}
+        jsonLd={[breadcrumbJsonLd([{ name: "Providers", path: "/providers" }, { name: tx(p.name, lang), path: `/providers/${p.id}` }]), hospitalLd]} />
+      {/* 네이비 풀블리드 히어로 */}
+      <div style={{ background: NAVY, color: "#fff" }}>
+        <div style={{ ...WRAP, padding: "52px 28px 64px" }}>
+          <button onClick={() => navigate("/providers")} style={{ border: "none", background: "transparent", cursor: "pointer", color: "rgba(255,255,255,0.72)", display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, fontWeight: 600, padding: 0 }}><ArrowLeft size={15} /> {tr("Providers", lang)}</button>
+          <div style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: AQUA, margin: "22px 0 16px" }}>{tr("Providers", lang)}</div>
+          <h1 style={{ fontFamily: DISPLAY, fontSize: "clamp(34px, 5vw, 60px)", fontWeight: 800, lineHeight: 1.02, letterSpacing: "-0.025em", margin: 0 }}>{tx(p.name, lang)}</h1>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 14, marginTop: 20, color: "rgba(255,255,255,0.8)", fontSize: 14 }}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><MapPin size={15} /> {tx(p.area, lang)}</span>
+            <span style={{ opacity: 0.4 }}>·</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}><Star size={15} fill={STAR} color={STAR} /> {ratingStr(p)} ({p.reviews.toLocaleString()} {reviewsLabel})</span>
+          </div>
+        </div>
       </div>
-    </div>
-  );
-}
-const contactInput = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 9, padding: "10px 12px", fontSize: 14, color: INK, outline: "none", boxSizing: "border-box" };
-
-/* ------------------------------- Footer ------------------------------- */
-function Footer({ brand, onNav, onHome, lang = "en" }) {
-  const L = LANDING[lang];
-  // 컬럼 라벨 → 실제 라우트 이동 매핑 (디자인 라벨은 LANDING 사전, 동작은 기존 라우트)
-  const progNav = [() => onHome(), () => onNav({ name: "treatments" }), () => onNav({ name: "treatments" }), () => onNav({ name: "howitworks" })];
-  const companyNav = [() => onNav({ name: "about" }), () => onNav({ name: "faq" }), () => onNav({ name: "contact" }), () => onNav({ name: "blog" })];
-  const legalNav = [() => onNav({ name: "legal", doc: "privacy" }), () => onNav({ name: "legal", doc: "terms" }), () => onNav({ name: "legal", doc: "refund" })];
-  const col = (title, items, navs) => (
-    <div>
-      <div style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 14 }}>{title}</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-        {items.map((label, i) => (
-          <button key={i} onClick={navs[i]} style={footerLink}>{label}</button>
-        ))}
+      {/* 병원 사진 모자이크 (Creatrip식: 큰 메인 + 2x2 썸네일 + VIEW ALL) — 히어로 직하단 */}
+      <div style={{ ...WRAP, padding: "22px 28px 6px" }}>
+        <div className="gal-mosaic">
+          {gallery.slice(0, 5).map((src, i) => {
+            const moreCount = gallery.length - 5; // 5번째 셀에 +N 오버레이
+            const showMore = i === 4 && moreCount > 0;
+            return (
+              <div key={i} className={`gal-cell${i === 0 ? " main" : ""}`} onClick={() => setLb(i)} role="button" tabIndex={0}
+                onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setLb(i); } }}>
+                <img src={src} alt={`${tx(p.name, lang)} ${tr("photo", lang)} ${i + 1}`} loading={i === 0 ? "eager" : "lazy"} />
+                {showMore && <div className="gal-more">+{moreCount}</div>}
+              </div>
+            );
+          })}
+          {gallery.length > 1 && (
+            <button className="gal-viewall" onClick={() => setLb(0)}>
+              <Folder size={15} /> {tr("VIEW ALL", lang)} ({gallery.length})
+            </button>
+          )}
+        </div>
+        <p style={{ fontSize: 11.5, color: MUTE, marginTop: 12 }}>{tr("Hospital photos/GIFs are replaced with real images when admin data is connected.", lang)}</p>
       </div>
-    </div>
-  );
-  return (
-    <div style={{ background: NAVY, color: "#aebdd8", marginTop: "auto" }}>
-      <div style={{ maxWidth: 1180, margin: "0 auto", padding: "52px 28px", display: "grid", gridTemplateColumns: "1.5fr 1fr 1fr 1fr", gap: 32 }} className="kc-footer-grid">
+      {/* 본문 2단 (좌 콘텐츠 / 우 사이드바) */}
+      <div style={{ ...WRAP, padding: "20px 28px 90px", display: "grid", gridTemplateColumns: "1fr 320px", gap: 48, alignItems: "start" }} className="g-2">
         <div>
-          <button onClick={onHome} style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16, background: "none", border: "none", cursor: "pointer", padding: 0 }}>
-            <span style={{ display: "inline-flex", width: 28, height: 28, borderRadius: 8, background: TEAL, color: "#fff", alignItems: "center", justifyContent: "center", fontFamily: DISPLAY, fontSize: 15, fontWeight: 800 }}>K</span>
-            <span style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 800, color: "#fff" }}>{brand.name}</span>
-          </button>
-          <p style={{ fontSize: 13.5, lineHeight: 1.6, margin: "0 0 16px", maxWidth: 280 }}>{L.footerBlurb}</p>
-          <div style={{ display: "flex", gap: 10 }}>
-            {["JCI", "ISO 9001", "HIPAA"].map((b) => (
-              <span key={b} style={{ fontSize: 11, fontWeight: 800, color: "#fff", border: `1.5px solid ${NAVY_LINE}`, borderRadius: 5, padding: "4px 8px" }}>{b}</span>
+          {/* About */}
+          <Block eyebrow={tr("Overview", lang)} mt={48}>
+            <h2 style={{ fontFamily: DISPLAY, fontSize: "clamp(24px,2.4vw,30px)", fontWeight: 800, color: INK, margin: "0 0 14px", letterSpacing: "-0.02em" }}>{tr("About", lang)}</h2>
+            <p style={{ fontSize: 15.5, color: SUB, lineHeight: 1.75, margin: 0 }}>{tx(p.blurb, lang)}</p>
+          </Block>
+          {/* Trust & safety */}
+          <Block eyebrow={tr("Trust & safety", lang)}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="g-2">
+              {trust.map(([ok, label], i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: 16, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 10 }}>
+                  <span style={{ width: 28, height: 28, borderRadius: "50%", display: "grid", placeItems: "center", flexShrink: 0, background: ok ? BLUE : CLOUD, color: ok ? "#fff" : MUTE }}>{ok ? <Check size={15} /> : <Shield size={14} />}</span>
+                  <span style={{ fontSize: 13.5, fontWeight: 700, color: INK, lineHeight: 1.45 }}>{label}</span>
+                </div>
+              ))}
+            </div>
+          </Block>
+          {/* Departments (chips → 목록 필터) */}
+          <Block eyebrow={tr("Departments", lang)}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {p.departments.map((d) => (
+                <button key={d} onClick={() => navigate("/providers")} style={{ cursor: "pointer", fontSize: 13, fontWeight: 600, color: SUB, background: CLOUD, border: "none", borderRadius: 999, padding: "7px 14px" }}>{deptLabel(d, lang)}</button>
+              ))}
+            </div>
+          </Block>
+          {/* Languages */}
+          <Block eyebrow={lang === "ko" ? "통역 가능 언어" : "Languages"}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+              {(p.languages || []).map((l) => <span key={l} style={{ fontSize: 13, fontWeight: 600, color: INK, border: `1px solid ${LINE}`, borderRadius: 999, padding: "6px 13px" }}>{langLabel(l, lang)}</span>)}
+            </div>
+          </Block>
+          {/* 시술 (진료과 매칭) — 접이식 카드 + 금액/포함항목/시술상세/장바구니 */}
+          {procs.length > 0 && (
+            <Block eyebrow={tr("Treatments", lang)}>
+              <div style={{ display: "grid", gap: 12 }}>
+                {procs.map((pr) => {
+                  const open = openProc === pr.id;
+                  const dc = Math.round((1 - pr.price / pr.listPrice) * 100);
+                  const inCart = mounted && store.inCart(pr.id);
+                  return (
+                    <div key={pr.id} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, overflow: "hidden" }}>
+                      <button onClick={() => setOpenProc(open ? null : pr.id)} style={{ width: "100%", textAlign: "start", cursor: "pointer", background: open ? SECTION_TINT : "#fff", border: "none", padding: "16px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 11.5, fontWeight: 700, color: BLUE, marginBottom: 4 }}>{tx(pr.dept, lang)}</div>
+                          <div style={{ fontFamily: DISPLAY, fontSize: 16, fontWeight: 800, color: INK }}>{tx(pr.name, lang)}</div>
+                          <div style={{ display: "flex", alignItems: "baseline", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
+                            <span style={{ fontSize: 12.5, color: "#9aa7bd", textDecoration: "line-through" }}>${usd(pr.listPrice).toLocaleString()}</span>
+                            <span style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 800, color: BLUE }}>${usd(pr.price).toLocaleString()}</span>
+                            <span style={{ fontSize: 12, color: SUB }}>≈ {krw(pr.price)}</span>
+                            {dc > 0 && <span style={{ fontSize: 11.5, fontWeight: 800, color: ACCENT }}>{dc}%↓</span>}
+                          </div>
+                        </div>
+                        <ChevronDown size={20} color={MUTE} style={{ flexShrink: 0, transform: open ? "rotate(180deg)" : "none", transition: "transform .15s" }} />
+                      </button>
+                      {open && (
+                        <div style={{ padding: "2px 18px 18px" }}>
+                          <div style={{ fontSize: 11.5, fontWeight: 800, color: MUTE, textTransform: "uppercase", letterSpacing: ".06em", margin: "10px 0 8px" }}>{tr("What's included", lang)}</div>
+                          <div style={{ display: "grid", gap: 6, marginBottom: 14 }}>
+                            {tx(pr.includes, lang).map((x, j) => <div key={j} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13.5, color: SUB }}><Check size={15} color={BLUE} /> {x}</div>)}
+                          </div>
+                          <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.65, margin: "0 0 16px" }}>{tx(pr.summary, lang)}</p>
+                          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                            <button onClick={() => navigate(`/treatments/${pr.id}`)} style={{ ...btn(BLUE, "#fff"), padding: "10px 18px" }}>{tr("View treatment", lang)} <ArrowRight size={14} /></button>
+                            {inCart
+                              ? <button onClick={() => navigate("/cart")} style={{ ...btn("#eaf0ff", BLUE), border: `1px solid ${BLUE}`, padding: "10px 18px", display: "inline-flex", alignItems: "center", gap: 8 }}><Check size={15} /> {tr("Saved", lang)}</button>
+                              : <button onClick={() => store.addToCart(pr.id)} style={{ ...btn("#fff", BLUE), border: `1px solid ${BLUE}`, padding: "10px 18px", display: "inline-flex", alignItems: "center", gap: 8 }}><Heart size={15} /> {tr("Save", lang)}</button>}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </Block>
+          )}
+          {/* 리뷰 — 평점 집계 + 리뷰 카드 (제목·병원명 제외) */}
+          <Block eyebrow={lang === "ko" ? "리뷰" : "Reviews"}>
+            <div style={{ display: "flex", alignItems: "center", gap: 18, padding: "18px 22px", background: SECTION_TINT, border: `1px solid ${LINE}`, borderRadius: 14, marginBottom: 16 }}>
+              <div style={{ fontFamily: DISPLAY, fontSize: 38, fontWeight: 800, color: INK, lineHeight: 1 }}>{ratingStr(p)}</div>
+              <div>
+                <div style={{ color: STAR, fontSize: 16, letterSpacing: 2 }}>{"★".repeat(Math.round(p.reviews ? p.rating : 0))}{"☆".repeat(5 - Math.round(p.reviews ? p.rating : 0))}</div>
+                <div style={{ fontSize: 13, color: SUB, marginTop: 4 }}>{p.reviews.toLocaleString()} {reviewsLabel}</div>
+              </div>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }} className="g-2">
+              {REVIEWS.map((r) => (
+                <div key={r.id} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 20 }}>
+                  <div style={{ color: STAR, fontSize: 14, letterSpacing: 1, marginBottom: 10 }}>{"★".repeat(r.rating)}</div>
+                  <p style={{ fontSize: 14, lineHeight: 1.65, color: "#1e293b", margin: "0 0 14px", fontWeight: 500 }}>"{tx(r.text, lang)}"</p>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, flexWrap: "wrap" }}>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: BLUE, background: SECTION_TINT, borderRadius: 999, padding: "4px 11px" }}>{tx(r.treatment, lang)}</span>
+                    <span style={{ fontSize: 12, color: MUTE }}>{tx(r.author, lang)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: 11.5, color: MUTE, marginTop: 12 }}>{tr("Patient nationality and review date appear when admin data is connected.", lang)}</p>
+          </Block>
+        </div>
+        {/* 사이드바: SafeDoc 상담 + 병원 정보 */}
+        <aside style={{ position: "sticky", top: 90 }}>
+          <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 24, boxShadow: "0 8px 28px rgba(15,23,42,.08)" }}>
+            <div style={{ fontSize: 11, fontWeight: 800, color: MUTE, letterSpacing: ".12em", textTransform: "uppercase" }}>SafeDoc</div>
+            <h3 style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 800, color: INK, margin: "10px 0 8px" }}>{tr("Book a visit", lang)}</h3>
+            <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.6, margin: "0 0 16px" }}>{tr("Pick a treatment and request a booking — a coordinator confirms the schedule and interpretation with this hospital.", lang)}</p>
+            <button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff"), width: "100%" }}>{tr("Request a booking", lang)} <ArrowRight size={15} /></button>
+          </div>
+          <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 24, marginTop: 18 }}>
+            <div style={{ fontSize: 11, fontWeight: 800, color: MUTE, letterSpacing: ".12em", textTransform: "uppercase", marginBottom: 14 }}>{tr("Hospital info", lang)}</div>
+            <div style={{ marginBottom: 14 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: MUTE, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 4 }}>{lang === "ko" ? "위치" : "Location"}</div>
+              <div style={{ fontSize: 14, color: INK, display: "inline-flex", alignItems: "center", gap: 6 }}><MapPin size={14} color={MUTE} /> {tx(p.area, lang)}</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, fontWeight: 700, color: MUTE, textTransform: "uppercase", letterSpacing: ".06em", marginBottom: 4 }}>{tr("Rating", lang)}</div>
+              <div style={{ fontSize: 14, color: INK }}>{ratingStr(p)}★ <span style={{ color: SUB }}>({p.reviews.toLocaleString()} {reviewsLabel})</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+      {/* 라이트박스(전체 보기) — 사진 클릭 / VIEW ALL 시 오픈 */}
+      {mounted && lb !== null && gallery[lb] && (
+        <div className="lb-ov" onClick={() => setLb(null)} role="dialog" aria-modal="true" aria-label={tr("Hospital photo gallery", lang)}>
+          <button className="lb-close" onClick={() => setLb(null)} aria-label={tr("Close", lang)}><X size={20} /></button>
+          <div className="lb-stage" onClick={(e) => e.stopPropagation()}>
+            <button className="lb-nav" style={{ left: 8 }} onClick={() => setLb((i) => (i - 1 + gallery.length) % gallery.length)} aria-label="Previous"><ChevronRight size={22} style={{ transform: "rotate(180deg)" }} /></button>
+            <img src={gallery[lb]} alt={`${tx(p.name, lang)} ${lb + 1}/${gallery.length}`} />
+            <button className="lb-nav" style={{ right: 8 }} onClick={() => setLb((i) => (i + 1) % gallery.length)} aria-label="Next"><ChevronRight size={22} /></button>
+          </div>
+          <div style={{ color: "rgba(255,255,255,.7)", fontSize: 13, fontWeight: 700, marginTop: 14 }}>{tx(p.name, lang)} · {lb + 1} / {gallery.length}</div>
+          <div className="lb-thumbs" onClick={(e) => e.stopPropagation()}>
+            {gallery.map((src, i) => (
+              <div key={i} className={`lb-thumb${i === lb ? " on" : ""}`} onClick={() => setLb(i)}>
+                <img src={src} alt="" loading="lazy" />
+              </div>
             ))}
           </div>
         </div>
-        {col(L.footerPrograms, L.footProgItems, progNav)}
-        {col(L.footerCompany, L.footCompanyItems, companyNav)}
-        {col(L.footerLegal, L.footLegalItems, legalNav)}
-      </div>
-      <div style={{ borderTop: `1px solid ${NAVY_LINE}` }}>
-        <div style={{ maxWidth: 1180, margin: "0 auto", padding: "18px 28px", display: "flex", justifyContent: "space-between", gap: 12, flexWrap: "wrap", fontSize: 12.5, color: "#7d92b8" }}>
-          <span>{L.footNote}</span>
-          <span style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-            <a href="/admin" style={{ color: "#7d92b8", textDecoration: "none" }}>운영자 어드민</a>
-            <a href="/hospital-admin" style={{ color: "#7d92b8", textDecoration: "none" }}>병원 관리자</a>
-            <span>{L.footNote2}</span>
-          </span>
-        </div>
-      </div>
-      <style>{`@media(max-width:760px){.kc-footer-grid{grid-template-columns:1fr 1fr!important}}`}</style>
-    </div>
-  );
-}
-const footerLink = { border: "none", background: "transparent", cursor: "pointer", color: "#aebdd8", fontSize: 13.5, padding: 0, fontWeight: 500, textAlign: "left" };
-
-/* ========================================================================
-   ABOUT  (mirrors SafeDoc "Company")
-   ======================================================================== */
-function AboutPage({ insurer, onContact, onPrograms }) {
-  const stats = [
-    { n: "500+", l: "Partner hospitals & clinics in Korea" },
-    { n: "12", l: "JCI-accredited tertiary centers" },
-    { n: "60%+", l: "Average savings vs. US list price" },
-    { n: "24/7", l: "English coordinator support" },
-  ];
-  const values = [
-    { icon: Shield, t: "Insurer-aligned", d: "We work directly with referrers so covered programs are clear before you commit." },
-    { icon: Award, t: "Accredited only", d: "Every partner is internationally accredited (JCI) with a dedicated international patient center." },
-    { icon: Users, t: "One team, end to end", d: "From records review to US aftercare, a single coordinator owns your journey." },
-  ];
-  return (
-    <div style={{ marginTop: 28, maxWidth: 860 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
-        <Building2 size={15} /> About KoreCare
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>World-class care in Korea, fully managed</h1>
-      <p style={{ fontSize: 15.5, color: SUB, margin: "0 0 22px", lineHeight: 1.6 }}>
-        KoreCare connects internationally-referred patients with Korea's top accredited hospitals — and manages
-        every step around the procedure. Your insurer covers the treatment; we handle travel, language, recovery,
-        and follow-up so you never coordinate a single vendor yourself.
-      </p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12 }} className="about-stats">
-        {stats.map((s, i) => (
-          <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 16 }}>
-            <div style={{ fontSize: 24, fontWeight: 800, color: TEAL }}>{s.n}</div>
-            <div style={{ fontSize: 12.5, color: SUB, marginTop: 4, lineHeight: 1.4 }}>{s.l}</div>
-          </div>
-        ))}
-      </div>
-
-      <SectionDivider />
-
-      <h3 style={{ fontSize: 18, fontWeight: 800, color: INK, margin: "0 0 14px" }}>What we stand for</h3>
-      <div style={{ display: "grid", gap: 12 }}>
-        {values.map((v, i) => {
-          const Icon = v.icon;
-          return (
-            <div key={i} style={{ display: "flex", gap: 14, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 16 }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", flexShrink: 0 }}><Icon size={20} /></div>
-              <div>
-                <div style={{ fontWeight: 700, color: INK, fontSize: 15 }}>{v.t}</div>
-                <div style={{ fontSize: 13.5, color: SUB, marginTop: 3, lineHeight: 1.5 }}>{v.d}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={{ marginTop: 22, background: TEAL_SOFT, borderRadius: 14, padding: 20, fontSize: 13.5, color: TEAL, display: "flex", gap: 10, alignItems: "flex-start" }}>
-        <Shield size={18} style={{ flexShrink: 0, marginTop: 1 }} />
-        <span>Referred by <b>{insurer}</b>? Your covered programs are highlighted across the site — start from Programs or talk to a coordinator.</span>
-      </div>
-
-      <div style={{ display: "flex", gap: 10, marginTop: 18, flexWrap: "wrap" }}>
-        <button onClick={onPrograms} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 8 }}>Browse programs <ChevronRight size={16} /></button>
-        <button onClick={onContact} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}`, display: "inline-flex", alignItems: "center", gap: 8 }}>Contact us</button>
-      </div>
-      <style>{`@media(max-width:760px){.about-stats{grid-template-columns:1fr 1fr!important}}`}</style>
-    </div>
+      )}
+    </>
   );
 }
 
-/* ========================================================================
-   HOW IT WORKS  (mirrors SafeDoc "Service" + Transportation/Accommodation/Tour)
-   ======================================================================== */
-function HowItWorksPage({ onPrograms, onContact }) {
-  const journey = [
-    { icon: Stethoscope, t: "1 · Match & review", d: "Share your records. We match a covered program and confirm your out-of-pocket before you commit." },
-    { icon: Plane, t: "2 · Transportation", d: "Flights, visa support and airport pickup arranged for you and one companion." },
-    { icon: Hotel, t: "3 · Accommodation", d: "Hospital-adjacent recovery stay booked to fit your treatment schedule." },
-    { icon: Languages, t: "4 · In-Korea support", d: "A dedicated English coordinator and medical interpreter join every appointment." },
-    { icon: MapPin, t: "5 · Tour & recovery", d: "Optional guided tours and wellness activities during recovery downtime." },
-    { icon: HeartPulse, t: "6 · US aftercare", d: "We prepare your medical summary and coordinate follow-up with your home doctor." },
-  ];
+function SimpleServicePage({ id }) {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const SERVICES = getCollection("services");
+  const svc = SERVICES.find((s) => s.id === id);
+  const Icon = ICONS[svc?.icon] || Stethoscope;
+  const img = { transportation: "https://images.unsplash.com/photo-1494515843206-f3117d3f51b7?w=1200&q=80", accommodation: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80", tour: "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1200&q=80", association: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1200&q=80" }[id];
   return (
-    <div style={{ marginTop: 28, maxWidth: 920 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
-        <Plane size={15} /> How it works
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>One team, the whole journey</h1>
-      <p style={{ fontSize: 15.5, color: SUB, margin: "0 0 24px", lineHeight: 1.6 }}>
-        Your insurer covers the procedure — KoreCare manages everything around it. Transportation, accommodation,
-        language, tours and aftercare are all handled by a single coordinator.
-      </p>
-
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }} className="how-grid">
-        {journey.map((s, i) => {
-          const Icon = s.icon;
-          return (
-            <div key={i} style={{ display: "flex", gap: 14, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18 }}>
-              <div style={{ width: 42, height: 42, borderRadius: 10, background: TEAL_SOFT, color: TEAL, display: "grid", placeItems: "center", flexShrink: 0 }}><Icon size={20} /></div>
-              <div>
-                <div style={{ fontWeight: 700, color: INK, fontSize: 15 }}>{s.t}</div>
-                <div style={{ fontSize: 13.5, color: SUB, marginTop: 3, lineHeight: 1.5 }}>{s.d}</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={{ marginTop: 24, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 22, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+    <>
+      <Seo title={tx(svc, lang)} description={tx(svc.desc, lang)} path={svc.path} jsonLd={breadcrumbJsonLd([{ name: "Service", path: "/service" }, { name: tx(svc, lang), path: svc.path }])} />
+      <PageHeader eyebrow={tr("Service", lang)} title={tx(svc, lang)} sub={tx(svc.desc, lang)} />
+      <div style={{ ...WRAP, padding: "60px 28px", display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 32, alignItems: "center" }} className="g-2">
         <div>
-          <div style={{ fontSize: 16, fontWeight: 800, color: INK }}>Ready to see covered programs?</div>
-          <div style={{ fontSize: 13.5, color: SUB, marginTop: 2 }}>Browse by department and see your savings instantly.</div>
+          <div style={{ width: 48, height: 48, borderRadius: 12, background: SECTION_TINT, color: BLUE, display: "grid", placeItems: "center", marginBottom: 18 }}><Icon size={24} /></div>
+          <p style={{ fontSize: 16, color: SUB, lineHeight: 1.7, margin: "0 0 24px" }}>{tx(svc.desc, lang)} {tr("A dedicated coordinator arranges everything around your schedule.", lang)}</p>
+          <button onClick={() => navigate("/contact")} style={{ ...btn(BLUE, "#fff") }}>{tr("Talk to a coordinator", lang)}</button>
         </div>
-        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <button onClick={onPrograms} style={{ ...btn(TEAL, "#fff"), display: "inline-flex", alignItems: "center", gap: 8 }}>View programs <ChevronRight size={16} /></button>
-          <button onClick={onContact} style={{ ...btn("#fff", TEAL), border: `1px solid ${TEAL}` }}>Contact us</button>
+        <img src={img} alt={tx(svc, lang)} style={{ width: "100%", height: 300, objectFit: "cover", borderRadius: 18 }} />
+      </div>
+    </>
+  );
+}
+
+function CompanyPage() {
+  const { lang } = useOutletContext();
+  const values = lang === "ko"
+    ? [["신뢰", "국제 인증 병원만 제휴합니다."], ["투명성", "예약 전 비용을 명확히 안내합니다."], ["전 과정 관리", "검진·시술·교통·숙박을 한 팀이 책임집니다."]]
+    : [["Trust", "We partner only with internationally accredited hospitals."], ["Transparency", "Costs are confirmed clearly before you book."], ["End-to-end", "One team handles checkups, procedures, transport and stay."]];
+  return (
+    <>
+      <Seo title={tr("Company", lang)} description={tx(HERO.sub, lang)} path="/company" jsonLd={breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Company", path: "/company" }])} />
+      <PageHeader eyebrow={tr("Company", lang)} title="SafeDoc Global" sub={tx(HERO.sub, lang)} />
+      <div style={{ ...WRAP, padding: "60px 28px" }}>
+        <div className="g-3">
+          {values.map((v, i) => (
+            <div key={i} style={{ background: "#fff", border: "1px solid #e7ecf5", borderRadius: 16, padding: 28 }}>
+              <div style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 800, color: INK, marginBottom: 8 }}>{v[0]}</div>
+              <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: 0 }}>{v[1]}</p>
+            </div>
+          ))}
         </div>
       </div>
-      <style>{`@media(max-width:760px){.how-grid{grid-template-columns:1fr!important}}`}</style>
+      <WhyKorea lang={lang} />
+    </>
+  );
+}
+
+function ContactPage() {
+  const { lang } = useOutletContext();
+  const u = UI[lang];
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [sent, setSent] = useState(false);
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+  const submit = async (e) => { e.preventDefault(); await submitLead(form).catch(() => {}); setSent(true); };
+  return (
+    <>
+      <Seo title={tr("Contact Us", lang)} description={tr("Talk to a SafeDoc Global coordinator.", lang)} path="/contact" />
+      <PageHeader eyebrow={tr("Contact Us", lang)} title={lang === "ko" ? "코디네이터와 상담하세요" : "Talk to a coordinator"} sub={tr("Checkups, procedures, scheduling — we reply within 24 hours.", lang)} />
+      <div style={{ ...WRAP, padding: "60px 28px", display: "grid", gridTemplateColumns: "1fr 1.2fr", gap: 40 }} className="g-2">
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          {[[Mail, BRAND.email], [Phone, "+82 2-0000-0000"], [MapPin, lang === "ko" ? BRAND.addrKo : BRAND.addrEn]].map(([Ic, v], i) => (
+            <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
+              <div style={{ width: 40, height: 40, borderRadius: 10, background: SECTION_TINT, color: BLUE, display: "grid", placeItems: "center", flexShrink: 0 }}><Ic size={18} /></div>
+              <span dir={(Ic === Phone || Ic === Mail) ? "ltr" : undefined} style={{ fontSize: 14.5, color: SUB, paddingTop: 9, unicodeBidi: "isolate" }}>{v}</span>
+            </div>
+          ))}
+          {/* 상담 채널 (지역별 메신저) */}
+          <div style={{ marginTop: 6 }}>
+            <div style={{ fontSize: 12.5, fontWeight: 800, color: INK, marginBottom: 10 }}>{tr("Chat with us", lang)}</div>
+            <ChannelButtons lang={lang} />
+          </div>
+        </div>
+        <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 28 }}>
+          {sent ? (
+            <div style={{ textAlign: "center", padding: "40px 0" }}>
+              <div style={{ width: 56, height: 56, borderRadius: "50%", background: SECTION_TINT, color: BLUE, display: "grid", placeItems: "center", margin: "0 auto 16px" }}><Check size={28} /></div>
+              <div style={{ fontSize: 18, fontWeight: 800, color: INK }}>{tr("Message received", lang)}</div>
+              <p style={{ fontSize: 14, color: SUB }}>{tr("We'll be in touch shortly.", lang)}</p>
+            </div>
+          ) : (
+            <form onSubmit={submit} style={{ display: "grid", gap: 14 }}>
+              {[["name", tr("Name", lang)], ["email", "Email"], ["phone", tr("Phone (with country code)", lang)]].map(([k, label]) => (
+                <label key={k} style={{ fontSize: 13, fontWeight: 700, color: INK }}>{label}
+                  <input required={k !== "phone"} type={k === "email" ? "email" : k === "phone" ? "tel" : "text"} value={form[k] || ""} onChange={set(k)} style={{ display: "block", width: "100%", marginTop: 6, padding: "12px 14px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 14, boxSizing: "border-box" }} />
+                </label>
+              ))}
+              <label style={{ fontSize: 13, fontWeight: 700, color: INK }}>{tr("Hospital category", lang)}
+                <select required value={form.category || ""} onChange={set("category")} style={{ display: "block", width: "100%", marginTop: 6, padding: "12px 14px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 14, boxSizing: "border-box" }}>
+                  <option value="" disabled>{tr("Select", lang)}</option>
+                  {(lang === "ko" ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과"] : ["Health check-up", "General hospital", "Dermatology", "Plastic surgery", "Ophthalmology", "Dental", "Obstetrics", "Urology", "Orthopedics"]).map((c) => <option key={c}>{c}</option>)}
+                </select>
+              </label>
+              <label style={{ fontSize: 13, fontWeight: 700, color: INK }}>{tr("Message", lang)}
+                <textarea required rows={4} value={form.message} onChange={set("message")} placeholder={tr("Tell us about the treatment you're considering", lang)} style={{ display: "block", width: "100%", marginTop: 6, padding: "12px 14px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 14, boxSizing: "border-box", resize: "vertical" }} />
+              </label>
+              <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: SUB }}><input type="checkbox" required /> {tr("I'm not a robot", lang)}</label>
+              <button type="submit" style={{ ...btn(BLUE, "#fff"), display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Send size={16} /> {u.send}</button>
+              {/* 접수 시 자동화: 고객 이메일 + 글로벌팀 슬랙 알림 (백엔드 연동 필요) */}
+            </form>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function FaqPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const FAQS = getCollection("faqs");
+  return (
+    <>
+      <Seo title="FAQ" description={tr("FAQs on checkups, Revital, payment and refunds.", lang)} path="/faq" jsonLd={faqJsonLd(FAQS.map((f) => ({ q: tx(f.q, lang), a: tx(f.a, lang) })))} />
+      <PageHeader eyebrow="FAQ" title={tr("Frequently asked questions", lang)} />
+      <FaqSection lang={lang} navigate={navigate} />
+    </>
+  );
+}
+
+/* 블로그 헬퍼 — 날짜 포맷 · 카테고리 조회 · 읽기 시간 라벨 */
+function fmtBlogDate(d, lang) {
+  const [y, m, day] = String(d).split("-").map(Number);
+  if (lang === "ko") return `${y}년 ${m}월 ${day}일`;
+  const M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${M[(m || 1) - 1]} ${day}, ${y}`;
+}
+function blogCat(catId) { return BLOG_CATS.find((c) => c.id === catId); }
+function readLabel(n, lang) { return lang === "ko" ? `${n}분 읽기` : `${n} min read`; }
+
+/* 카테고리 뱃지(필) — 밝은 SafeDoc 블루 틴트 */
+function CatBadge({ catId, lang, style }) {
+  const c = blogCat(catId);
+  if (!c) return null;
+  return (
+    <span style={{ display: "inline-block", background: BLUE_SOFT, color: BLUE, fontSize: 11.5, fontWeight: 800, letterSpacing: "0.03em", borderRadius: 999, padding: "5px 11px", textTransform: "uppercase", ...style }}>
+      {tx(c, lang)}
+    </span>
+  );
+}
+
+/* 인기·관련 카드 (썸네일 + 제목 + 발췌 + by 저자 + 카테고리 뱃지) */
+function BlogGridCard({ p, lang, navigate }) {
+  return (
+    <button className="blog-gcard" onClick={() => navigate(`/blog/${p.id}`)}>
+      <div className="thumb"><img src={p.image} alt={tx(p.title, lang)} loading="lazy" /></div>
+      <div style={{ padding: "18px 20px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
+        <div style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: INK, lineHeight: 1.35, letterSpacing: "-0.01em", marginBottom: 8 }}>{tx(p.title, lang)}</div>
+        <p className="ex" style={{ fontSize: 13.5, color: SUB, lineHeight: 1.6, margin: "0 0 18px" }}>{tx(p.excerpt, lang)}</p>
+        <div style={{ marginTop: "auto", borderTop: "1px dashed #D8DEE8", paddingTop: 14, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}>
+          <span style={{ fontSize: 12.5, color: MUTE, fontWeight: 600 }}>by {tx(p.author, lang)}</span>
+          <span style={{ fontSize: 12.5, color: BLUE, fontWeight: 800, letterSpacing: "0.01em" }}>{tx(blogCat(p.category) || {}, lang)}</span>
+        </div>
+      </div>
+    </button>
+  );
+}
+
+/* 하단 리스트 행 (카테고리 라벨 | 제목 | 날짜·읽기) */
+function BlogListRow({ p, lang, navigate }) {
+  const c = blogCat(p.category);
+  return (
+    <button className="blog-lrow" onClick={() => navigate(`/blog/${p.id}`)}>
+      <span style={{ fontSize: 12, fontWeight: 800, color: BLUE, letterSpacing: "0.02em" }}>{c ? tx(c, lang) : ""}</span>
+      <span className="lr-title" style={{ fontFamily: DISPLAY, fontSize: 16, fontWeight: 700, color: INK, lineHeight: 1.4, transition: "color .14s ease" }}>{tx(p.title, lang)}</span>
+      <span style={{ fontSize: 12.5, color: MUTE, fontWeight: 600, whiteSpace: "nowrap" }}>{fmtBlogDate(p.date, lang)} · {readLabel(p.read || 5, lang)}</span>
+    </button>
+  );
+}
+
+/* 뉴스레터 신청 (일러스트 + 이메일 입력 + 구독 버튼, 데모 상태) */
+function NewsletterSignup({ lang }) {
+  const ko = lang === "ko";
+  const [email, setEmail] = useState("");
+  const [done, setDone] = useState(false);
+  const submit = (e) => { e.preventDefault(); if (email.trim()) setDone(true); };
+  return (
+    <section className="blog-news">
+      <svg className="illus" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="60" cy="60" r="58" fill="#D7E4FF" />
+        <rect x="26" y="40" width="68" height="46" rx="8" fill="#fff" />
+        <path d="M28 45l32 22 32-22" stroke="#1B59FA" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+        <rect x="26" y="40" width="68" height="46" rx="8" stroke="#1B59FA" strokeWidth="2.2" fill="none" />
+        <circle cx="90" cy="82" r="16" fill="#1B59FA" />
+        <path d="M83 82l5 5 9-10" stroke="#fff" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+      </svg>
+      <div>
+        <div style={{ fontFamily: DISPLAY, fontSize: "clamp(21px,2.3vw,27px)", fontWeight: 800, letterSpacing: "-0.01em", marginBottom: 8, color: INK }}>{ko ? "세이프닥 뉴스레터 신청하기" : "Subscribe to the SafeDoc newsletter"}</div>
+        <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: "0 0 18px", maxWidth: 560 }}>{ko ? "검진·시술 가이드와 한국 의료관광 인사이트를 이메일로 가장 먼저 받아보세요." : "Get our checkup & procedure guides and Korea medical-travel insights, straight to your inbox."}</p>
+        {done ? (
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#fff", border: `1px solid ${BLUE_100}`, color: BLUE, borderRadius: 10, padding: "12px 18px", fontSize: 14, fontWeight: 700 }}>
+            <Check size={17} /> {ko ? "신청이 완료되었습니다. 감사합니다!" : "You're subscribed — thank you!"}
+          </div>
+        ) : (
+          <form onSubmit={submit} style={{ display: "flex", gap: 10, flexWrap: "wrap", maxWidth: 520 }}>
+            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={ko ? "이메일 주소" : "Email address"} style={{ flex: "1 1 240px", minWidth: 0, padding: "13px 16px", borderRadius: 10, border: `1px solid ${EDGE}`, background: "#fff", fontSize: 14, color: INK }} />
+            <button type="submit" style={{ ...btn(BLUE, "#fff"), whiteSpace: "nowrap" }}>{ko ? "구독하기" : "Subscribe"} <ArrowRight size={16} /></button>
+          </form>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function BlogPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const BLOG = getCollection("blog");
+  const ko = lang === "ko";
+  const [cat, setCat] = useState("all");
+  const [sort, setSort] = useState("latest");   // latest | popular
+  const filtered = cat === "all" ? BLOG : BLOG.filter((p) => p.category === cat);
+  const byPop = [...filtered].sort((a, b) => (b.views || 0) - (a.views || 0));
+  const top = byPop.slice(0, 6);                 // 클릭(조회) 상위 6 → 카드
+  const restPool = byPop.slice(6);               // 나머지 → 리스트
+  const rest = sort === "latest"
+    ? [...restPool].sort((a, b) => String(b.date).localeCompare(String(a.date)))
+    : restPool;                                  // popular = 조회순(이미 정렬됨)
+  return (
+    <>
+      <Seo title="Blog" description={tr("Guides and insights on medical travel to Korea.", lang)} path="/blog" />
+      {/* 히어로 배너 — 제목 + 카테고리 탭 내장 (ListeningMind /all) */}
+      <div style={{ background: BRAND_GRAD, color: "#fff" }}>
+        <div style={{ ...WRAP, padding: "56px 28px 38px" }}>
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: "#cfdcff", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 10 }}>Blog</div>
+          <h1 style={{ fontFamily: DISPLAY, fontSize: 38, fontWeight: 800, margin: "0 0 10px", letterSpacing: "-0.02em" }}>{tr("Insights & Guides", lang)}</h1>
+          <p style={{ fontSize: 16, color: "#d6e1ff", margin: 0, maxWidth: 620 }}>{tr("Practical guides on checkups, procedures and traveling to Korea for care.", lang)}</p>
+          <div className="blog-htabs">
+            <button className={"blog-htab" + (cat === "all" ? " on" : "")} onClick={() => setCat("all")}>{ko ? "전체" : "All"}</button>
+            {BLOG_CATS.map((c) => (
+              <button key={c.id} className={"blog-htab" + (cat === c.id ? " on" : "")} onClick={() => setCat(c.id)}>{tx(c, lang)}</button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div style={{ ...WRAP, padding: "52px 28px 88px" }}>
+        {filtered.length === 0 && <p style={{ color: MUTE, fontSize: 14 }}>{ko ? "해당 카테고리의 글이 아직 없습니다." : "No posts in this category yet."}</p>}
+
+        {/* 인기(조회) 상위 6개 카드 */}
+        {top.length > 0 && (
+          <>
+            <div style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 800, color: INK, letterSpacing: "-0.01em", margin: "0 0 22px" }}>{ko ? "인기 아티클" : "Popular articles"}</div>
+            <div className="blog-cards">
+              {top.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} />)}
+            </div>
+          </>
+        )}
+
+        {/* 뉴스레터 신청 */}
+        <div style={{ margin: "48px 0" }}><NewsletterSignup lang={lang} /></div>
+
+        {/* 나머지 글 리스트 + 최신순/인기순 토글 */}
+        {rest.length > 0 && (
+          <>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap", margin: "0 0 6px" }}>
+              <div style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 800, color: INK, letterSpacing: "-0.01em" }}>{ko ? "전체 아티클" : "All articles"}</div>
+              <div className="blog-sort">
+                <button className={sort === "latest" ? "on" : ""} onClick={() => setSort("latest")}>{ko ? "최신순" : "Latest"}</button>
+                <button className={sort === "popular" ? "on" : ""} onClick={() => setSort("popular")}>{ko ? "인기순" : "Popular"}</button>
+              </div>
+            </div>
+            <div className="blog-list">
+              {rest.map((p) => <BlogListRow key={p.id} p={p} lang={lang} navigate={navigate} />)}
+            </div>
+          </>
+        )}
+      </div>
+    </>
+  );
+}
+
+function BlogPostPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const BLOG = getCollection("blog");
+  const { id } = useParams();
+  const ko = lang === "ko";
+  const p = BLOG.find((b) => b.id === id);
+  if (!p) return <div style={{ ...WRAP, padding: "80px 28px", textAlign: "center" }}><p style={{ color: MUTE }}>Post not found.</p><button onClick={() => navigate("/blog")} style={{ ...btn(BLUE, "#fff") }}>Back to blog</button></div>;
+  const sections = Array.isArray(p.sections) ? p.sections : [];
+  const related = BLOG.filter((b) => b.id !== p.id).sort((a, b) => (a.category === p.category ? -1 : 0) - (b.category === p.category ? -1 : 0)).slice(0, 3);
+  return (
+    <>
+      <Seo title={tx(p.title, lang)} description={tx(p.excerpt, lang)} type="article" path={`/blog/${id}`} jsonLd={breadcrumbJsonLd([{ name: "Blog", path: "/blog" }, { name: tx(p.title, lang), path: `/blog/${id}` }])} />
+      <div style={{ ...WRAP, maxWidth: 980, padding: "40px 28px 20px" }}>
+        {/* 브레드크럼 / 뒤로 */}
+        <button onClick={() => navigate("/blog")} style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13.5, fontWeight: 600, marginBottom: 22, padding: 0 }}><ArrowLeft size={16} /> {tr("Blog", lang)}</button>
+        {/* 카테고리 + 제목 + 메타 */}
+        <CatBadge catId={p.category} lang={lang} />
+        <h1 style={{ fontFamily: DISPLAY, fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, color: INK, margin: "16px 0 18px", lineHeight: 1.2, letterSpacing: "-0.02em" }}>{tx(p.title, lang)}</h1>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap", fontSize: 13.5, color: MUTE, fontWeight: 600, marginBottom: 28 }}>
+          <span style={{ color: INK, fontWeight: 700 }}>{tx(p.author, lang)}</span>
+          <span style={{ color: FAINT }}>·</span><span>{fmtBlogDate(p.date, lang)}</span>
+          <span style={{ color: FAINT }}>·</span><span>{readLabel(p.read || 5, lang)}</span>
+        </div>
+        <img src={p.image} alt={tx(p.title, lang)} style={{ width: "100%", height: "clamp(220px,38vw,400px)", objectFit: "cover", borderRadius: 20, marginBottom: 40 }} />
+      </div>
+
+      {/* 본문 + 목차(TOC) 2단 */}
+      <div style={{ ...WRAP, maxWidth: 980, padding: "0 28px 40px" }}>
+        <div className="blog-art">
+          <aside className="blog-toc">
+            <div style={{ fontSize: 12, fontWeight: 800, color: MUTE, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 12 }}>{ko ? "목차" : "In this article"}</div>
+            {sections.map((s) => <a key={s.id} href={`#${s.id}`}>{tx(s.h, lang)}</a>)}
+          </aside>
+          <div className="blog-body">
+            <p style={{ fontSize: 18, color: SUB, lineHeight: 1.75, fontWeight: 500, margin: "0 0 34px", paddingBottom: 30, borderBottom: `1px solid ${LINE}` }}>{tx(p.excerpt, lang)}</p>
+            {sections.map((s) => (
+              <section key={s.id} style={{ marginBottom: 34 }}>
+                <h2 id={s.id} style={{ fontFamily: DISPLAY, fontSize: 23, fontWeight: 800, color: INK, letterSpacing: "-0.01em", margin: "0 0 14px", lineHeight: 1.35 }}>{tx(s.h, lang)}</h2>
+                {(s.p || []).map((para, i) => (
+                  <p key={i} style={{ fontSize: 16, color: SUB, lineHeight: 1.85, margin: "0 0 14px" }}>{tx(para, lang)}</p>
+                ))}
+              </section>
+            ))}
+
+            {/* 상담 유도 CTA (ListeningMind Demo Request 박스) */}
+            <div style={{ background: BRAND_GRAD, color: "#fff", borderRadius: 20, padding: "clamp(24px,3vw,34px)", margin: "8px 0 12px" }}>
+              <div style={{ fontFamily: DISPLAY, fontSize: 21, fontWeight: 800, letterSpacing: "-0.01em", marginBottom: 8 }}>{ko ? "한국 방문을 계획 중이신가요?" : "Planning your visit to Korea?"}</div>
+              <p style={{ fontSize: 14.5, color: "#d6e1ff", lineHeight: 1.65, margin: "0 0 18px", maxWidth: 520 }}>{ko ? "세이프닥이 병원 예약부터 통역, 이동, 숙소까지 처음부터 끝까지 조율해 드립니다." : "SafeDoc coordinates everything — hospital booking, interpreters, transport and stays — end to end."}</p>
+              <button onClick={() => navigate("/contact")} style={{ ...btn("#fff", BLUE) }}>{ko ? "무료 상담 신청" : "Book a free consultation"} <ArrowRight size={16} /></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 관련 글 */}
+      {related.length > 0 && (
+        <div style={{ background: SECTION_TINT, borderTop: `1px solid ${LINE}`, marginTop: 32 }}>
+          <div style={{ ...WRAP, padding: "56px 28px 72px" }}>
+            <div style={{ fontFamily: DISPLAY, fontSize: 24, fontWeight: 800, color: INK, letterSpacing: "-0.01em", marginBottom: 26 }}>{ko ? "관련 글" : "Related articles"}</div>
+            <div className="blog-cards">
+              {related.map((r) => <BlogGridCard key={r.id} p={r} lang={lang} navigate={navigate} />)}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+function AccountPage() {
+  const { lang, navigate } = useOutletContext();
+  return (<><Seo title={UI[lang].signin} path="/account" noindex /><ClientOnly>{() => <AccountInner lang={lang} navigate={navigate} />}</ClientOnly></>);
+}
+function AccountInner({ lang, navigate }) {
+  const ko = lang === "ko";
+  const [mode, setMode] = useState("login");      // login | signup
+  const [form, setForm] = useState({ name: "", email: "", pw: "", pw2: "", firstName: "", middleName: "", lastName: "", phone: "", referralCode: "", keep: true, agree: false });
+  const [terms, setTerms] = useState(false);
+  const [err, setErr] = useState("");
+  const [signedUp, setSignedUp] = useState(false);   // 회원가입 직후 로그인 안내
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
+  const inp = { padding: "12px 14px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 14, width: "100%", boxSizing: "border-box" };
+  const switchMode = (m) => { setMode(m); setErr(""); };
+  const doAuth = (provider) => {
+    // 데모: 입력값으로 로그인. (실서비스: 인증 백엔드 + 서드파티 채널 동일인 식별 필요)
+    const email = form.email || (provider ? `${provider}user@safedoc.io` : "guest@safedoc.io");
+    store.login({ name: form.name || email.split("@")[0], email, provider: provider || "email" });
+    navigate("/mypage?tab=info");   // ④ 로그인하면 마이페이지 고객정보 탭으로
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    setErr("");
+    if (mode === "login") { doAuth(null); return; }
+    // ───── 회원가입 ─────
+    if (!form.agree) { setErr(ko ? "이용약관에 동의해 주세요." : "Please agree to the Terms."); return; }
+    if (form.pw !== form.pw2) { setErr(ko ? "비밀번호가 일치하지 않습니다." : "Passwords do not match."); return; }
+    // ② 프로필만 저장(로그인 X) → ④ 로그인 페이지로 이동
+    store.register({ email: form.email, firstName: form.firstName, middleName: form.middleName, lastName: form.lastName, phone: form.phone, referralCode: form.referralCode });
+    setSignedUp(true);
+    setMode("login");
+    setForm((f) => ({ ...f, pw: "", pw2: "" }));   // 이메일은 유지, 비번만 비움
+  };
+  return (
+    <div style={{ ...WRAP, maxWidth: 460, padding: "60px 28px 90px" }}>
+      <div style={{ textAlign: "center", marginBottom: 22 }}>
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, margin: "0 0 6px" }}>{mode === "login" ? (tr("Sign in", lang)) : (tr("Create account", lang))}</h1>
+        <p style={{ fontSize: 14, color: SUB, margin: 0 }}>{tr("Manage your reservations and checkup history.", lang)}</p>
+      </div>
+      <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 26, display: "grid", gap: 12 }}>
+        {signedUp && mode === "login" && (
+          <div style={{ background: "#EEF8F1", border: "1px solid #BFE6CD", color: "#1E8E5C", borderRadius: 9, padding: "10px 13px", fontSize: 12.5, fontWeight: 600 }}>
+            {ko ? "회원가입이 완료되었습니다. 로그인해 주세요." : "Sign-up complete. Please sign in."}
+          </div>
+        )}
+        <form onSubmit={submit} style={{ display: "grid", gap: 12 }}>
+          {/* ① 회원가입 정보 작성란 */}
+          <input style={inp} required type="email" placeholder={ko ? "아이디 (이메일)" : "ID (email)"} value={form.email} onChange={set("email")} />
+          <input style={inp} required type="password" placeholder={ko ? "비밀번호" : "Password"} value={form.pw} onChange={set("pw")} />
+          {mode === "signup" && (
+            <>
+              <input style={inp} required type="password" placeholder={ko ? "비밀번호 확인" : "Confirm password"} value={form.pw2} onChange={set("pw2")} />
+              <input style={inp} required placeholder="First name" value={form.firstName} onChange={set("firstName")} />
+              <input style={inp} placeholder="Middle name" value={form.middleName} onChange={set("middleName")} />
+              <input style={inp} required placeholder="Last name" value={form.lastName} onChange={set("lastName")} />
+              <input style={inp} required type="tel" placeholder={ko ? "연락처" : "Phone"} value={form.phone} onChange={set("phone")} />
+              <input style={inp} placeholder={ko ? "추천 코드 (선택)" : "Referral code (optional)"} value={form.referralCode} onChange={set("referralCode")} />
+            </>
+          )}
+          {mode === "login" ? (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 12.5 }}>
+              <label style={{ display: "inline-flex", alignItems: "center", gap: 6, color: SUB, cursor: "pointer" }}><input type="checkbox" checked={form.keep} onChange={set("keep")} /> {ko ? "로그인 유지" : "Keep me signed in"}</label>
+              <span style={{ color: MUTE }}><a style={lnk}>{ko ? "아이디 찾기" : "Find ID"}</a> · <a style={lnk}>{ko ? "비밀번호 찾기" : "Reset PW"}</a></span>
+            </div>
+          ) : (
+            /* ② 약관 동의 체크박스 + ③ 이용약관 모달 */
+            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: SUB }}>
+              <input type="checkbox" checked={form.agree} onChange={set("agree")} />
+              <span>{ko ? "동의합니다 — " : "I agree — "}<button type="button" onClick={() => setTerms(true)} style={{ ...lnk, background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 700, textDecoration: "underline" }}>{ko ? "이용약관" : "Terms of Service"}</button></span>
+            </label>
+          )}
+          {err && <div style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600 }}>{err}</div>}
+          {/* ④ 회원가입 완료 → 로그인 페이지로 */}
+          <button type="submit" style={{ ...btn(BLUE, "#fff") }}>{mode === "login" ? (ko ? "로그인" : "Sign in") : (ko ? "회원가입 완료" : "Create account")}</button>
+        </form>
+        <div style={{ textAlign: "center", fontSize: 12, color: MUTE, margin: "2px 0" }}>or</div>
+        <button onClick={() => doAuth("google")} style={{ ...btn("#fff", INK), border: `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><span style={{ fontWeight: 800, color: "#4285F4" }}>G</span> {tr("Continue with Google", lang)}</button>
+        <button onClick={() => doAuth("apple")} style={{ ...btn("#111317", "#fff"), display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}> {tr("Continue with Apple", lang)}</button>
+        <div style={{ textAlign: "center", fontSize: 12.5, color: SUB, marginTop: 4 }}>
+          {mode === "login" ? (tr("No account? ", lang)) : (tr("Have an account? ", lang))}
+          <button onClick={() => switchMode(mode === "login" ? "signup" : "login")} style={{ ...lnk, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}>{mode === "login" ? (tr("Sign up", lang)) : (tr("Sign in", lang))}</button>
+        </div>
+        <p style={{ fontSize: 11, color: MUTE, textAlign: "center", margin: 0 }}>{tr("Prototype — demo auth", lang)}</p>
+      </div>
+      {terms && (
+        <div onClick={() => setTerms(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,15,44,.5)", zIndex: 60, display: "grid", placeItems: "center", padding: 20 }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 16, maxWidth: 480, width: "100%", maxHeight: "80vh", overflow: "auto", padding: 26 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}><h3 style={{ margin: 0, fontFamily: DISPLAY, fontWeight: 800, color: INK }}>{tr("Terms of Service", lang)}</h3><button onClick={() => setTerms(false)} style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE }}><X size={20} /></button></div>
+            <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.7 }}>{tr("Placeholder terms for the prototype demo. Full terms at launch.", lang)}</p>
+          </div>
+        </div>
+      )}
     </div>
+  );
+}
+const lnk = { color: BLUE, textDecoration: "none", cursor: "pointer" };
+
+function LegalPage() {
+  const { lang } = useOutletContext();
+  const { doc } = useParams();
+  const titles = { privacy: { en: "Privacy Policy", ko: "개인정보처리방침" }, terms: { en: "Terms of Service", ko: "이용약관" }, refund: { en: "Refund Policy", ko: "환불정책" } };
+  const t = titles[doc] || { en: "Legal", ko: "법적 고지" };
+  return (
+    <>
+      <Seo title={tx(t, lang)} path={`/legal/${doc}`} noindex />
+      <div style={{ ...WRAP, maxWidth: 800, padding: "60px 28px" }}>
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 30, fontWeight: 800, color: INK, marginBottom: 18 }}>{tx(t, lang)}</h1>
+        <p style={{ fontSize: 15, color: SUB, lineHeight: 1.8 }}>{tr("This document is a placeholder for the prototype demo. Full terms will be provided at launch.", lang)}</p>
+        <p style={{ fontSize: 14, color: MUTE }}>{BRAND.name} · {BRAND.email}</p>
+      </div>
+    </>
+  );
+}
+
+function NotFound() {
+  const { lang, navigate } = useOutletContext();
+  return (
+    <>
+      <Seo title="Not found" noindex />
+      <div style={{ ...WRAP, padding: "100px 28px", textAlign: "center" }}>
+        <h1 style={{ fontSize: 28, color: INK }}>404</h1>
+        <p style={{ color: SUB }}>{tr("Page not found.", lang)}</p>
+        <button onClick={() => navigate("/")} style={{ ...btn(BLUE, "#fff"), marginTop: 12 }}>{tr("Back home", lang)}</button>
+      </div>
+    </>
   );
 }
 
 /* ========================================================================
-   LEGAL  (Privacy / Terms / Refund — mirrors SafeDoc footer)
+   ROUTES
    ======================================================================== */
-const LEGAL_DOCS = {
-  privacy: {
-    title: "Privacy Policy",
-    intro: "How KoreCare collects, uses and protects your personal and health information.",
-    sections: [
-      { h: "Information we collect", b: "Contact details you submit (name, email, phone) and any medical records you share to confirm program coverage. We collect only what is needed to coordinate your care." },
-      { h: "How we use it", b: "To match you to covered programs, confirm out-of-pocket costs with your insurer, and arrange travel, accommodation and aftercare. We never sell your information." },
-      { h: "Sharing", b: "We share relevant medical details only with the partner hospital you select and, where applicable, your referring insurer — always to deliver your care." },
-      { h: "Your rights", b: "You may request access to, correction of, or deletion of your data at any time by contacting us." },
+// 콘텐츠 페이지 라우트 템플릿(EN=루트). admin·404 는 언어별 미생성.
+/* /pricing — 외국인 유치용 투명 가격표 (가격/견적 관리) */
+function PricingPage() {
+  const { lang, navigate } = useOutletContext();
+  useContent();
+  const P = getCollection("pricing") || {};
+  const rows = Array.isArray(P.rows) ? P.rows : [];
+  const th = { padding: "12px 14px", textAlign: "start", fontSize: 12, fontWeight: 800, color: MUTE, textTransform: "uppercase", letterSpacing: ".04em", whiteSpace: "nowrap" };
+  const td = { padding: "14px 14px", verticalAlign: "top" };
+  return (
+    <>
+      <Seo title={tx(P.title, lang)} description={tx(P.note, lang)} path="/pricing" />
+      <PageHeader eyebrow={tx(P.eyebrow, lang)} title={tx(P.title, lang)} sub={tx(P.note, lang)} />
+      <div style={{ ...WRAP, padding: "16px 28px 80px" }}>
+        <div style={{ overflowX: "auto", border: `1px solid ${LINE}`, borderRadius: 14 }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+            <thead>
+              <tr style={{ borderBottom: `1px solid ${LINE}`, background: BG_SOFT }}>
+                <th style={th}>{tr("Category", lang)}</th>
+                <th style={th}>{tr("Treatment", lang)}</th>
+                <th style={{ ...th, textAlign: "end" }}>{tr("Price", lang)}</th>
+                <th style={th}>{tr("Notes", lang)}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr key={r.id} style={{ borderBottom: `1px solid ${LINE}` }}>
+                  <td style={{ ...td, color: SUB, whiteSpace: "nowrap" }}>{tx(r.category, lang)}</td>
+                  <td style={{ ...td, fontWeight: 700, color: INK }}>{tx(r.name, lang)}</td>
+                  <td style={{ ...td, textAlign: "end", fontWeight: 800, color: BLUE, whiteSpace: "nowrap" }}><span dir="ltr" style={{ unicodeBidi: "isolate" }}>{r.price}</span></td>
+                  <td style={{ ...td, color: SUB }}>{tx(r.note, lang)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div style={{ marginTop: 22, display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center" }}>
+          <button onClick={() => navigate("/contact")} style={{ ...btn(BLUE, "#fff") }}>{tr("Get a free quote", lang)}</button>
+          <span style={{ fontSize: 12, color: MUTE, maxWidth: 520 }}>{tx(P.note, lang)}</span>
+        </div>
+      </div>
+    </>
+  );
+}
+
+const PAGE_ROUTES = [
+  { index: true, element: <Home /> },
+  { path: "pricing", element: <PricingPage /> },
+  { path: "company", element: <CompanyPage /> },
+  { path: "service", element: <ServiceHub /> },
+  { path: "service/health-checkup", element: <CheckupPage /> },
+  { path: "service/health-checkup/:id", element: <CheckupDetailPage />, getStaticPaths: () => CHECKUP.packages.map((p) => `service/health-checkup/${p.id}`) },
+  { path: "service/revital", element: <RevitalPage /> },
+  { path: "service/transportation", element: <SimpleServicePage id="transportation" /> },
+  { path: "service/accommodation", element: <SimpleServicePage id="accommodation" /> },
+  { path: "service/tour", element: <SimpleServicePage id="tour" /> },
+  { path: "service/association", element: <SimpleServicePage id="association" /> },
+  { path: "providers", element: <ProvidersPage /> },
+  { path: "providers/:id", element: <ProviderDetailPage />, getStaticPaths: () => PROVIDERS.map((p) => `providers/${p.id}`) },
+  { path: "treatments", element: <TreatmentListPage /> },
+  { path: "treatments/:id", element: <TreatmentDetailPage />, getStaticPaths: () => PROCEDURES.map((p) => `treatments/${p.id}`) },
+  { path: "booking", element: <BookingPage /> },
+  { path: "cart", element: <CartPage /> },
+  { path: "mypage", element: <MyPage /> },
+  { path: "contact", element: <ContactPage /> },
+  { path: "faq", element: <FaqPage /> },
+  { path: "blog", element: <BlogPage /> },
+  { path: "blog/:id", element: <BlogPostPage />, getStaticPaths: () => BLOG.map((p) => `blog/${p.id}`) },
+  { path: "legal/:doc", element: <LegalPage />, getStaticPaths: () => ["privacy", "terms", "refund"].map((d) => `legal/${d}`) },
+  { path: "account", element: <AccountPage /> },
+];
+
+// 언어 접두 트리(ko/ar/ja): index → /{lang}, 그 외 → /{lang}/path, getStaticPaths 접두 부착
+const langTree = (lang) => PAGE_ROUTES.map((r) => {
+  if (r.index) return { path: lang, element: r.element };
+  const child = { path: `${lang}/${r.path}`, element: r.element };
+  if (r.getStaticPaths) child.getStaticPaths = () => r.getStaticPaths().map((p) => `${lang}/${p}`);
+  return child;
+});
+
+export const routes = [
+  {
+    path: "/", element: <Layout />,
+    children: [
+      ...PAGE_ROUTES,                                 // EN (루트)
+      { path: "admin", element: <AdminPage /> },      // admin: EN 전용(noindex)
+      ...PREFIX_LANGS.flatMap(langTree),              // /ko /ar /ja 프리렌더
+      { path: "*", element: <NotFound /> },
     ],
   },
-  terms: {
-    title: "Terms of Service",
-    intro: "The terms that govern your use of the KoreCare website and coordination services.",
-    sections: [
-      { h: "Service scope", b: "KoreCare is a care-coordination service. We arrange and manage the journey around medical treatment; we do not provide medical care ourselves and are not a substitute for professional medical advice." },
-      { h: "Quotes & coverage", b: "Prices shown are estimates. Final out-of-pocket amounts are confirmed after a records review with your insurer before any commitment." },
-      { h: "Bookings", b: "Travel, accommodation and treatment bookings are made on your behalf with third-party providers and partner hospitals, subject to their terms." },
-      { h: "Liability", b: "This site is a prototype for demonstration. Treatment outcomes are the responsibility of the providing hospital and your medical team." },
-    ],
-  },
-  refund: {
-    title: "Refund Policy",
-    intro: "When and how coordination fees and bookings can be refunded.",
-    sections: [
-      { h: "Coordination fees", b: "Any coordination fee is fully refundable until you confirm a program. After confirmation, refunds are prorated against services already arranged." },
-      { h: "Travel & accommodation", b: "Flights and stays follow the cancellation terms of the airline and property. We help you secure flexible options where possible." },
-      { h: "Treatment deposits", b: "Hospital deposits are refundable according to the partner hospital's policy, which we disclose before you pay." },
-      { h: "How to request", b: "Email our coordinator line with your booking reference; refunds are processed to your original payment method." },
-    ],
-  },
-};
-
-function LegalPage({ doc, onContact }) {
-  const d = LEGAL_DOCS[doc] || LEGAL_DOCS.privacy;
-  return (
-    <div style={{ marginTop: 28, maxWidth: 760 }}>
-      <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: TEAL_SOFT, color: TEAL, padding: "6px 12px", borderRadius: 20, fontSize: 13, fontWeight: 700 }}>
-        <Shield size={15} /> Legal
-      </div>
-      <h1 style={{ fontSize: 28, fontWeight: 800, color: INK, margin: "14px 0 6px" }}>{d.title}</h1>
-      <p style={{ fontSize: 15, color: SUB, margin: "0 0 22px", lineHeight: 1.6 }}>{d.intro}</p>
-
-      <div style={{ display: "grid", gap: 14 }}>
-        {d.sections.map((s, i) => (
-          <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12, padding: 18 }}>
-            <div style={{ fontWeight: 700, color: INK, fontSize: 15, marginBottom: 6 }}>{s.h}</div>
-            <div style={{ fontSize: 13.5, color: SUB, lineHeight: 1.6 }}>{s.b}</div>
-          </div>
-        ))}
-      </div>
-
-      <div style={{ marginTop: 20, fontSize: 12.5, color: MUTE }}>
-        Prototype document for demonstration — not legal advice. Questions?{" "}
-        <button onClick={onContact} style={{ ...footerLink, color: TEAL, fontWeight: 600 }}>Contact us</button>.
-      </div>
-    </div>
-  );
-}
-
-/* =========================================================================
-   ADMIN EDITOR
-   ========================================================================= */
-function AdminEditor({ content, setContent, activeDeptId, setActiveDeptId, onClose, isMobile }) {
-  const [tab, setTab] = useState("hero");
-
-  const update = (fn) => setContent((prev) => {
-    const next = structuredClone(prev);
-    fn(next);
-    return next;
-  });
-
-  const activeDept = content.departments.find((d) => d.id === activeDeptId) || content.departments.find((d) => d.active);
-
-  const shellStyle = isMobile
-    ? { position: "fixed", top: 0, right: 0, bottom: 0, width: "100%", maxWidth: 400, background: "#fff", borderLeft: `1px solid ${LINE}`, height: "100vh", overflowY: "auto", zIndex: 41, boxShadow: "-8px 0 40px rgba(8,20,24,.25)" }
-    : { width: 380, flexShrink: 0, background: "#fff", borderLeft: `1px solid ${LINE}`, height: "100vh", position: "sticky", top: 0, overflowY: "auto" };
-  return (
-    <div style={shellStyle}>
-      <div style={{ padding: "16px 18px", borderBottom: `1px solid ${LINE}`, display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, background: "#fff", zIndex: 2 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, fontWeight: 800, color: INK }}>
-          <Settings size={18} color={TEAL} /> Content admin
-        </div>
-        <button onClick={onClose} style={{ border: "none", background: "#f6f8f9", borderRadius: 8, padding: 6, cursor: "pointer", color: SUB }}><X size={16} /></button>
-      </div>
-
-      <div style={{ display: "flex", gap: 6, padding: "12px 18px", borderBottom: `1px solid ${LINE}` }}>
-        {[["hero", "Hero image"], ["depts", "Departments"]].map(([id, label]) => (
-          <button key={id} onClick={() => setTab(id)} style={{
-            flex: 1, border: "none", cursor: "pointer", borderRadius: 8, padding: "8px 0", fontSize: 13, fontWeight: 600,
-            background: tab === id ? TEAL_SOFT : "#f6f8f9", color: tab === id ? TEAL : SUB,
-          }}>{label}</button>
-        ))}
-      </div>
-
-      <div style={{ padding: 18 }}>
-        {tab === "hero" && (
-          <ImageEditor
-            label="Hero banner"
-            image={content.hero.image}
-            onChange={(img) => update((n) => { n.hero.image = img; })}
-          />
-        )}
-        {tab === "depts" && (
-          <DeptEditor content={content} update={update} activeDept={activeDept} setActiveDeptId={setActiveDeptId} />
-        )}
-      </div>
-    </div>
-  );
-}
-
-/* ---------------- image + overlay editor (shared) ---------------- */
-function ImageEditor({ label, image, onChange }) {
-  const setField = (k, v) => onChange({ ...image, [k]: v });
-  const setOverlay = (id, k, v) => onChange({ ...image, overlays: image.overlays.map((o) => o.id === id ? { ...o, [k]: v } : o) });
-  const addOverlay = () => onChange({ ...image, overlays: [...(image.overlays || []), { id: "ov" + Date.now(), text: "New text", x: 6, y: 50, size: 22, weight: 700, color: "#ffffff", align: "left", maxWidth: 70 }] });
-  const removeOverlay = (id) => onChange({ ...image, overlays: image.overlays.filter((o) => o.id !== id) });
-
-  return (
-    <div>
-      <div style={{ fontSize: 12, fontWeight: 700, color: MUTE, marginBottom: 8, textTransform: "uppercase", letterSpacing: ".04em" }}>{label}</div>
-
-      <div style={{ marginBottom: 12 }}>
-        <OverlayImage image={image} height={130} radius={10} />
-      </div>
-
-      <FieldLabel icon={<ImageIcon size={13} />} text="Image URL" />
-      <input value={image.url} onChange={(e) => setField("url", e.target.value)} placeholder="https://… or /uploads/…" style={input} />
-
-      <div style={{ marginTop: 8 }}>
-        <FieldLabel icon={<Palette size={13} />} text={`Scrim (text shade) · ${Math.round((image.overlayScrim ?? 0) * 100)}%`} />
-        <input type="range" min={0} max={0.8} step={0.05} value={image.overlayScrim ?? 0} onChange={(e) => setField("overlayScrim", parseFloat(e.target.value))} style={{ width: "100%" }} />
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", margin: "16px 0 8px" }}>
-        <FieldLabel icon={<Type size={13} />} text="Text overlays" noMargin />
-        <button onClick={addOverlay} style={{ ...btn(TEAL_SOFT, TEAL), padding: "5px 10px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 4 }}>
-          <Plus size={13} /> Add text
-        </button>
-      </div>
-
-      {(image.overlays || []).length === 0 && (
-        <div style={{ fontSize: 12.5, color: MUTE, padding: "8px 0" }}>No overlay text. Add one to layer text on the image.</div>
-      )}
-
-      {(image.overlays || []).map((o) => (
-        <div key={o.id} style={{ border: `1px solid ${LINE}`, borderRadius: 10, padding: 12, marginBottom: 10, background: "#fafbfc" }}>
-          <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
-            <input value={o.text} onChange={(e) => setOverlay(o.id, "text", e.target.value)} style={{ ...input, marginTop: 0 }} />
-            <button onClick={() => removeOverlay(o.id)} style={{ border: "none", background: "#fff", color: "#c0392b", borderRadius: 7, padding: "0 8px", cursor: "pointer" }}><Trash2 size={14} /></button>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <Mini label={`X ${o.x}%`} icon={<Move size={11} />}>
-              <input type="range" min={0} max={90} value={o.x} onChange={(e) => setOverlay(o.id, "x", +e.target.value)} style={{ width: "100%" }} />
-            </Mini>
-            <Mini label={`Y ${o.y}%`} icon={<Move size={11} />}>
-              <input type="range" min={0} max={100} value={o.y} onChange={(e) => setOverlay(o.id, "y", +e.target.value)} style={{ width: "100%" }} />
-            </Mini>
-            <Mini label={`Size ${o.size}px`}>
-              <input type="range" min={11} max={48} value={o.size} onChange={(e) => setOverlay(o.id, "size", +e.target.value)} style={{ width: "100%" }} />
-            </Mini>
-            <Mini label="Weight">
-              <select value={o.weight} onChange={(e) => setOverlay(o.id, "weight", +e.target.value)} style={selectS}>
-                <option value={400}>Regular</option><option value={500}>Medium</option>
-                <option value={700}>Bold</option><option value={800}>Heavy</option>
-              </select>
-            </Mini>
-            <Mini label="Align">
-              <select value={o.align} onChange={(e) => setOverlay(o.id, "align", e.target.value)} style={selectS}>
-                <option value="left">Left</option><option value="center">Center</option><option value="right">Right</option>
-              </select>
-            </Mini>
-            <Mini label="Color">
-              <input type="color" value={o.color} onChange={(e) => setOverlay(o.id, "color", e.target.value)} style={{ width: "100%", height: 28, border: `1px solid ${LINE}`, borderRadius: 6, background: "#fff", cursor: "pointer" }} />
-            </Mini>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/* ------------------- department / hospital editor ------------------- */
-function DeptEditor({ content, update, activeDept, setActiveDeptId }) {
-  const addDept = () => {
-    const id = "dept" + Date.now();
-    update((n) => { n.departments.push({ id, name: "New Department", active: true, hospitals: [] }); });
-    setActiveDeptId(id);
-  };
-  const addHospital = (deptId) => update((n) => {
-    const d = n.departments.find((x) => x.id === deptId);
-    d.hospitals.push({
-      id: "h" + Date.now(), name: "New Hospital", city: "Seoul", rating: 4.8, reviews: 0,
-      accred: "JCI", program: "New Program", weeks: "2–3 wks", us: 100000, kr: 35000, covered: true, lead: "",
-      image: { url: "", alt: "", overlays: [], overlayScrim: 0.35 },
-    });
-  });
-
-  return (
-    <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-        <FieldLabel icon={<Stethoscope size={13} />} text="Departments" noMargin />
-        <button onClick={addDept} style={{ ...btn(TEAL_SOFT, TEAL), padding: "5px 10px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 4 }}>
-          <Plus size={13} /> Add
-        </button>
-      </div>
-
-      {content.departments.map((d) => (
-        <div key={d.id} style={{ border: `1px solid ${d.id === activeDept?.id ? TEAL : LINE}`, borderRadius: 10, padding: 10, marginBottom: 8, background: d.id === activeDept?.id ? TEAL_SOFT : "#fff" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <input value={d.name} onChange={(e) => update((n) => { n.departments.find((x) => x.id === d.id).name = e.target.value; })} style={{ ...input, marginTop: 0, fontWeight: 600 }} />
-            <button onClick={() => setActiveDeptId(d.id)} title="Preview" style={{ border: "none", background: "#fff", borderRadius: 7, padding: "0 8px", cursor: "pointer", color: TEAL }}><Eye size={14} /></button>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 8 }}>
-            <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12.5, color: SUB, cursor: "pointer" }}>
-              <input type="checkbox" checked={d.active} onChange={(e) => update((n) => { n.departments.find((x) => x.id === d.id).active = e.target.checked; })} />
-              Visible on site
-            </label>
-            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-              <span style={{ fontSize: 11.5, color: MUTE }}>{d.hospitals.length} hospitals</span>
-              <button onClick={() => update((n) => { n.departments = n.departments.filter((x) => x.id !== d.id); })} style={{ border: "none", background: "transparent", color: "#c0392b", cursor: "pointer", padding: 0 }}><Trash2 size={13} /></button>
-            </div>
-          </div>
-        </div>
-      ))}
-
-      {activeDept && (
-        <div style={{ marginTop: 18 }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
-            <FieldLabel icon={<Building2 size={13} />} text={`Hospitals · ${activeDept.name}`} noMargin />
-            <button onClick={() => addHospital(activeDept.id)} style={{ ...btn(TEAL_SOFT, TEAL), padding: "5px 10px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 4 }}>
-              <Plus size={13} /> Add
-            </button>
-          </div>
-
-          {activeDept.hospitals.map((h) => (
-            <HospitalEditor key={h.id} hospital={h} deptId={activeDept.id} update={update} />
-          ))}
-          {activeDept.hospitals.length === 0 && <div style={{ fontSize: 12.5, color: MUTE }}>No hospitals yet. Add one above.</div>}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function HospitalEditor({ hospital, deptId, update }) {
-  const [open, setOpen] = useState(false);
-  const setH = (k, v) => update((n) => {
-    const h = n.departments.find((x) => x.id === deptId).hospitals.find((x) => x.id === hospital.id);
-    h[k] = v;
-  });
-  const setImage = (img) => update((n) => {
-    const h = n.departments.find((x) => x.id === deptId).hospitals.find((x) => x.id === hospital.id);
-    h.image = img;
-  });
-  const remove = () => update((n) => {
-    const d = n.departments.find((x) => x.id === deptId);
-    d.hospitals = d.hospitals.filter((x) => x.id !== hospital.id);
-  });
-
-  return (
-    <div style={{ border: `1px solid ${LINE}`, borderRadius: 10, marginBottom: 10, overflow: "hidden" }}>
-      <div onClick={() => setOpen((o) => !o)} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 12px", cursor: "pointer", background: "#fafbfc" }}>
-        <span style={{ fontSize: 13, fontWeight: 600, color: INK }}>{hospital.name}</span>
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-          <button onClick={(e) => { e.stopPropagation(); remove(); }} style={{ border: "none", background: "transparent", color: "#c0392b", cursor: "pointer", padding: 0 }}><Trash2 size={13} /></button>
-          <ChevronRight size={15} color={MUTE} style={{ transform: open ? "rotate(90deg)" : "none", transition: "transform .15s" }} />
-        </div>
-      </div>
-
-      {open && (
-        <div style={{ padding: 12, borderTop: `1px solid ${LINE}` }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            <Labeled label="Name"><input value={hospital.name} onChange={(e) => setH("name", e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="City"><input value={hospital.city} onChange={(e) => setH("city", e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Program"><input value={hospital.program} onChange={(e) => setH("program", e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Accreditation"><input value={hospital.accred} onChange={(e) => setH("accred", e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Tagline"><input value={hospital.lead} onChange={(e) => setH("lead", e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Stay"><input value={hospital.weeks} onChange={(e) => setH("weeks", e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="US cost $"><input type="number" value={hospital.us} onChange={(e) => setH("us", +e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Korea $"><input type="number" value={hospital.kr} onChange={(e) => setH("kr", +e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Rating"><input type="number" step="0.1" value={hospital.rating} onChange={(e) => setH("rating", +e.target.value)} style={inputSm} /></Labeled>
-            <Labeled label="Reviews"><input type="number" value={hospital.reviews} onChange={(e) => setH("reviews", +e.target.value)} style={inputSm} /></Labeled>
-          </div>
-          <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12.5, color: SUB, margin: "8px 0 14px", cursor: "pointer" }}>
-            <input type="checkbox" checked={hospital.covered} onChange={(e) => setH("covered", e.target.checked)} /> Covered by insurer
-          </label>
-
-          <ImageEditor label="Hospital image" image={hospital.image} onChange={setImage} />
-        </div>
-      )}
-    </div>
-  );
-}
-
-/* ------------------------- small UI atoms ------------------------- */
-function FieldLabel({ icon, text, noMargin }) {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, color: SUB, marginBottom: noMargin ? 0 : 6 }}>
-      <span style={{ color: TEAL }}>{icon}</span>{text}
-    </div>
-  );
-}
-function Mini({ label, icon, children }) {
-  return (
-    <div>
-      <div style={{ fontSize: 11, color: MUTE, marginBottom: 3, display: "flex", alignItems: "center", gap: 3 }}>{icon}{label}</div>
-      {children}
-    </div>
-  );
-}
-function Labeled({ label, children }) {
-  return <div><div style={{ fontSize: 11, color: MUTE, marginBottom: 3 }}>{label}</div>{children}</div>;
-}
-
-const input = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 8, padding: "8px 10px", fontSize: 13, color: INK, outline: "none", boxSizing: "border-box" };
-const inputSm = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 7, padding: "6px 8px", fontSize: 12.5, color: INK, outline: "none", boxSizing: "border-box" };
-const selectS = { width: "100%", border: `1px solid ${LINE}`, borderRadius: 6, padding: "5px 6px", fontSize: 12, color: INK, background: "#fff", outline: "none" };
-
-/* btn() 은 theme.js 로 이동 (상단 import) */
+];

@@ -17,5 +17,11 @@ export const CHANNEL_PLUGIN_KEY = env.VITE_CHANNEL_PLUGIN_KEY || ""; // ChannelT
 // Google 로그인(회원가입 대체). 설정 시 실제 GIS 로그인, 미설정 시 데모 로그인 폴백.
 export const GOOGLE_CLIENT_ID = env.VITE_GOOGLE_CLIENT_ID || "";
 
-// 사이트 정식 URL (canonical/OG/sitemap 기준) — 커스텀 도메인 루트
-export const SITE_URL = "https://global.safedoc.io";
+// Admin 콘텐츠 편집 게이트 토큰. 설정 시 /admin 진입에 토큰 일치 요구 + API 쓰기에
+// Bearer 로 전달. 미설정 시 로컬 프리뷰 모드(영속 저장은 백엔드 연동 후).
+export const ADMIN_TOKEN = env.VITE_ADMIN_TOKEN || "";
+
+// 사이트 정식 URL (canonical/OG/sitemap 기준).
+// 프로덕션 커스텀 도메인 루트가 기본. 서브경로 프리뷰(github.io/korea-care3 등)는
+// VITE_SITE_URL 로 주입하여 canonical/OG/sitemap 이 그 URL 을 가리키게 한다.
+export const SITE_URL = (env.VITE_SITE_URL || "https://global.safedoc.io").replace(/\/$/, "");

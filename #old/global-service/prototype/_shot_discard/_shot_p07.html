@@ -1,9 +1,0 @@
-<!doctype html>
-<html><head><meta charset="utf-8"><title>p07</title></head><body>
-<script>
-const FULL = Object.assign({lang:'en',persona:'us_individual',signedIn:false,profile:null,bookings:{},couponCode:null,conflictChoice:null,cart:[]}, {signedIn:true,persona:'ka_enterprise',profile:{"name":"Sarah Kim","email":"sarah.kim@acme.example.com","citizenship":"KR","enterprise":"acme","enterpriseStatus":"verified"},cart:[{serviceId:'smc-derm-laser',hospitalId:'samsung-mc',visitDate:'2026-06-17',addedAt:1715600000000},{serviceId:'smc-screen-compact',hospitalId:'samsung-mc',visitDate:'2026-06-17',addedAt:1715600000001},{serviceId:'ora-dental-veneer',hospitalId:'oracle-dental',visitDate:'2026-06-19',addedAt:1715600000002}]});
-localStorage.setItem('safedoc_demo_v1', JSON.stringify(FULL));
-document.documentElement.lang = FULL.lang || 'en';
-location.replace('./demo.html#/cart');
-</script>
-</body></html>

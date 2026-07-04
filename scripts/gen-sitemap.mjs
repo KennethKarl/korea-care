@@ -6,12 +6,14 @@
    ========================================================================= */
 import { readdirSync, statSync, writeFileSync, copyFileSync, existsSync } from "node:fs";
 import { join, relative } from "node:path";
+import { stripLang } from "../src/langs.js";
 
-const SITE_URL = "https://global.safedoc.io";
+// 기본은 프로덕션 루트. 서브경로 프리뷰는 VITE_SITE_URL 로 주입(끝 슬래시 제거).
+const SITE_URL = (process.env.VITE_SITE_URL || "https://global.safedoc.io").replace(/\/$/, "");
 const DIST = "dist";
 
-// noindex 로 둘 경로(사이트맵 제외)
-const EXCLUDE = new Set(["/mypage", "/404", "/admin", "/hospital-admin"]);
+// noindex 로 둘 경로(사이트맵 제외) — 언어 접두어 제거 후 비교(/ja/mypage 등도 제외)
+const EXCLUDE = new Set(["/mypage", "/404", "/admin", "/hospital-admin", "/booking", "/cart", "/account"]);
 
 function walk(dir, acc = []) {
   for (const name of readdirSync(dir)) {
@@ -33,7 +35,7 @@ function toRoute(htmlPath) {
 let urls;
 try {
   urls = [...new Set(walk(DIST).map(toRoute))]
-    .filter((r) => !EXCLUDE.has(r))
+    .filter((r) => !EXCLUDE.has(stripLang(r)))
     .sort();
 } catch (e) {
   console.error("[gen-sitemap] dist/ 스캔 실패:", e.message);

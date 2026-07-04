@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(git clone *)",
-      "Bash(npm install *)",
-      "Bash(bash ./install.sh --profile full)"
-    ]
-  }
-}

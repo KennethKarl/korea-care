@@ -14,7 +14,9 @@ export default defineConfig(() => ({
     open: true,
   },
   ssgOptions: {
-    script: "async",
+    // defer: 모듈 스크립트가 인라인 SSG 해시 설정 스크립트 이후 실행되도록 보장.
+    // (async 시 manifest 해시를 undefined 로 읽어 정적 로더 데이터 fetch 404 → 하이드레이션 실패)
+    script: "defer",
     dirStyle: "nested",   // /treatment/proton/index.html → 클린 URL
     entry: "src/main.jsx",
   },
