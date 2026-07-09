@@ -696,9 +696,9 @@ DUMMY_POSTS.forEach(([te, tk, ee, ek, cat], i) => {
 
 /* ---------------- 공용 i18n ---------------- */
 export const UI = {
-  en: { signin: "Sign in", myaccount: "My account", viewMore: "View more", learnMore: "Learn more", book: "Book now", all: "All", send: "Send", langLabel: "EN",
+  en: { signin: "Sign in", myaccount: "Reservations", viewMore: "View more", learnMore: "Learn more", book: "Book now", all: "All", send: "Send", langLabel: "EN",
     addCart: "Save treatment", inCart: "Saved — View saved →", reserve: "Request reservation", cart: "Saved", treatments: "Treatments", qty: "Reservations", viewHospital: "View hospital" },
-  ko: { signin: "로그인", myaccount: "마이페이지", viewMore: "자세히 보기", learnMore: "더 알아보기", book: "예약하기", all: "전체", send: "보내기", langLabel: "한",
+  ko: { signin: "로그인", myaccount: "예약 내역", viewMore: "자세히 보기", learnMore: "더 알아보기", book: "예약하기", all: "전체", send: "보내기", langLabel: "한",
     addCart: "관심시술 담기", inCart: "담김 — 관심시술 보기 →", reserve: "예약 신청", cart: "관심시술", treatments: "시술", qty: "예약 수", viewHospital: "병원 상세" },
 };
 
