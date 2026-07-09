@@ -590,11 +590,19 @@ function BookingInner({ lang, navigate }) {
 
   if (submitted) {
     const usdKrw = (n) => `$${usd(n).toLocaleString()} (≈ ₩${Number(n).toLocaleString()})`;
+    const ko = lang === "ko";
+    const bkNo = store.getBooking(submitted)?.no;
     return (
       <div style={{ ...WRAP, maxWidth: 920, padding: "70px 28px 90px", textAlign: "center" }}>
         <div style={{ width: 60, height: 60, borderRadius: "50%", background: SECTION_TINT, color: GREEN, display: "grid", placeItems: "center", margin: "0 auto 18px" }}><CheckCircle2 size={32} /></div>
         <h1 style={{ fontFamily: DISPLAY, fontSize: 30, fontWeight: 800, color: INK }}>{tr("Reservations submitted", lang)}</h1>
         <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, marginTop: 8 }}>{tr("Each reservation will be confirmed by the hospital separately.", lang)}</p>
+        {bkNo && (
+          <div style={{ display: "inline-flex", flexDirection: "column", gap: 4, background: SECTION_TINT, border: `1px solid ${LINE}`, borderRadius: 14, padding: "16px 28px", marginTop: 22 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: MUTE }}>{ko ? "예약번호 · 조회 시 필요하니 저장하세요" : "Reservation number · save it to look up later"}</span>
+            <span style={{ fontFamily: DISPLAY, fontSize: 23, fontWeight: 800, color: BLUE, letterSpacing: "0.04em" }}>{bkNo}</span>
+          </div>
+        )}
 
         <div style={{ display: "grid", gridTemplateColumns: cards.length > 1 ? "repeat(auto-fit, minmax(360px, 1fr))" : "minmax(360px, 560px)", gap: 18, marginTop: 30, justifyContent: "center", textAlign: "start" }}>
           {cards.map((c, i) => {
@@ -623,9 +631,9 @@ function BookingInner({ lang, navigate }) {
           })}
         </div>
 
-        {/* 8. 예약내역 페이지로 이동 */}
+        {/* 8. 예약번호로 예약 내역 조회 */}
         <div style={{ display: "flex", justifyContent: "center", marginTop: 30 }}>
-          <button onClick={() => navigate("/mypage?tab=bookings")} style={{ ...btn(BLUE, "#fff"), padding: "14px 28px", display: "inline-flex", alignItems: "center", gap: 8 }}>{tr("View all reservations", lang)} <ChevronRight size={18} /></button>
+          <button onClick={() => navigate(`/mypage${bkNo ? `?no=${encodeURIComponent(bkNo)}` : ""}`)} style={{ ...btn(BLUE, "#fff"), padding: "14px 28px", display: "inline-flex", alignItems: "center", gap: 8 }}>{ko ? "예약 내역 조회" : "Look up reservation"} <ChevronRight size={18} /></button>
         </div>
       </div>
     );
@@ -785,33 +793,39 @@ export function MyPage() {
   const { lang, navigate } = useOutletContext();
   return <ClientOnly>{() => <MyPageInner lang={lang} navigate={navigate} />}</ClientOnly>;
 }
+// 예약 내역 = 로그인 없이 예약번호(no)로 조회. 발급된 번호와 일치하는 예약만 상세 노출.
 function MyPageInner({ lang, navigate }) {
   store.useStore();
-  const [sp, setSp] = useSearchParams();
-  const user = store.getUser();
-  if (!user) { navigate("/account"); return null; }
-  const tab = "bookings";
-  const setTab = (t) => setSp({ tab: t });
-  const detailId = sp.get("booking");
-  if (detailId) return <BookingDetail id={detailId} lang={lang} navigate={navigate} onBack={() => setSp({ tab: "bookings" })} />;
-  const TABS = [["bookings", tr("My Reservations", lang)]];
+  const ko = lang === "ko";
+  const [sp] = useSearchParams();
+  const preset = (sp.get("no") || "").toUpperCase();
+  const [query, setQuery] = useState(preset);
+  const [foundId, setFoundId] = useState(null);
+  const [err, setErr] = useState("");
+  const runLookup = (raw) => {
+    const q = String(raw).trim().toUpperCase();
+    if (!q) { setFoundId(null); setErr(ko ? "예약번호를 입력해 주세요." : "Please enter your reservation number."); return; }
+    const hit = store.getBookings().find((b) => String(b.no || "").toUpperCase() === q);
+    if (!hit) { setFoundId(null); setErr(ko ? "일치하는 예약번호가 없습니다. 다시 확인해 주세요." : "No reservation matches that number. Please check and try again."); return; }
+    setErr(""); setFoundId(hit.id);
+  };
+  useEffect(() => { if (preset) runLookup(preset); }, [preset]);   // eslint-disable-line react-hooks/exhaustive-deps
+  const lookup = (e) => { if (e) e.preventDefault(); runLookup(query); };
+  if (foundId) return <BookingDetail id={foundId} lang={lang} navigate={navigate} onBack={() => setFoundId(null)} />;
+  const inp = { padding: "13px 15px", border: `1px solid ${LINE}`, borderRadius: 10, fontSize: 15, width: "100%", boxSizing: "border-box", fontFamily: "inherit", letterSpacing: "0.03em" };
   return (
     <>
       <Seo title={UI[lang].myaccount} path="/mypage" noindex />
-      <div style={{ ...WRAP, maxWidth: 980, padding: "40px 28px 80px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
-          <div>
-            <h1 style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, margin: 0 }}>{tr("My Page", lang)}</h1>
-            {user?.email && <div style={{ fontSize: 13.5, color: MUTE, marginTop: 4 }}>{user.email}</div>}
-          </div>
-          <button onClick={() => { store.logout(); navigate("/"); }} style={{ ...viewMoreBtn }}>{tr("Sign out", lang)}</button>
-        </div>
-        <div style={{ display: "flex", gap: 6, borderBottom: `1px solid ${LINE}`, marginBottom: 26 }}>
-          {TABS.map(([id, label]) => (
-            <button key={id} onClick={() => setTab(id)} style={{ border: "none", background: "transparent", cursor: "pointer", padding: "12px 16px", fontSize: 14, fontWeight: 700, color: tab === id ? BLUE : SUB, borderBottom: `2px solid ${tab === id ? BLUE : "transparent"}`, marginBottom: -1 }}>{label}</button>
-          ))}
-        </div>
-        <BookingsList lang={lang} onOpen={(id) => setSp({ tab: "bookings", booking: id })} navigate={navigate} />
+      <div style={{ ...WRAP, maxWidth: 520, padding: "56px 28px 100px" }}>
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 27, fontWeight: 800, color: INK, margin: "0 0 8px" }}>{UI[lang].myaccount}</h1>
+        <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: "0 0 26px" }}>{ko ? "예약 시 발급된 예약번호를 입력하면 진행 상태를 확인할 수 있습니다." : "Enter the reservation number issued at booking to check its status."}</p>
+        <form onSubmit={lookup} style={{ display: "grid", gap: 12, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
+          <label style={{ fontSize: 12.5, fontWeight: 700, color: MUTE }}>{ko ? "예약번호" : "Reservation number"}</label>
+          <input style={inp} value={query} onChange={(e) => { setQuery(e.target.value); setErr(""); }} placeholder="SD2026-000000" autoFocus />
+          {err && <div style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600 }}>{err}</div>}
+          <button type="submit" style={{ ...btn(BLUE, "#fff"), display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Search size={16} /> {ko ? "조회" : "Look up"}</button>
+        </form>
+        <p style={{ fontSize: 12, color: MUTE, marginTop: 14, lineHeight: 1.6 }}>{ko ? "예약번호는 예약 신청 완료 시 발급됩니다. 확인이 어려우면 문의하기로 연락해 주세요." : "Your reservation number is issued when you submit a booking. Contact us if you can't find it."}</p>
       </div>
     </>
   );

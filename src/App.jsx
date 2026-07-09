@@ -255,9 +255,6 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
   const [open, setOpen] = useState(false);
   store.useStore();
   useContent();                       // 언어 레지스트리 발행/편집 시 드롭다운 리렌더
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  const user = mounted ? store.getUser() : null;
   const active = (p) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
   const go = (p) => { navigate(p); setOpen(false); };
   // 언어 드롭다운 (레지스트리 LANGS 구동 — 언어 추가 시 자동 반영)
@@ -275,9 +272,9 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
       <ChevronDown size={14} color={SUB} style={{ position: "absolute", right: 10, pointerEvents: "none" }} />
     </div>
   );
-  const signin = (
-    <button onClick={() => go(user ? "/mypage" : "/account")} style={{ border: "none", background: "transparent", color: INK, cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}>
-      <User size={15} /> {user ? u.myaccount : u.signin}
+  const bookingsLink = (
+    <button onClick={() => go("/mypage")} style={{ border: "none", background: "transparent", color: INK, cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}>
+      <CalendarCheck size={15} /> {u.myaccount}
     </button>
   );
   const searchBtn = (
@@ -312,7 +309,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
           </nav>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          {!isMobile && signin}{!isMobile && langBtn}
+          {!isMobile && bookingsLink}{!isMobile && langBtn}
           {isMobile && <button onClick={() => setOpen((o) => !o)} style={{ border: `1px solid ${LINE}`, background: "#fff", borderRadius: 9, padding: 7, cursor: "pointer", color: INK }}>{open ? <X size={18} /> : <Menu size={18} />}</button>}
         </div>
       </div>
@@ -326,7 +323,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
               ))}</div>}
             </div>
           ))}
-          <button onClick={() => go(user ? "/mypage" : "/account")} style={{ ...btn(BLUE, "#fff"), marginTop: 8, width: "100%" }}>{user ? UI[lang].myaccount : UI[lang].signin}</button>
+          <button onClick={() => go("/mypage")} style={{ ...btn(BLUE, "#fff"), marginTop: 8, width: "100%" }}>{UI[lang].myaccount}</button>
         </div>
       )}
     </div>
@@ -1782,102 +1779,6 @@ function BlogPostPage() {
   );
 }
 
-function AccountPage() {
-  const { lang, navigate } = useOutletContext();
-  return (<><Seo title={UI[lang].signin} path="/account" noindex /><ClientOnly>{() => <AccountInner lang={lang} navigate={navigate} />}</ClientOnly></>);
-}
-function AccountInner({ lang, navigate }) {
-  const ko = lang === "ko";
-  const [mode, setMode] = useState("login");      // login | signup
-  const [form, setForm] = useState({ name: "", email: "", pw: "", pw2: "", firstName: "", middleName: "", lastName: "", phone: "", referralCode: "", keep: true, agree: false });
-  const [terms, setTerms] = useState(false);
-  const [err, setErr] = useState("");
-  const [signedUp, setSignedUp] = useState(false);   // 회원가입 직후 로그인 안내
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.type === "checkbox" ? e.target.checked : e.target.value }));
-  const inp = { padding: "12px 14px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 14, width: "100%", boxSizing: "border-box" };
-  const switchMode = (m) => { setMode(m); setErr(""); };
-  const doAuth = (provider) => {
-    // 데모: 입력값으로 로그인. (실서비스: 인증 백엔드 + 서드파티 채널 동일인 식별 필요)
-    const email = form.email || (provider ? `${provider}user@safedoc.io` : "guest@safedoc.io");
-    store.login({ name: form.name || email.split("@")[0], email, provider: provider || "email" });
-    navigate("/mypage?tab=bookings");   // ④ 로그인하면 마이페이지 예약내역 탭으로
-  };
-  const submit = (e) => {
-    e.preventDefault();
-    setErr("");
-    if (mode === "login") { doAuth(null); return; }
-    // ───── 회원가입 ─────
-    if (!form.agree) { setErr(ko ? "이용약관에 동의해 주세요." : "Please agree to the Terms."); return; }
-    if (form.pw !== form.pw2) { setErr(ko ? "비밀번호가 일치하지 않습니다." : "Passwords do not match."); return; }
-    // ② 프로필만 저장(로그인 X) → ④ 로그인 페이지로 이동
-    store.register({ email: form.email, firstName: form.firstName, middleName: form.middleName, lastName: form.lastName, phone: form.phone, referralCode: form.referralCode });
-    setSignedUp(true);
-    setMode("login");
-    setForm((f) => ({ ...f, pw: "", pw2: "" }));   // 이메일은 유지, 비번만 비움
-  };
-  return (
-    <div style={{ ...WRAP, maxWidth: 460, padding: "60px 28px 90px" }}>
-      <div style={{ textAlign: "center", marginBottom: 22 }}>
-        <h1 style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, margin: "0 0 6px" }}>{mode === "login" ? (tr("Sign in", lang)) : (tr("Create account", lang))}</h1>
-        <p style={{ fontSize: 14, color: SUB, margin: 0 }}>{tr("Manage your reservations and checkup history.", lang)}</p>
-      </div>
-      <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 26, display: "grid", gap: 12 }}>
-        {signedUp && mode === "login" && (
-          <div style={{ background: "#EEF8F1", border: "1px solid #BFE6CD", color: "#1E8E5C", borderRadius: 9, padding: "10px 13px", fontSize: 12.5, fontWeight: 600 }}>
-            {ko ? "회원가입이 완료되었습니다. 로그인해 주세요." : "Sign-up complete. Please sign in."}
-          </div>
-        )}
-        <form onSubmit={submit} style={{ display: "grid", gap: 12 }}>
-          {/* ① 회원가입 정보 작성란 */}
-          <input style={inp} required type="email" placeholder={ko ? "아이디 (이메일)" : "ID (email)"} value={form.email} onChange={set("email")} />
-          <input style={inp} required type="password" placeholder={ko ? "비밀번호" : "Password"} value={form.pw} onChange={set("pw")} />
-          {mode === "signup" && (
-            <>
-              <input style={inp} required type="password" placeholder={ko ? "비밀번호 확인" : "Confirm password"} value={form.pw2} onChange={set("pw2")} />
-              <input style={inp} required placeholder="First name" value={form.firstName} onChange={set("firstName")} />
-              <input style={inp} placeholder="Middle name" value={form.middleName} onChange={set("middleName")} />
-              <input style={inp} required placeholder="Last name" value={form.lastName} onChange={set("lastName")} />
-              <input style={inp} required type="tel" placeholder={ko ? "연락처" : "Phone"} value={form.phone} onChange={set("phone")} />
-              <input style={inp} placeholder={ko ? "추천 코드 (선택)" : "Referral code (optional)"} value={form.referralCode} onChange={set("referralCode")} />
-            </>
-          )}
-          {mode === "login" ? (
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 12.5 }}>
-              <label style={{ display: "inline-flex", alignItems: "center", gap: 6, color: SUB, cursor: "pointer" }}><input type="checkbox" checked={form.keep} onChange={set("keep")} /> {ko ? "로그인 유지" : "Keep me signed in"}</label>
-              <span style={{ color: MUTE }}><a style={lnk}>{ko ? "아이디 찾기" : "Find ID"}</a> · <a style={lnk}>{ko ? "비밀번호 찾기" : "Reset PW"}</a></span>
-            </div>
-          ) : (
-            /* ② 약관 동의 체크박스 + ③ 이용약관 모달 */
-            <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: SUB }}>
-              <input type="checkbox" checked={form.agree} onChange={set("agree")} />
-              <span>{ko ? "동의합니다 — " : "I agree — "}<button type="button" onClick={() => setTerms(true)} style={{ ...lnk, background: "none", border: "none", cursor: "pointer", padding: 0, fontWeight: 700, textDecoration: "underline" }}>{ko ? "이용약관" : "Terms of Service"}</button></span>
-            </label>
-          )}
-          {err && <div style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600 }}>{err}</div>}
-          {/* ④ 회원가입 완료 → 로그인 페이지로 */}
-          <button type="submit" style={{ ...btn(BLUE, "#fff") }}>{mode === "login" ? (ko ? "로그인" : "Sign in") : (ko ? "회원가입 완료" : "Create account")}</button>
-        </form>
-        <div style={{ textAlign: "center", fontSize: 12, color: MUTE, margin: "2px 0" }}>or</div>
-        <button onClick={() => doAuth("google")} style={{ ...btn("#fff", INK), border: `1px solid ${LINE}`, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><span style={{ fontWeight: 800, color: "#4285F4" }}>G</span> {tr("Continue with Google", lang)}</button>
-        <button onClick={() => doAuth("apple")} style={{ ...btn("#111317", "#fff"), display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}> {tr("Continue with Apple", lang)}</button>
-        <div style={{ textAlign: "center", fontSize: 12.5, color: SUB, marginTop: 4 }}>
-          {mode === "login" ? (tr("No account? ", lang)) : (tr("Have an account? ", lang))}
-          <button onClick={() => switchMode(mode === "login" ? "signup" : "login")} style={{ ...lnk, background: "none", border: "none", cursor: "pointer", fontWeight: 700 }}>{mode === "login" ? (tr("Sign up", lang)) : (tr("Sign in", lang))}</button>
-        </div>
-        <p style={{ fontSize: 11, color: MUTE, textAlign: "center", margin: 0 }}>{tr("Prototype — demo auth", lang)}</p>
-      </div>
-      {terms && (
-        <div onClick={() => setTerms(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,15,44,.5)", zIndex: 60, display: "grid", placeItems: "center", padding: 20 }}>
-          <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 16, maxWidth: 480, width: "100%", maxHeight: "80vh", overflow: "auto", padding: 26 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 12 }}><h3 style={{ margin: 0, fontFamily: DISPLAY, fontWeight: 800, color: INK }}>{tr("Terms of Service", lang)}</h3><button onClick={() => setTerms(false)} style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE }}><X size={20} /></button></div>
-            <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.7 }}>{tr("Placeholder terms for the prototype demo. Full terms at launch.", lang)}</p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-const lnk = { color: BLUE, textDecoration: "none", cursor: "pointer" };
 
 function LegalPage() {
   const { lang } = useOutletContext();
@@ -1982,7 +1883,6 @@ const PAGE_ROUTES = [
   { path: "blog", element: <BlogPage /> },
   { path: "blog/:id", element: <BlogPostPage />, getStaticPaths: () => BLOG.map((p) => `blog/${p.id}`) },
   { path: "legal/:doc", element: <LegalPage />, getStaticPaths: () => ["privacy", "terms", "refund"].map((d) => `legal/${d}`) },
-  { path: "account", element: <AccountPage /> },
 ];
 
 // 언어 접두 트리(ko/ar/ja): index → /{lang}, 그 외 → /{lang}/path, getStaticPaths 접두 부착
