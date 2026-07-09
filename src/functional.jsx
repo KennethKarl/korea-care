@@ -790,11 +790,11 @@ function MyPageInner({ lang, navigate }) {
   const [sp, setSp] = useSearchParams();
   const user = store.getUser();
   if (!user) { navigate("/account"); return null; }
-  const tab = sp.get("tab") || "info";
+  const tab = "bookings";
   const setTab = (t) => setSp({ tab: t });
   const detailId = sp.get("booking");
   if (detailId) return <BookingDetail id={detailId} lang={lang} navigate={navigate} onBack={() => setSp({ tab: "bookings" })} />;
-  const TABS = [["bookings", tr("My Reservations", lang)], ["cart", lang === "ko" ? "관심시술" : "Saved"], ["info", tr("My Profile", lang)]];
+  const TABS = [["bookings", tr("My Reservations", lang)]];
   return (
     <>
       <Seo title={UI[lang].myaccount} path="/mypage" noindex />
@@ -811,9 +811,7 @@ function MyPageInner({ lang, navigate }) {
             <button key={id} onClick={() => setTab(id)} style={{ border: "none", background: "transparent", cursor: "pointer", padding: "12px 16px", fontSize: 14, fontWeight: 700, color: tab === id ? BLUE : SUB, borderBottom: `2px solid ${tab === id ? BLUE : "transparent"}`, marginBottom: -1 }}>{label}</button>
           ))}
         </div>
-        {tab === "info" && <MemberInfo lang={lang} />}
-        {tab === "bookings" && <BookingsList lang={lang} onOpen={(id) => setSp({ tab: "bookings", booking: id })} navigate={navigate} />}
-        {tab === "cart" && <CartInner lang={lang} navigate={navigate} />}
+        <BookingsList lang={lang} onOpen={(id) => setSp({ tab: "bookings", booking: id })} navigate={navigate} />
       </div>
     </>
   );

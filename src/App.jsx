@@ -1800,7 +1800,7 @@ function AccountInner({ lang, navigate }) {
     // 데모: 입력값으로 로그인. (실서비스: 인증 백엔드 + 서드파티 채널 동일인 식별 필요)
     const email = form.email || (provider ? `${provider}user@safedoc.io` : "guest@safedoc.io");
     store.login({ name: form.name || email.split("@")[0], email, provider: provider || "email" });
-    navigate("/mypage?tab=info");   // ④ 로그인하면 마이페이지 고객정보 탭으로
+    navigate("/mypage?tab=bookings");   // ④ 로그인하면 마이페이지 예약내역 탭으로
   };
   const submit = (e) => {
     e.preventDefault();
