@@ -346,7 +346,15 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
 /* --------- Footer --------- */
 function Footer({ lang, navigate }) {
   const cols = [
-    { title: { en: "Service", ko: "서비스" }, items: NAV.find((n) => n.id === "service").children },
+    { title: { en: "Service", ko: "서비스" }, items: [
+      { path: "/treatments", en: "Treatments (Book)", ko: "시술 예약", ar: "العلاجات (الحجز)", ja: "施術予約" },
+      { path: "/service/health-checkup", en: "Health Check-up", ko: "건강검진", ar: "الفحص الصحي", ja: "健康診断" },
+      { path: "/service/revital", en: "Revital", ko: "리바이탈", ar: "ريفيتال", ja: "Revital" },
+      { path: "/service/transportation", en: "Transportation", ko: "교통", ar: "النقل", ja: "交通" },
+      { path: "/service/accommodation", en: "Accommodation", ko: "숙박", ar: "الإقامة", ja: "宿泊" },
+      { path: "/service/tour", en: "Tour", ko: "투어", ar: "الجولات", ja: "ツアー" },
+      { path: "/service/association", en: "Association", ko: "제휴", ar: "الشراكات", ja: "提携" },
+    ] },
     { title: { en: "Company", ko: "회사" }, items: [{ path: "/company", en: "About", ko: "회사소개" }, { path: "/pricing", en: "Pricing", ko: "가격 안내", ar: "الأسعار", ja: "料金" }, { path: "/contact", en: "Contact", ko: "문의" }, { path: "/faq", en: "FAQ", ko: "FAQ" }, { path: "/blog", en: "Blog", ko: "블로그" }] },
     { title: { en: "Legal", ko: "법적 고지" }, items: [{ path: "/legal/privacy", en: "Privacy Policy", ko: "개인정보처리방침" }, { path: "/legal/terms", en: "Terms of Service", ko: "이용약관" }, { path: "/legal/refund", en: "Refund Policy", ko: "환불정책" }] },
   ];

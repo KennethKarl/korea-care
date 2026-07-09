@@ -76,22 +76,10 @@ export const PRICING = {
   ],
 };
 
-/* ---------------- 글로벌 네비게이션 (Home / Company / Service▾ / Contact / FAQ / Blog) ---------------- */
+/* ---------------- 글로벌 네비게이션 (Home / Treatments / Providers / Contact / FAQ / Blog) ---------------- */
 export const NAV = [
   { id: "home", path: "/", en: "Home", ko: "홈" },
-  { id: "company", path: "/company", en: "Company", ko: "회사소개" },
-  {
-    id: "service", path: "/service", en: "Service", ko: "서비스",
-    children: [
-      { id: "treatments", path: "/treatments", en: "Treatments (Book)", ko: "시술 예약" },
-      { id: "checkup", path: "/service/health-checkup", en: "Health Check-up", ko: "건강검진" },
-      { id: "revital", path: "/service/revital", en: "Revital", ko: "리바이탈" },
-      { id: "transportation", path: "/service/transportation", en: "Transportation", ko: "교통" },
-      { id: "accommodation", path: "/service/accommodation", en: "Accommodation", ko: "숙박" },
-      { id: "tour", path: "/service/tour", en: "Tour", ko: "투어" },
-      { id: "association", path: "/service/association", en: "Association", ko: "제휴" },
-    ],
-  },
+  { id: "treatments", path: "/treatments", en: "Treatments", ko: "시술" },
   { id: "providers", path: "/providers", en: "Providers", ko: "파트너 병원" },
   { id: "contact", path: "/contact", en: "Contact Us", ko: "문의하기" },
   { id: "faq", path: "/faq", en: "FAQ", ko: "자주 묻는 질문" },
