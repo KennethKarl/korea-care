@@ -258,7 +258,6 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const user = mounted ? store.getUser() : null;
-  const cartCount = mounted ? store.getCart().reduce((s, c) => s + (c.qty || 1), 0) : 0;
   const active = (p) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
   const go = (p) => { navigate(p); setOpen(false); };
   // 언어 드롭다운 (레지스트리 LANGS 구동 — 언어 추가 시 자동 반영)
@@ -276,18 +275,9 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
       <ChevronDown size={14} color={SUB} style={{ position: "absolute", right: 10, pointerEvents: "none" }} />
     </div>
   );
-  const consultBtn = (
-    <button onClick={() => go("/contact")} style={{ ...btn(BLUE, "#fff"), padding: "11px 18px", fontSize: 13.5 }}>{tr("Start Consultation", lang)} <ChevronRight size={15} /></button>
-  );
   const signin = (
     <button onClick={() => go(user ? "/mypage" : "/account")} style={{ border: "none", background: "transparent", color: INK, cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}>
       <User size={15} /> {user ? u.myaccount : u.signin}
-    </button>
-  );
-  const cartBtn = (
-    <button onClick={() => go("/cart")} title={u.cart} style={{ position: "relative", border: `1px solid ${LINE}`, background: "#fff", color: INK, cursor: "pointer", borderRadius: 9, width: 36, height: 36, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
-      <Heart size={16} />
-      {cartCount > 0 && <span style={{ position: "absolute", top: -6, right: -6, background: ACCENT, color: "#fff", fontSize: 10, fontWeight: 800, borderRadius: 999, minWidth: 16, height: 16, display: "grid", placeItems: "center", padding: "0 4px" }}>{cartCount}</span>}
     </button>
   );
   const searchBtn = (
@@ -322,7 +312,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
           </nav>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          {!isMobile && signin}{!isMobile && langBtn}{cartBtn}{!isMobile && consultBtn}
+          {!isMobile && signin}{!isMobile && langBtn}
           {isMobile && <button onClick={() => setOpen((o) => !o)} style={{ border: `1px solid ${LINE}`, background: "#fff", borderRadius: 9, padding: 7, cursor: "pointer", color: INK }}>{open ? <X size={18} /> : <Menu size={18} />}</button>}
         </div>
       </div>
