@@ -7,7 +7,7 @@ import {
   Phone, Mail, Send, Star, ArrowLeft, MessageCircle,
   Heart, MapPinned, SlidersHorizontal, ArrowDownUp, ArrowRight, Shield,
 } from "lucide-react";
-import { Outlet, useNavigate, useLocation, useParams, useOutletContext } from "react-router-dom";
+import { Outlet, useNavigate, useLocation, useParams, useOutletContext, useSearchParams } from "react-router-dom";
 import { ClientOnly } from "vite-react-ssg";
 import { Seo, orgJsonLd, faqJsonLd, breadcrumbJsonLd, procedureJsonLd, providersJsonLd, scanMenuJsonLd } from "./seo.jsx";
 import { initAnalytics, trackPageView } from "./analytics.js";
@@ -421,6 +421,8 @@ function Home() {
 
 function Hero({ lang, navigate }) {
   useContent();
+  const [q, setQ] = useState("");
+  const goSearch = () => navigate(q.trim() ? `/search?q=${encodeURIComponent(q.trim())}` : "/search");
   return (
     <div style={{ background: "#fff" }}>
       <div className="g-hero" style={{ ...WRAP, padding: "64px clamp(20px, 4vw, 40px) 76px", display: "grid", gridTemplateColumns: "1.08fr .92fr", gap: 56, alignItems: "center" }}>
@@ -436,8 +438,8 @@ function Hero({ lang, navigate }) {
           {/* 검색바 (prototype sd-search) */}
           <div style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", marginBottom: 18, maxWidth: 520 }}>
             <Search size={17} color={MUTE} />
-            <input onKeyDown={(e) => e.key === "Enter" && navigate("/treatments")} placeholder={tr("Search treatments, clinics, or concerns", lang)} style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
-            <button onClick={() => navigate("/treatments")} style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, letterSpacing: "0.05em", cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
+            <input value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && goSearch()} placeholder={tr("Search treatments, clinics, or concerns", lang)} style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
+            <button onClick={goSearch} style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, letterSpacing: "0.05em", cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
           </div>
         </div>
         {/* 우: 포토 + 오버레이 캡션 + 플로팅 배지 */}
@@ -1870,8 +1872,102 @@ function PricingPage() {
   );
 }
 
+/* --------- 통합 검색 (병원·시술·블로그) --------- */
+function SearchPage() {
+  const { lang, navigate } = useOutletContext();
+  return <ClientOnly>{() => <SearchInner lang={lang} navigate={navigate} />}</ClientOnly>;
+}
+function SearchInner({ lang, navigate }) {
+  useContent();
+  const [sp, setSp] = useSearchParams();
+  const q = (sp.get("q") || "").trim();
+  const ko = lang === "ko";
+  const [query, setQuery] = useState(q);
+  useEffect(() => { setQuery(q); }, [q]);
+  const nq = q.toLowerCase();
+  const hit = (...vals) => !!nq && vals.some((v) => String(v || "").toLowerCase().includes(nq));
+
+  const providers = nq ? getCollection("providers").filter((p) => hit(
+    tx(p.name, "en"), tx(p.name, "ko"), tx(p.area, "en"), tx(p.area, "ko"), tx(p.blurb, "en"), tx(p.blurb, "ko"),
+    ...(p.departments || []).map((d) => deptLabel(d, "en")), ...(p.departments || []).map((d) => deptLabel(d, "ko")))) : [];
+  const treatments = nq ? getCollection("procedures").filter((p) => hit(
+    tx(p.name, "en"), tx(p.name, "ko"), tx(p.hospital?.name, "en"), tx(p.hospital?.name, "ko"), tx(p.dept, "en"), tx(p.dept, "ko"), p.category)) : [];
+  const posts = nq ? getCollection("blog").filter((p) => hit(
+    tx(p.title, "en"), tx(p.title, "ko"), tx(p.excerpt, "en"), tx(p.excerpt, "ko"), p.category)) : [];
+
+  const TABS = [
+    { id: "providers", label: ko ? "병원" : "Providers", items: providers },
+    { id: "treatments", label: ko ? "시술" : "Treatments", items: treatments },
+    { id: "blog", label: ko ? "블로그" : "Blog", items: posts },
+  ];
+  const firstNonEmpty = (TABS.find((t) => t.items.length) || TABS[0]).id;
+  const [tab, setTab] = useState(firstNonEmpty);
+  useEffect(() => { setTab(firstNonEmpty); }, [q]);   // eslint-disable-line react-hooks/exhaustive-deps
+  const total = providers.length + treatments.length + posts.length;
+
+  const submit = (e) => { if (e) e.preventDefault(); setSp(query.trim() ? { q: query.trim() } : {}); };
+  const cardBtn = { textAlign: "start", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 16, cursor: "pointer", display: "flex", flexDirection: "column", boxShadow: "0 4px 16px rgba(15,23,42,.04)" };
+  const empty = (t) => <div style={{ color: MUTE, padding: "40px 0", textAlign: "center", fontSize: 14 }}>{ko ? `일치하는 ${t}이(가) 없습니다.` : `No matching ${t}.`}</div>;
+
+  return (
+    <>
+      <Seo title={ko ? "검색" : "Search"} path="/search" noindex />
+      <div style={{ ...WRAP, padding: "48px 28px 90px" }}>
+        <h1 style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, margin: "0 0 16px" }}>{ko ? "검색" : "Search"}</h1>
+        <form onSubmit={submit} style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", maxWidth: 620 }}>
+          <Search size={17} color={MUTE} />
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={tr("Search treatments, clinics, or concerns", lang)} autoFocus style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
+          <button type="submit" style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
+        </form>
+
+        {q ? (
+          <>
+            <div style={{ fontSize: 13.5, color: MUTE, margin: "20px 0 10px" }}>{ko ? <>‘<b style={{ color: INK }}>{q}</b>’ 검색 결과 {total}건</> : <>{total} results for ‘<b style={{ color: INK }}>{q}</b>’</>}</div>
+            <div style={{ display: "flex", gap: 6, borderBottom: `1px solid ${LINE}`, marginBottom: 24 }}>
+              {TABS.map((t) => (
+                <button key={t.id} onClick={() => setTab(t.id)} style={{ border: "none", background: "transparent", cursor: "pointer", padding: "12px 16px", fontSize: 14, fontWeight: 700, color: tab === t.id ? BLUE : SUB, borderBottom: `2px solid ${tab === t.id ? BLUE : "transparent"}`, marginBottom: -1 }}>
+                  {t.label} <span style={{ color: MUTE, fontWeight: 600 }}>{t.items.length}</span>
+                </button>
+              ))}
+            </div>
+
+            {tab === "providers" && (providers.length ? (
+              <div className="g-3">{providers.map((p) => (
+                <button key={p.id} onClick={() => navigate(`/providers/${p.id}`)} style={cardBtn}>
+                  {p.image && <img src={p.image} alt="" loading="lazy" style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 10, marginBottom: 12 }} />}
+                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, lineHeight: 1.3 }}>{tx(p.name, lang)}</div>
+                  <div style={{ fontSize: 12.5, color: SUB, marginTop: 3 }}>{tx(p.area, lang)}</div>
+                  <div style={{ fontSize: 12.5, color: ACCENT, fontWeight: 700, marginTop: 8 }}>★ {p.rating}{p.reviews ? ` · ${p.reviews.toLocaleString()}` : ""}</div>
+                </button>
+              ))}</div>
+            ) : empty(ko ? "병원" : "providers"))}
+
+            {tab === "treatments" && (treatments.length ? (
+              <div className="g-3">{treatments.map((p) => (
+                <button key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} style={cardBtn}>
+                  {p.hospital?.square && <img src={p.hospital.square} alt="" loading="lazy" style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 10, marginBottom: 12 }} />}
+                  <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, lineHeight: 1.3 }}>{tx(p.name, lang)}</div>
+                  <div style={{ fontSize: 12.5, color: SUB, marginTop: 3 }}>{tx(p.hospital?.name, lang)}</div>
+                  {p.price ? <div style={{ fontFamily: DISPLAY, fontSize: 14, fontWeight: 800, color: BLUE, marginTop: 8 }}>${usd(p.price).toLocaleString()}</div> : null}
+                </button>
+              ))}</div>
+            ) : empty(ko ? "시술" : "treatments"))}
+
+            {tab === "blog" && (posts.length ? (
+              <div className="g-3">{posts.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} />)}</div>
+            ) : empty(ko ? "글" : "articles"))}
+          </>
+        ) : (
+          <div style={{ color: MUTE, padding: "48px 0", fontSize: 14 }}>{ko ? "검색어를 입력하세요." : "Enter a search term."}</div>
+        )}
+      </div>
+    </>
+  );
+}
+
 const PAGE_ROUTES = [
   { index: true, element: <Home /> },
+  { path: "search", element: <SearchPage /> },
   { path: "pricing", element: <PricingPage /> },
   { path: "company", element: <CompanyPage /> },
   { path: "service", element: <ServiceHub /> },
