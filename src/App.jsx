@@ -439,9 +439,6 @@ function Hero({ lang, navigate }) {
             <input onKeyDown={(e) => e.key === "Enter" && navigate("/treatments")} placeholder={tr("Search treatments, clinics, or concerns", lang)} style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
             <button onClick={() => navigate("/treatments")} style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, letterSpacing: "0.05em", cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
-            <button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff"), fontSize: 14.5, padding: "14px 26px" }}>{tx(HERO.cta1, lang)}</button>
-          </div>
         </div>
         {/* 우: 포토 + 오버레이 캡션 + 플로팅 배지 */}
         <div style={{ position: "relative", borderRadius: 16, overflow: "hidden", minHeight: 540, alignSelf: "stretch" }}>
