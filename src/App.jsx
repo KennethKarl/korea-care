@@ -402,8 +402,6 @@ function Home() {
       <Hero lang={lang} navigate={navigate} />
       <Journey lang={lang} />
       <ProvidersHomeSection lang={lang} navigate={navigate} />
-      <RevitalSection lang={lang} navigate={navigate} />
-      <CheckupSection lang={lang} navigate={navigate} />
       <WhyKorea lang={lang} />
       <Reviews lang={lang} />
       <FaqSection lang={lang} navigate={navigate} preview />
