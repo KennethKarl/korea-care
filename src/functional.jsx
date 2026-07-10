@@ -79,7 +79,7 @@ export function TreatmentListPage() {
       <div data-spec="tl-title" style={{ background: BRAND_GRAD, color: "#fff" }}>
         <div style={{ ...WRAP, padding: "56px 28px" }}>
           <h1 style={{ fontFamily: DISPLAY, fontSize: 38, fontWeight: 800, margin: "0 0 10px", letterSpacing: "-0.02em" }}>{tr("Treatments", lang)}</h1>
-          <p style={{ fontSize: 16, color: "#d6e1ff", margin: 0, maxWidth: 620 }}>{tr("Browse every treatment across our partner hospitals — bilingual descriptions, transparent pricing, hospital details on each card.", lang)}</p>
+          <p style={{ fontSize: 16, color: "#d6e1ff", margin: 0, maxWidth: 620 }}>{tr("Explore verified treatments at Korea's top partner hospitals, with clear and transparent pricing on every option.", lang)}</p>
         </div>
       </div>
       <div style={{ ...WRAP, padding: "28px 28px 80px" }}>
