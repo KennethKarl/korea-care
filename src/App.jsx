@@ -101,7 +101,6 @@ function FloatingInquiry({ lang }) {
   );
 }
 function InquiryModal({ lang, onClose }) {
-  const profile = store.getProfile();
   const [sent, setSent] = useState(false);
   const cats = lang === "ko"
     ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과"]
@@ -122,9 +121,9 @@ function InquiryModal({ lang, onClose }) {
           </div>
         ) : (
           <form onSubmit={(e) => { e.preventDefault(); submitLead({ source: "inquiry" }).catch(() => {}); setSent(true); }} style={{ display: "grid", gap: 12 }}>
-            <input style={inp} required placeholder={tr("Name", lang)} defaultValue={profile?.fullName || ""} />
-            <input style={inp} required type="email" placeholder="Email" defaultValue={profile?.email || ""} />
-            <input type="tel" style={inp} placeholder={tr("Phone (with country code)", lang)} defaultValue={profile?.phone || ""} />
+            <input style={inp} required placeholder={tr("Name", lang)} />
+            <input style={inp} required type="email" placeholder="Email" />
+            <input type="tel" style={inp} placeholder={tr("Phone (with country code)", lang)} />
             <select style={inp} required defaultValue=""><option value="" disabled>{tr("Select category", lang)}</option>{cats.map((c) => <option key={c}>{c}</option>)}</select>
             <textarea style={inp} rows={3} placeholder={tr("Tell us about the treatment you're considering", lang)} />
             <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, color: SUB }}><input type="checkbox" required /> {tr("I'm not a robot", lang)}</label>
