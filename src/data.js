@@ -329,17 +329,43 @@ export const PROVIDERS = [
       { name: { en: "Dr. Tae-ri Kim", ko: "김태리 센터장" }, title: { en: "Director, Int'l Health Services", ko: "국제진료센터장" }, credentials: { en: "MD · 15 yrs", ko: "MD · 15년" }, photo: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80" },
     ] },
   { id: "asan-mc", name: { en: "Asan Medical Center", ko: "서울아산병원" }, image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=800&q=80", area: { en: "Songpa-gu, Seoul", ko: "서울 송파구" }, rating: 4.8, reviews: 1218, accreditation: ["JCI", "ISO 9001"], departments: ["general", "screen", "ortho", "ophth", "obgyn", "derm", "urology"], languages: ["en", "zh", "ja", "ru", "ar"], english_support: true, international_ward: true,
-    blurb: { en: "Korea's largest tertiary hospital, renowned for liver transplantation, cardiothoracic surgery, and premium executive screening. 24-hour international coordinator line.", ko: "국내 최대 규모의 상급종합병원으로, 간 이식·흉부외과·프리미엄 건강검진 분야에서 세계적 명성을 얻고 있습니다. 24시간 국제진료 핫라인 운영." } },
+    blurb: { en: "Korea's largest tertiary hospital, renowned for liver transplantation, cardiothoracic surgery, and premium executive screening. 24-hour international coordinator line.", ko: "국내 최대 규모의 상급종합병원으로, 간 이식·흉부외과·프리미엄 건강검진 분야에서 세계적 명성을 얻고 있습니다. 24시간 국제진료 핫라인 운영." },
+    doctors: [
+      { name: { en: "Prof. Do-hyun Lee", ko: "이도현 교수" }, title: { en: "Liver Transplant & HBP Surgery", ko: "간이식·간담도외과" }, credentials: { en: "MD, PhD · 22 yrs", ko: "MD, PhD · 22년" }, photo: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80" },
+      { name: { en: "Prof. Hyun-woo Seo", ko: "서현우 교수" }, title: { en: "Cardiothoracic Surgery", ko: "심장혈관흉부외과" }, credentials: { en: "MD, PhD · 24 yrs", ko: "MD, PhD · 24년" }, photo: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80" },
+      { name: { en: "Dr. Su-bin Choi", ko: "최수빈 과장" }, title: { en: "Health Screening", ko: "건강의학과" }, credentials: { en: "MD · 16 yrs", ko: "MD · 16년" }, photo: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" },
+    ] },
   { id: "severance", name: { en: "Severance Hospital (Yonsei)", ko: "연세세브란스병원" }, image: "https://images.unsplash.com/photo-1530497610245-94d3c16cda28?w=800&q=80", area: { en: "Seodaemun-gu, Seoul", ko: "서울 서대문구" }, rating: 4.8, reviews: 982, accreditation: ["JCI", "ISO 9001", "KAHF"], departments: ["general", "screen", "ophth", "plastic", "dental", "obgyn", "ortho", "urology"], languages: ["en", "zh", "ru"], english_support: true, international_ward: true,
-    blurb: { en: "Korea's oldest Western-style hospital, affiliated with Yonsei University College of Medicine. Strong in ophthalmology, robotic surgery, and women's health.", ko: "국내 최초의 서양식 병원으로, 연세대학교 의과대학 부속병원. 안과·로봇 수술·여성건강 분야에서 강세를 보입니다." } },
+    blurb: { en: "Korea's oldest Western-style hospital, affiliated with Yonsei University College of Medicine. Strong in ophthalmology, robotic surgery, and women's health.", ko: "국내 최초의 서양식 병원으로, 연세대학교 의과대학 부속병원. 안과·로봇 수술·여성건강 분야에서 강세를 보입니다." },
+    doctors: [
+      { name: { en: "Prof. A-reum Yoon", ko: "윤아름 교수" }, title: { en: "Ophthalmology", ko: "안과" }, credentials: { en: "MD, PhD · 19 yrs", ko: "MD, PhD · 19년" }, photo: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80" },
+      { name: { en: "Prof. Min-ho Kang", ko: "강민호 교수" }, title: { en: "Robotic Surgery Center", ko: "로봇수술센터" }, credentials: { en: "MD · 21 yrs", ko: "MD · 21년" }, photo: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&q=80" },
+      { name: { en: "Dr. Da-eun Jang", ko: "장다은 과장" }, title: { en: "Obstetrics & Gynecology", ko: "산부인과" }, credentials: { en: "MD · 15 yrs", ko: "MD · 15년" }, photo: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" },
+    ] },
   { id: "seoul-saint-marys", name: { en: "Seoul St. Mary's Hospital", ko: "서울성모병원" }, image: "https://images.unsplash.com/photo-1516069677018-378515003435?w=800&q=80", area: { en: "Seocho-gu, Seoul", ko: "서울 서초구" }, rating: 4.7, reviews: 614, accreditation: ["JCI", "KAHF"], departments: ["general", "screen", "ortho", "obgyn", "ophth", "urology"], languages: ["en", "zh"], english_support: true, international_ward: false,
-    blurb: { en: "Catholic University of Korea's flagship hospital, known for hematology, bone marrow transplantation, and maternal-fetal medicine.", ko: "가톨릭대학교 대표 부속병원으로, 혈액학·조혈모세포 이식·모체태아의학에서 두각을 나타냅니다." } },
+    blurb: { en: "Catholic University of Korea's flagship hospital, known for hematology, bone marrow transplantation, and maternal-fetal medicine.", ko: "가톨릭대학교 대표 부속병원으로, 혈액학·조혈모세포 이식·모체태아의학에서 두각을 나타냅니다." },
+    doctors: [
+      { name: { en: "Prof. Se-hoon Oh", ko: "오세훈 교수" }, title: { en: "Hematology", ko: "혈액내과" }, credentials: { en: "MD, PhD · 24 yrs", ko: "MD, PhD · 24년" }, photo: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80" },
+      { name: { en: "Dr. Yu-na Lim", ko: "임유나 과장" }, title: { en: "Maternal-Fetal Medicine", ko: "모체태아의학" }, credentials: { en: "MD · 17 yrs", ko: "MD · 17년" }, photo: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" },
+    ] },
   { id: "jk-plastic", name: { en: "JK Plastic Surgery Center", ko: "JK성형외과" }, image: "https://images.unsplash.com/photo-1622902046580-2b47f47f5471?w=800&q=80", area: { en: "Gangnam-gu, Seoul", ko: "서울 강남구" }, rating: 4.9, reviews: 1604, accreditation: ["ISAPS Member", "KSAPS"], departments: ["plastic", "derm"], languages: ["en", "zh", "ja"], english_support: true, international_ward: false,
-    blurb: { en: "Boutique plastic-surgery center on Apgujeong Rodeo, serving international patients since 2000. In-house interpreters and pickup service standard.", ko: "압구정 로데오 거리에 위치한 프리미엄 성형외과. 2000년부터 해외 환자를 진료해왔으며, 통역·픽업 서비스가 기본 제공됩니다." } },
+    blurb: { en: "Boutique plastic-surgery center on Apgujeong Rodeo, serving international patients since 2000. In-house interpreters and pickup service standard.", ko: "압구정 로데오 거리에 위치한 프리미엄 성형외과. 2000년부터 해외 환자를 진료해왔으며, 통역·픽업 서비스가 기본 제공됩니다." },
+    doctors: [
+      { name: { en: "Dr. In-sung Cho", ko: "조인성 대표원장" }, title: { en: "Chief Plastic Surgeon", ko: "성형외과 · 대표원장" }, credentials: { en: "MD · 23 yrs", ko: "MD · 23년" }, photo: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&q=80" },
+      { name: { en: "Dr. Min-a Shin", ko: "신민아 원장" }, title: { en: "Dermatology", ko: "피부과" }, credentials: { en: "MD · 14 yrs", ko: "MD · 14년" }, photo: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&q=80" },
+    ] },
   { id: "oracle-dental", name: { en: "Oracle Dental Clinic (Gangnam)", ko: "오라클치과 (강남)" }, image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=800&q=80", area: { en: "Gangnam-gu, Seoul", ko: "서울 강남구" }, rating: 4.8, reviews: 486, accreditation: ["KDA"], departments: ["dental"], languages: ["en"], english_support: true, international_ward: false,
-    blurb: { en: "Premium multi-specialty dental group. Implants, digital veneers, clear-aligner ortho, full-mouth rehabilitation.", ko: "강남 플래그십을 둔 프리미엄 복합 치과 그룹. 임플란트·디지털 라미네이트·투명교정·풀마우스 치료." } },
+    blurb: { en: "Premium multi-specialty dental group. Implants, digital veneers, clear-aligner ortho, full-mouth rehabilitation.", ko: "강남 플래그십을 둔 프리미엄 복합 치과 그룹. 임플란트·디지털 라미네이트·투명교정·풀마우스 치료." },
+    doctors: [
+      { name: { en: "Dr. Hae-in Jung", ko: "정해인 원장" }, title: { en: "Implant & Prosthodontics", ko: "임플란트·보철과" }, credentials: { en: "DDS · 18 yrs", ko: "DDS · 18년" }, photo: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&q=80" },
+      { name: { en: "Dr. Su-ji Bae", ko: "배수지 원장" }, title: { en: "Orthodontics", ko: "교정과" }, credentials: { en: "DDS, PhD · 12 yrs", ko: "DDS, PhD · 12년" }, photo: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" },
+    ] },
   { id: "snuh", name: { en: "Seoul National University Hospital", ko: "서울대학교병원" }, image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=800&q=80", area: { en: "Jongno-gu, Seoul", ko: "서울 종로구" }, rating: 4.7, reviews: 721, accreditation: ["JCI", "KAHF"], departments: ["general", "screen", "ortho", "ophth", "obgyn", "urology"], languages: ["en", "zh", "vi", "ar"], english_support: true, international_ward: true,
-    blurb: { en: "Korea's leading public tertiary hospital, with an international healthcare center and rare-disease clinic.", ko: "국내 대표 공공 상급종합병원으로, 국제진료센터와 희귀질환 클리닉을 운영합니다." } },
+    blurb: { en: "Korea's leading public tertiary hospital, with an international healthcare center and rare-disease clinic.", ko: "국내 대표 공공 상급종합병원으로, 국제진료센터와 희귀질환 클리닉을 운영합니다." },
+    doctors: [
+      { name: { en: "Prof. Ye-jin Son", ko: "손예진 교수" }, title: { en: "Endocrinology", ko: "내분비내과" }, credentials: { en: "MD, PhD · 20 yrs", ko: "MD, PhD · 20년" }, photo: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" },
+      { name: { en: "Prof. Jun-yeol Ryu", ko: "류준열 교수" }, title: { en: "Rare Disease Center", ko: "희귀질환센터" }, credentials: { en: "MD, PhD · 16 yrs", ko: "MD, PhD · 16년" }, photo: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80" },
+    ] },
 ];
 
 /* ---------------- 방문자 후기 ---------------- */
