@@ -723,7 +723,6 @@ function BlogHomeSection({ lang, navigate }) {
     <div style={{ background: BG_SOFT }}>
       <div style={{ ...WRAP, padding: "76px 28px" }}>
         <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <Eyebrow>{tr("Blog", lang)}</Eyebrow>
           <H2 center>{tr("Insights & Guides", lang)}</H2>
         </div>
         <div className="g-3">
