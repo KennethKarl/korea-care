@@ -32,7 +32,7 @@ export const CHANNELS = [
    placement: "banner"(상단 스트립) | "popup"(홈 모달, 세션당 1회)
    text/cta: i18n · link: 이동 경로 · langs: []=전 언어 · enabled: 노출 */
 export const PROMOS = [
-  { id: "summer-checkup", placement: "banner", enabled: true, langs: [],
+  { id: "summer-checkup", placement: "banner", enabled: false, langs: [],
     text: { en: "Summer Health Check-up — up to 20% off for international patients", ko: "여름 건강검진 — 해외 환자 최대 20% 할인", ar: "الفحص الصحي الصيفي — خصم يصل إلى 20٪ للمرضى الدوليين", ja: "夏の健康診断 — 海外の患者様に最大20%オフ" },
     cta: { en: "See offers", ko: "혜택 보기", ar: "شاهد العروض", ja: "特典を見る" }, link: "/service/health-checkup" },
   { id: "welcome-consult", placement: "popup", enabled: false, langs: [],
