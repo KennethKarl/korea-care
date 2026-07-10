@@ -340,7 +340,7 @@ const INTERPRETERS = [
 ];
 const GENDERS = { en: ["Male", "Female", "Transgender (MtF)", "Transgender (FtM)"], ko: ["남성", "여성", "트랜스젠더(남→여)", "트랜스젠더(여→남)"] };
 const blankCustomer = (profile) => ({
-  bookingFor: "self", fullName: profile?.fullName || "", email: profile?.email || "", phone: profile?.phone || "", countryCode: profile?.countryCode || "+1",
+  bookingFor: "self", fullName: "", email: "", phone: "", countryCode: profile?.countryCode || "+1",
   dob: "", gender: "", nationality: "", passportNo: "", interpreter: "", history: "", meds: "", allergy: "", memo: "",
   arrival: "", departure: "", d1: "", t1: "any", d2: "", t2: "any", selectedOptions: {}, airportPickup: false, hotel: false,
 });
@@ -486,7 +486,7 @@ function BookingInner({ lang, navigate }) {
           <SubTitle>{lang === "ko" ? (cur.bookingFor === "proxy" ? "방문자 정보" : "고객 정보") : (cur.bookingFor === "proxy" ? "Visitor info" : "Customer info")}</SubTitle>
           <div style={grid2}>
             <Field label={tr("Full name (passport)", lang)}><input style={inp} value={cur.fullName} onChange={(e) => setField("fullName", e.target.value)} placeholder="GILDONG HONG" /></Field>
-            <Field label="Email"><input type="email" style={inp} value={cur.email} onChange={(e) => setField("email", e.target.value)} /></Field>
+            <Field label="Email"><input type="email" style={inp} value={cur.email} onChange={(e) => setField("email", e.target.value)} placeholder="you@email.com" /></Field>
             <Field label={tr("Phone", lang)}><input type="tel" style={inp} value={cur.phone} onChange={(e) => setField("phone", e.target.value)} placeholder="+1 555 0100" /></Field>
             <Field label={tr("Date of birth", lang)}><input type="date" style={inp} value={cur.dob} onChange={(e) => setField("dob", e.target.value)} /></Field>
             <Field label={tr("Gender", lang)}><select style={inp} value={cur.gender} onChange={(e) => setField("gender", e.target.value)}><option value="">—</option>{(GENDERS[lang] || GENDERS.en).map((g) => <option key={g}>{g}</option>)}</select></Field>
