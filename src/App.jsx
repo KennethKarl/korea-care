@@ -443,7 +443,6 @@ function Hero({ lang, navigate }) {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
             <button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff"), fontSize: 14.5, padding: "14px 26px" }}>{tx(HERO.cta1, lang)}</button>
-            <button onClick={() => navigate("/service")} style={{ ...btn("#fff", INK), border: `1px solid ${INK}`, fontSize: 14.5, padding: "13px 26px" }}>{tx(HERO.cta2, lang)}</button>
           </div>
         </div>
         {/* 우: 포토 + 오버레이 캡션 + 플로팅 배지 */}
