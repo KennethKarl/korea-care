@@ -398,7 +398,7 @@ function Home() {
       <Journey lang={lang} />
       <ProvidersHomeSection lang={lang} navigate={navigate} />
       <WhyKorea lang={lang} />
-      <Reviews lang={lang} />
+      <BlogHomeSection lang={lang} navigate={navigate} />
       <FaqSection lang={lang} navigate={navigate} preview />
     </>
   );
@@ -700,6 +700,30 @@ function Reviews({ lang }) {
               <span style={{ display: "inline-block", fontSize: 11.5, fontWeight: 700, color: BLUE, background: SECTION_TINT, borderRadius: 999, padding: "5px 12px" }}>{tx(r.source, lang)} · {tx(r.treatment, lang)}</span>
             </div>
           ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 홈 블로그 섹션 — Reviews와 동일한 레이아웃(Eyebrow+H2+g-3), 조회수 상위 3편 카드
+function BlogHomeSection({ lang, navigate }) {
+  useContent();
+  const BLOG = getCollection("blog");
+  const posts = [...BLOG].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 3);
+  if (!posts.length) return null;
+  return (
+    <div style={{ background: BG_SOFT }}>
+      <div style={{ ...WRAP, padding: "76px 28px" }}>
+        <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <Eyebrow>{tr("Blog", lang)}</Eyebrow>
+          <H2 center>{tr("Insights & Guides", lang)}</H2>
+        </div>
+        <div className="g-3">
+          {posts.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} />)}
+        </div>
+        <div style={{ textAlign: "center", marginTop: 36 }}>
+          <button onClick={() => navigate("/blog")} style={{ ...btn("#fff", BLUE), border: `1px solid ${BLUE}`, padding: "12px 26px", display: "inline-flex", alignItems: "center", gap: 8 }}>{lang === "ko" ? "모든 글 보기" : "View all articles"} <ChevronRight size={16} /></button>
         </div>
       </div>
     </div>
