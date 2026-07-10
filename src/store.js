@@ -107,7 +107,23 @@ export function upsertBooking(b) {
   write(K.bookings, list);
   return id;
 }
-export const getBooking = (id) => getBookings().find((b) => b.id === id);
+export const getBooking = (id) => getBookings().find((b) => b.id === id) || (id === SAMPLE_BOOKING.id ? SAMPLE_BOOKING : undefined);
+
+/* 데모 샘플 예약 — 예약 내역 조회에서 아무 번호나 입력 시 노출(백엔드 연동 전 시연용).
+   실제 예약이 localStorage 에 있으면 그 예약이 우선한다. */
+export const SAMPLE_BOOKING = {
+  id: "bk-sample", no: "SD2026-000000", status: "pending",
+  procedureId: "smile-lasik", treatmentName: "SMILE LASIK", totalCards: 1, createdAt: "now",
+  cards: [{
+    fullName: "Michael Reeves", email: "michael.r@example.com", phone: "010-2713-5533", countryCode: "+1",
+    dob: "1988-04-12", gender: "male", nationality: "us", interpreter: "en", passportNo: "M12345678",
+    d1: "2026-08-05", t1: "am", d2: "2026-08-12", t2: "pm",
+    arrival: "2026-08-03", departure: "2026-08-15",
+    history: "None", meds: "None", allergy: "None",
+    memo: "Prefer a morning appointment; traveling with spouse.",
+    selectedOptions: ["Corneal topography"],
+  }],
+};
 export function requestCancel(id) {
   // 고객은 직접 취소 불가 — "세이프닥에 취소 요청" 플래그만 (어드민이 처리)
   const list = getBookings().map((b) => (b.id === id ? { ...b, cancelRequested: true } : b));

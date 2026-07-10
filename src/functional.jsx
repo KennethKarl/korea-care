@@ -606,18 +606,19 @@ function MyPageInner({ lang, navigate }) {
   const [sp] = useSearchParams();
   const preset = (sp.get("no") || "").toUpperCase();
   const [query, setQuery] = useState(preset);
-  const [foundId, setFoundId] = useState(null);
+  const [found, setFound] = useState(null);   // { id } 실제예약 | { booking } 데모샘플
   const [err, setErr] = useState("");
   const runLookup = (raw) => {
     const q = String(raw).trim().toUpperCase();
-    if (!q) { setFoundId(null); setErr(ko ? "예약번호를 입력해 주세요." : "Please enter your reservation number."); return; }
+    if (!q) { setFound(null); setErr(ko ? "예약번호를 입력해 주세요." : "Please enter your reservation number."); return; }
     const hit = store.getBookings().find((b) => String(b.no || "").toUpperCase() === q);
-    if (!hit) { setFoundId(null); setErr(ko ? "일치하는 예약번호가 없습니다. 다시 확인해 주세요." : "No reservation matches that number. Please check and try again."); return; }
-    setErr(""); setFoundId(hit.id);
+    setErr("");
+    // 실제 예약이 있으면 그 예약, 없으면 데모 샘플(입력한 번호로 표기) 조회
+    setFound(hit ? { id: hit.id } : { booking: { ...store.SAMPLE_BOOKING, no: q } });
   };
   useEffect(() => { if (preset) runLookup(preset); }, [preset]);   // eslint-disable-line react-hooks/exhaustive-deps
   const lookup = (e) => { if (e) e.preventDefault(); runLookup(query); };
-  if (foundId) return <BookingDetail id={foundId} lang={lang} navigate={navigate} onBack={() => setFoundId(null)} />;
+  if (found) return <BookingDetail id={found.id} booking={found.booking} lang={lang} navigate={navigate} onBack={() => setFound(null)} />;
   const inp = { padding: "13px 15px", border: `1px solid ${LINE}`, borderRadius: 10, fontSize: 15, width: "100%", boxSizing: "border-box", fontFamily: "inherit", letterSpacing: "0.03em" };
   return (
     <>
@@ -843,9 +844,9 @@ function flowMessage(status, lang) {
   }[status] || "";
 }
 
-function BookingDetail({ id, lang, navigate, onBack }) {
+function BookingDetail({ id, booking, lang, navigate, onBack }) {
   store.useStore();
-  const b = store.getBooking(id);
+  const b = booking || store.getBooking(id);
   const [visitorIdx, setVisitorIdx] = useState(0);
   const [editForm, setEditForm] = useState(null);   // null = 닫힘
   if (!b) return <div style={{ color: MUTE, padding: "40px 0" }}>—</div>;
