@@ -427,7 +427,6 @@ function Home() {
 
 function Hero({ lang, navigate }) {
   useContent();
-  const chips = getCollection("procedures").slice(0, 5);
   return (
     <div style={{ background: "#fff" }}>
       <div className="g-hero" style={{ ...WRAP, padding: "64px clamp(20px, 4vw, 40px) 76px", display: "grid", gridTemplateColumns: "1.08fr .92fr", gap: 56, alignItems: "center" }}>
@@ -449,12 +448,6 @@ function Hero({ lang, navigate }) {
           <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
             <button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff"), fontSize: 14.5, padding: "14px 26px" }}>{tx(HERO.cta1, lang)}</button>
             <button onClick={() => navigate("/service")} style={{ ...btn("#fff", INK), border: `1px solid ${INK}`, fontSize: 14.5, padding: "13px 26px" }}>{tx(HERO.cta2, lang)}</button>
-          </div>
-          {/* 전문분야 칩 */}
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            {chips.map((p) => (
-              <button key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} style={{ background: "#fff", color: INK, border: `1px solid ${LINE}`, borderRadius: 999, padding: "7px 14px", fontSize: 12.5, fontWeight: 600, cursor: "pointer" }}>{tx(p.name, lang)}</button>
-            ))}
           </div>
         </div>
         {/* 우: 포토 + 오버레이 캡션 + 플로팅 배지 */}
