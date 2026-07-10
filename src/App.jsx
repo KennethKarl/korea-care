@@ -407,7 +407,6 @@ function Home() {
       <WhyKorea lang={lang} />
       <Reviews lang={lang} />
       <FaqSection lang={lang} navigate={navigate} preview />
-      <Certifications lang={lang} />
     </>
   );
 }
@@ -761,26 +760,6 @@ function FaqSection({ lang, navigate, preview }) {
           <button onClick={() => navigate("/faq")} style={{ ...viewMoreBtn }}>{u.viewMore} <ChevronRight size={15} /></button>
         </div>
       )}
-    </div>
-  );
-}
-
-function Certifications({ lang }) {
-  useContent();
-  const CERTS = getCollection("certs");
-  return (
-    <div style={{ background: BG_SOFT, borderTop: "1px solid #eef1f6" }}>
-      <div style={{ ...WRAP, padding: "48px 28px", textAlign: "center" }}>
-        <div style={{ fontSize: 14, fontWeight: 700, color: "#7587a3", marginBottom: 24 }}>{tx(CERTS.title, lang)}</div>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 18, flexWrap: "wrap" }}>
-          {CERTS.orgs.map((o) => (
-            <div key={o.mark} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, minWidth: 150, padding: "16px 20px", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 12 }}>
-              <span style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: "#5a6b86" }}>{o.mark}</span>
-              <span style={{ fontSize: 11.5, color: "#9aa7bd" }}>{tx(o.sub, lang)}</span>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
