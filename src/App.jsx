@@ -93,7 +93,7 @@ function FloatingInquiry({ lang }) {
   }, []);
   return (
     <>
-      <button onClick={() => setOpen(true)} style={{ position: "fixed", right: 22, bottom: 22, zIndex: 50, display: "inline-flex", alignItems: "center", gap: 8, background: BRAND_GRAD, color: "#fff", border: "none", borderRadius: 999, padding: "13px 20px", fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 24px rgba(27,89,250,.4)" }}>
+      <button onClick={() => setOpen(true)} data-spec="iq-fab" style={{ position: "fixed", right: 22, bottom: 22, zIndex: 50, display: "inline-flex", alignItems: "center", gap: 8, background: BRAND_GRAD, color: "#fff", border: "none", borderRadius: 999, padding: "13px 20px", fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 24px rgba(27,89,250,.4)" }}>
         <MessageCircle size={18} /> {tr("Contact", lang)}
       </button>
       {open && <InquiryModal lang={lang} onClose={() => setOpen(false)} />}
@@ -108,7 +108,7 @@ function InquiryModal({ lang, onClose }) {
   const inp = { width: "100%", padding: "11px 13px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 13.5, boxSizing: "border-box", fontFamily: "inherit" };
   return (
     <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,15,44,.5)", zIndex: 60, display: "grid", placeItems: "center", padding: 20 }}>
-      <div onClick={(e) => e.stopPropagation()} style={{ background: "#fff", borderRadius: 18, width: "100%", maxWidth: 460, maxHeight: "90vh", overflow: "auto", padding: 26 }}>
+      <div onClick={(e) => e.stopPropagation()} data-spec="iq-modal" style={{ background: "#fff", borderRadius: 18, width: "100%", maxWidth: 460, maxHeight: "90vh", overflow: "auto", padding: 26 }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
           <h3 style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 800, color: INK, margin: 0 }}>{tr("Get in touch", lang)}</h3>
           <button onClick={onClose} style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE }}><X size={20} /></button>
@@ -120,7 +120,7 @@ function InquiryModal({ lang, onClose }) {
             <p style={{ fontSize: 13, color: SUB }}>{tr("A confirmation email was sent and our global team was notified.", lang)}</p>
           </div>
         ) : (
-          <form onSubmit={(e) => { e.preventDefault(); submitLead({ source: "inquiry" }).catch(() => {}); setSent(true); }} style={{ display: "grid", gap: 12 }}>
+          <form onSubmit={(e) => { e.preventDefault(); submitLead({ source: "inquiry" }).catch(() => {}); setSent(true); }} data-spec="iq-form" style={{ display: "grid", gap: 12 }}>
             <input style={inp} required placeholder={tr("Name", lang)} />
             <input style={inp} required type="email" placeholder="Email" />
             <input type="tel" style={inp} placeholder={tr("Phone (with country code)", lang)} />
@@ -241,7 +241,7 @@ function LandingStyles() {
 /* --------- logo --------- */
 function SafedocLogo({ onClick, dark = false }) {
   return (
-    <button onClick={onClick} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 5, padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
+    <button onClick={onClick} data-spec={dark ? "f-logo" : "h-logo"} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 5, padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
       {/* 라이트=파란 워드마크 SVG, 다크=흰 knockout PNG(투명 배경) */}
       <img src={`${import.meta.env.BASE_URL}${dark ? "safedoc-wordmark-white.png" : "safedoc-wordmark.svg"}`} alt="SafeDoc" style={{ height: 26, width: "auto", display: "block" }} />
       <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: dark ? "rgba(255,255,255,.6)" : MUTE, paddingLeft: 2 }}>GLOBAL SERVICE</span>
@@ -274,7 +274,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
   };
   // 언어 드롭다운 (레지스트리 LANGS 구동 — 언어 추가 시 자동 반영)
   const langBtn = (
-    <div style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
+    <div data-spec="h-lang" style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
       <Globe size={14} color={SUB} style={{ position: "absolute", left: 11, pointerEvents: "none" }} />
       <select
         value={lang}
@@ -288,7 +288,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
     </div>
   );
   const bookingsLink = (
-    <button onClick={() => go("/mypage")} style={{ border: "none", background: "transparent", color: INK, cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}>
+    <button onClick={() => go("/mypage")} data-spec="h-bookings" style={{ border: "none", background: "transparent", color: INK, cursor: "pointer", fontSize: 13.5, fontWeight: 600, display: "inline-flex", alignItems: "center", gap: 6 }}>
       <CalendarCheck size={15} /> {u.myaccount}
     </button>
   );
@@ -302,10 +302,10 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
       <div style={{ ...WRAP, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "12px 28px" }}>
         <SafedocLogo onClick={() => go("/")} />
         {!isMobile && (
-          <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
+          <nav data-spec="h-menu" style={{ display: "flex", alignItems: "center", gap: 4 }}>
             {NAV.map((n) => (
               <div key={n.id} className="g-nav-item" style={{ position: "relative" }}>
-                <button onClick={() => goNav(n)} style={{
+                <button onClick={() => goNav(n)} data-spec={n.id === "contact" ? "h-contact" : undefined} style={{
                   border: "none", background: "transparent", cursor: "pointer", padding: "8px 12px", borderRadius: 8,
                   fontSize: 14, fontWeight: active(n.path) ? 700 : 500, color: active(n.path) ? BLUE : SUB,
                   display: "inline-flex", alignItems: "center", gap: 4,
@@ -369,7 +369,7 @@ function Footer({ lang, navigate }) {
           </div>
         </div>
         {cols.map((c, i) => (
-          <div key={i}>
+          <div key={i} data-spec={["f-service", "f-company", "f-legal"][i]}>
             <div style={{ fontSize: 13, fontWeight: 800, color: "#fff", marginBottom: 14 }}>{tx(c.title, lang)}</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {c.items.map((it, j) => (
@@ -436,7 +436,7 @@ function Hero({ lang, navigate }) {
           </h1>
           <p style={{ fontSize: "clamp(16px, 1.4vw, 19px)", lineHeight: 1.6, color: SUB, margin: "0 0 30px", maxWidth: 520 }}>{tx(HERO.sub, lang)}</p>
           {/* 검색바 (prototype sd-search) */}
-          <div style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", marginBottom: 18, maxWidth: 520 }}>
+          <div data-spec="hero-search" style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", marginBottom: 18, maxWidth: 520 }}>
             <Search size={17} color={MUTE} />
             <input value={q} onChange={(e) => setQ(e.target.value)} onKeyDown={(e) => e.key === "Enter" && goSearch()} placeholder={tr("Search treatments, clinics, or concerns", lang)} style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
             <button onClick={goSearch} style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, letterSpacing: "0.05em", cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
@@ -719,16 +719,16 @@ function BlogHomeSection({ lang, navigate }) {
   const posts = [...BLOG].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 3);
   if (!posts.length) return null;
   return (
-    <div style={{ background: BG_SOFT }}>
+    <div data-spec="bh-section" style={{ background: BG_SOFT }}>
       <div style={{ ...WRAP, padding: "76px 28px" }}>
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <div data-spec="bh-title" style={{ textAlign: "center", marginBottom: 40 }}>
           <H2 center>{tr("Insights & Guides", lang)}</H2>
         </div>
-        <div className="g-3">
+        <div data-spec="bh-grid" className="g-3">
           {posts.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} />)}
         </div>
         <div style={{ textAlign: "center", marginTop: 36 }}>
-          <button onClick={() => navigate("/blog")} style={{ ...btn("#fff", BLUE), border: `1px solid ${BLUE}`, padding: "12px 26px", display: "inline-flex", alignItems: "center", gap: 8 }}>{lang === "ko" ? "모든 글 보기" : "View all articles"} <ChevronRight size={16} /></button>
+          <button onClick={() => navigate("/blog")} data-spec="bh-viewall" style={{ ...btn("#fff", BLUE), border: `1px solid ${BLUE}`, padding: "12px 26px", display: "inline-flex", alignItems: "center", gap: 8 }}>{lang === "ko" ? "모든 글 보기" : "View all articles"} <ChevronRight size={16} /></button>
         </div>
       </div>
     </div>
@@ -1323,6 +1323,7 @@ function ProviderDetailPage() {
           </Block>
           {/* 의료진 (어드민 CMS: providers[].doctors — 사진/이름/전공/약력) */}
           {(p.doctors || []).length > 0 && (
+            <div data-spec="pd-doctors">
             <Block eyebrow={lang === "ko" ? "의료진" : "Medical Staff"}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(158px, 1fr))", gap: 16 }}>
                 {p.doctors.map((doc, i) => (
@@ -1337,6 +1338,7 @@ function ProviderDetailPage() {
                 ))}
               </div>
             </Block>
+            </div>
           )}
           {/* 시술 (진료과 매칭) — 접이식 카드 + 금액/포함항목/시술상세/장바구니 */}
           {procs.length > 0 && (
@@ -1587,9 +1589,9 @@ function CatBadge({ catId, lang, style }) {
 }
 
 /* 인기·관련 카드 (썸네일 + 제목 + 발췌 + by 저자 + 카테고리 뱃지) */
-function BlogGridCard({ p, lang, navigate }) {
+function BlogGridCard({ p, lang, navigate, spec }) {
   return (
-    <button className="blog-gcard" onClick={() => navigate(`/blog/${p.id}`)}>
+    <button className="blog-gcard" data-spec={spec} onClick={() => navigate(`/blog/${p.id}`)}>
       <div className="thumb"><img src={p.image} alt={tx(p.title, lang)} loading="lazy" /></div>
       <div style={{ padding: "18px 20px 18px", display: "flex", flexDirection: "column", flex: 1 }}>
         <div style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: INK, lineHeight: 1.35, letterSpacing: "-0.01em", marginBottom: 8 }}>{tx(p.title, lang)}</div>
@@ -1902,14 +1904,14 @@ function SearchInner({ lang, navigate }) {
 
   const submit = (e) => { if (e) e.preventDefault(); setSp(query.trim() ? { q: query.trim() } : {}); };
   const cardBtn = { textAlign: "start", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: 16, cursor: "pointer", display: "flex", flexDirection: "column", boxShadow: "0 4px 16px rgba(15,23,42,.04)" };
-  const empty = (t) => <div style={{ color: MUTE, padding: "40px 0", textAlign: "center", fontSize: 14 }}>{ko ? `일치하는 ${t}이(가) 없습니다.` : `No matching ${t}.`}</div>;
+  const empty = (t) => <div data-spec="sr-empty" style={{ color: MUTE, padding: "40px 0", textAlign: "center", fontSize: 14 }}>{ko ? `일치하는 ${t}이(가) 없습니다.` : `No matching ${t}.`}</div>;
 
   return (
     <>
       <Seo title={ko ? "검색" : "Search"} path="/search" noindex />
       <div style={{ ...WRAP, padding: "48px 28px 90px" }}>
-        <h1 style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, margin: "0 0 16px" }}>{ko ? "검색" : "Search"}</h1>
-        <form onSubmit={submit} style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", maxWidth: 620 }}>
+        <h1 data-spec="sr-title" style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, margin: "0 0 16px" }}>{ko ? "검색" : "Search"}</h1>
+        <form onSubmit={submit} data-spec="sr-search" style={{ display: "flex", alignItems: "center", background: "#fff", border: `1px solid ${INK}`, borderRadius: 8, padding: "5px 5px 5px 18px", maxWidth: 620 }}>
           <Search size={17} color={MUTE} />
           <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder={tr("Search treatments, clinics, or concerns", lang)} autoFocus style={{ background: "transparent", border: 0, outline: "none", flex: 1, padding: "13px 12px", fontSize: 15, color: INK, minWidth: 0 }} />
           <button type="submit" style={{ background: BLUE, color: "#fff", border: "none", borderRadius: 6, padding: "12px 22px", fontWeight: 600, fontSize: 13, cursor: "pointer", whiteSpace: "nowrap" }}>{tr("Search", lang)}</button>
@@ -1917,8 +1919,8 @@ function SearchInner({ lang, navigate }) {
 
         {q ? (
           <>
-            <div style={{ fontSize: 13.5, color: MUTE, margin: "20px 0 10px" }}>{ko ? <>‘<b style={{ color: INK }}>{q}</b>’ 검색 결과 {total}건</> : <>{total} results for ‘<b style={{ color: INK }}>{q}</b>’</>}</div>
-            <div style={{ display: "flex", gap: 6, borderBottom: `1px solid ${LINE}`, marginBottom: 24 }}>
+            <div data-spec="sr-count" style={{ fontSize: 13.5, color: MUTE, margin: "20px 0 10px" }}>{ko ? <>‘<b style={{ color: INK }}>{q}</b>’ 검색 결과 {total}건</> : <>{total} results for ‘<b style={{ color: INK }}>{q}</b>’</>}</div>
+            <div data-spec="sr-tabs" style={{ display: "flex", gap: 6, borderBottom: `1px solid ${LINE}`, marginBottom: 24 }}>
               {TABS.map((t) => (
                 <button key={t.id} onClick={() => setTab(t.id)} style={{ border: "none", background: "transparent", cursor: "pointer", padding: "12px 16px", fontSize: 14, fontWeight: 700, color: tab === t.id ? BLUE : SUB, borderBottom: `2px solid ${tab === t.id ? BLUE : "transparent"}`, marginBottom: -1 }}>
                   {t.label} <span style={{ color: MUTE, fontWeight: 600 }}>{t.items.length}</span>
@@ -1928,7 +1930,7 @@ function SearchInner({ lang, navigate }) {
 
             {tab === "providers" && (providers.length ? (
               <div className="g-3">{providers.map((p) => (
-                <button key={p.id} onClick={() => navigate(`/providers/${p.id}`)} style={cardBtn}>
+                <button key={p.id} onClick={() => navigate(`/providers/${p.id}`)} data-spec="sr-card-provider" style={cardBtn}>
                   {p.image && <img src={p.image} alt="" loading="lazy" style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 10, marginBottom: 12 }} />}
                   <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, lineHeight: 1.3 }}>{tx(p.name, lang)}</div>
                   <div style={{ fontSize: 12.5, color: SUB, marginTop: 3 }}>{tx(p.area, lang)}</div>
@@ -1939,7 +1941,7 @@ function SearchInner({ lang, navigate }) {
 
             {tab === "treatments" && (treatments.length ? (
               <div className="g-3">{treatments.map((p) => (
-                <button key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} style={cardBtn}>
+                <button key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} data-spec="sr-card-treatment" style={cardBtn}>
                   {p.hospital?.square && <img src={p.hospital.square} alt="" loading="lazy" style={{ width: "100%", height: 150, objectFit: "cover", borderRadius: 10, marginBottom: 12 }} />}
                   <div style={{ fontSize: 15.5, fontWeight: 800, color: INK, lineHeight: 1.3 }}>{tx(p.name, lang)}</div>
                   <div style={{ fontSize: 12.5, color: SUB, marginTop: 3 }}>{tx(p.hospital?.name, lang)}</div>
@@ -1949,11 +1951,11 @@ function SearchInner({ lang, navigate }) {
             ) : empty(ko ? "시술" : "treatments"))}
 
             {tab === "blog" && (posts.length ? (
-              <div className="g-3">{posts.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} />)}</div>
+              <div className="g-3">{posts.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} spec="sr-card-blog" />)}</div>
             ) : empty(ko ? "글" : "articles"))}
           </>
         ) : (
-          <div style={{ color: MUTE, padding: "48px 0", fontSize: 14 }}>{ko ? "검색어를 입력하세요." : "Enter a search term."}</div>
+          <div data-spec="sr-empty" style={{ color: MUTE, padding: "48px 0", fontSize: 14 }}>{ko ? "검색어를 입력하세요." : "Enter a search term."}</div>
         )}
       </div>
     </>

@@ -84,7 +84,7 @@ export function TreatmentListPage() {
       </div>
       <div style={{ ...WRAP, padding: "28px 28px 80px" }}>
         {/* #3 검색창 */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${LINE}`, borderRadius: 12, padding: "4px 6px 4px 16px", background: "#fff", marginBottom: 22, maxWidth: 560 }}>
+        <div data-spec="tl-search" style={{ display: "flex", alignItems: "center", gap: 8, border: `1px solid ${LINE}`, borderRadius: 12, padding: "4px 6px 4px 16px", background: "#fff", marginBottom: 22, maxWidth: 560 }}>
           <Search size={17} color={MUTE} />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tr("Search treatments, hospitals, specialties", lang)} style={{ flex: 1, border: "none", outline: "none", fontSize: 14.5, padding: "11px 8px", color: INK, background: "transparent", minWidth: 0 }} />
           {q && <button onClick={() => setQ("")} style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE, padding: 6 }}><X size={16} /></button>}
@@ -617,21 +617,21 @@ function MyPageInner({ lang, navigate }) {
   };
   useEffect(() => { if (preset) runLookup(preset); }, [preset]);   // eslint-disable-line react-hooks/exhaustive-deps
   const lookup = (e) => { if (e) e.preventDefault(); runLookup(query); };
-  if (found) return <BookingDetail id={found.id} booking={found.booking} lang={lang} navigate={navigate} onBack={() => setFound(null)} />;
+  if (found) return <div data-spec="mp-detail"><BookingDetail id={found.id} booking={found.booking} lang={lang} navigate={navigate} onBack={() => setFound(null)} /></div>;
   const inp = { padding: "13px 15px", border: `1px solid ${LINE}`, borderRadius: 10, fontSize: 15, width: "100%", boxSizing: "border-box", fontFamily: "inherit", letterSpacing: "0.03em" };
   return (
     <>
       <Seo title={UI[lang].myaccount} path="/mypage" noindex />
       <div style={{ ...WRAP, maxWidth: 520, padding: "56px 28px 100px" }}>
-        <h1 style={{ fontFamily: DISPLAY, fontSize: 27, fontWeight: 800, color: INK, margin: "0 0 8px" }}>{UI[lang].myaccount}</h1>
+        <h1 data-spec="mp-title" style={{ fontFamily: DISPLAY, fontSize: 27, fontWeight: 800, color: INK, margin: "0 0 8px" }}>{UI[lang].myaccount}</h1>
         <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: "0 0 26px" }}>{ko ? "예약 시 발급된 예약번호를 입력하면 진행 상태를 확인할 수 있습니다." : "Enter the reservation number issued at booking to check its status."}</p>
-        <form onSubmit={lookup} style={{ display: "grid", gap: 12, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
+        <form onSubmit={lookup} data-spec="mp-lookup" style={{ display: "grid", gap: 12, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
           <label style={{ fontSize: 12.5, fontWeight: 700, color: MUTE }}>{ko ? "예약번호" : "Reservation number"}</label>
           <input style={inp} value={query} onChange={(e) => { setQuery(e.target.value); setErr(""); }} placeholder="SD2026-000000" autoFocus />
           {err && <div style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600 }}>{err}</div>}
           <button type="submit" style={{ ...btn(BLUE, "#fff"), display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Search size={16} /> {ko ? "조회" : "Look up"}</button>
         </form>
-        <p style={{ fontSize: 12, color: MUTE, marginTop: 14, lineHeight: 1.6 }}>{ko ? "예약번호는 예약 신청 완료 시 발급됩니다. 확인이 어려우면 문의하기로 연락해 주세요." : "Your reservation number is issued when you submit a booking. Contact us if you can't find it."}</p>
+        <p data-spec="mp-help" style={{ fontSize: 12, color: MUTE, marginTop: 14, lineHeight: 1.6 }}>{ko ? "예약번호는 예약 신청 완료 시 발급됩니다. 확인이 어려우면 문의하기로 연락해 주세요." : "Your reservation number is issued when you submit a booking. Contact us if you can't find it."}</p>
       </div>
     </>
   );
