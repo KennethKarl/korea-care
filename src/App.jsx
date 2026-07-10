@@ -1774,7 +1774,7 @@ function BlogPostPage() {
             <div style={{ background: BRAND_GRAD, color: "#fff", borderRadius: 20, padding: "clamp(24px,3vw,34px)", margin: "8px 0 12px" }}>
               <div style={{ fontFamily: DISPLAY, fontSize: 21, fontWeight: 800, letterSpacing: "-0.01em", marginBottom: 8 }}>{ko ? "한국 방문을 계획 중이신가요?" : "Planning your visit to Korea?"}</div>
               <p style={{ fontSize: 14.5, color: "#d6e1ff", lineHeight: 1.65, margin: "0 0 18px", maxWidth: 520 }}>{ko ? "세이프닥이 병원 예약부터 통역, 이동, 숙소까지 처음부터 끝까지 조율해 드립니다." : "SafeDoc coordinates everything — hospital booking, interpreters, transport and stays — end to end."}</p>
-              <button onClick={() => navigate("/contact")} style={{ ...btn("#fff", BLUE) }}>{ko ? "무료 상담 신청" : "Book a free consultation"} <ArrowRight size={16} /></button>
+              <button onClick={() => { if (typeof window !== "undefined") window.dispatchEvent(new Event("kc-open-inquiry")); }} style={{ ...btn("#fff", BLUE) }}>{ko ? "무료 상담 신청" : "Book a free consultation"} <ArrowRight size={16} /></button>
             </div>
           </div>
         </div>
