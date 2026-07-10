@@ -85,6 +85,12 @@ function Layout() {
 /* 전역 문의 플로팅 버튼 + 상담 접수 모달 (Figma 문의) */
 function FloatingInquiry({ lang }) {
   const [open, setOpen] = useState(false);
+  // 헤더 '문의하기'(en/ko/ja) 클릭 시에도 동일 모달을 연다 — Nav가 이 이벤트를 발행
+  useEffect(() => {
+    const on = () => setOpen(true);
+    window.addEventListener("kc-open-inquiry", on);
+    return () => window.removeEventListener("kc-open-inquiry", on);
+  }, []);
   return (
     <>
       <button onClick={() => setOpen(true)} style={{ position: "fixed", right: 22, bottom: 22, zIndex: 50, display: "inline-flex", alignItems: "center", gap: 8, background: BRAND_GRAD, color: "#fff", border: "none", borderRadius: 999, padding: "13px 20px", fontSize: 14, fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 24px rgba(27,89,250,.4)" }}>
@@ -261,8 +267,13 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
   const waCh = (getCollection("channels") || []).find((c) => c.type === "whatsapp" && c.enabled !== false);
   const waLink = waCh ? CHANNEL_LINK("whatsapp", waCh.value) : null;
   const goNav = (n) => {
-    if (n.id === "contact" && lang === "ar" && waLink) {
-      if (typeof window !== "undefined") window.open(waLink, "_blank", "noopener,noreferrer");
+    if (n.id === "contact") {
+      // 아랍어 → WhatsApp, 그 외(영/한/일) → 전역 상담 문의 모달 열기(우하단 플로팅 버튼과 동일)
+      if (lang === "ar" && waLink && typeof window !== "undefined") {
+        window.open(waLink, "_blank", "noopener,noreferrer");
+      } else if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("kc-open-inquiry"));
+      }
       setOpen(false); return;
     }
     go(n.path);
