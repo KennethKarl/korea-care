@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { Seo } from "./seo.jsx";
 import {
-  BLUE, BLUE_SOFT, BLUE_100, EDGE, FAINT, INK, SUB, MUTE, LINE, BG_SOFT, CLOUD, ACCENT, STAR, GREEN, NAVY, SECTION_TINT, DISPLAY, btn, viewMoreBtn,
+  BLUE, BLUE_SOFT, BLUE_100, EDGE, FAINT, INK, SUB, MUTE, LINE, BG_SOFT, CLOUD, ACCENT, STAR, GREEN, NAVY, SECTION_TINT, DISPLAY, BRAND_GRAD, btn, viewMoreBtn,
 } from "./theme.js";
 import { RECOVERY_BANDS, UI, tx, usd, KRW_PER_USD } from "./data.js";
 import { getCollection, useContent } from "./content.js";
@@ -75,11 +75,11 @@ export function TreatmentListPage() {
   return (
     <>
       <Seo title={tr("Treatments", lang)} description={tr("Browse treatments at accredited Korean hospitals — bilingual descriptions, transparent pricing.", lang)} path="/treatments" />
-      {/* #1 페이지명 */}
-      <div style={{ background: BG_SOFT, borderBottom: `1px solid ${LINE}` }}>
-        <div style={{ ...WRAP, padding: "44px 28px" }}>
-          <h1 style={{ fontFamily: DISPLAY, fontSize: 34, fontWeight: 800, color: INK, margin: "0 0 8px" }}>{tr("Treatments", lang)}</h1>
-          <p style={{ fontSize: 15, color: SUB, margin: 0, maxWidth: 620 }}>{tr("Browse every treatment across our partner hospitals — bilingual descriptions, transparent pricing, hospital details on each card.", lang)}</p>
+      {/* #1 페이지명 — 공통 블루 배너(FAQ·블로그와 통일) */}
+      <div data-spec="tl-title" style={{ background: BRAND_GRAD, color: "#fff" }}>
+        <div style={{ ...WRAP, padding: "56px 28px" }}>
+          <h1 style={{ fontFamily: DISPLAY, fontSize: 38, fontWeight: 800, margin: "0 0 10px", letterSpacing: "-0.02em" }}>{tr("Treatments", lang)}</h1>
+          <p style={{ fontSize: 16, color: "#d6e1ff", margin: 0, maxWidth: 620 }}>{tr("Browse every treatment across our partner hospitals — bilingual descriptions, transparent pricing, hospital details on each card.", lang)}</p>
         </div>
       </div>
       <div style={{ ...WRAP, padding: "28px 28px 80px" }}>
