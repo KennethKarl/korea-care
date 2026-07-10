@@ -460,7 +460,6 @@ function BookingInner({ lang, navigate }) {
         <button onClick={() => navigate(-1)} style={backLink}><ArrowLeft size={16} /> {tr("Back", lang)}</button>
         <h1 style={{ fontFamily: DISPLAY, fontSize: 26, fontWeight: 800, color: INK, marginBottom: 6 }}>{tr("Booking request", lang)}</h1>
         <p style={{ fontSize: 13.5, color: SUB, margin: "0 0 8px" }}>{tx(targets[0].p.name, lang)} · {tx(targets[0].p.hospital.name, lang)} — <b style={{ color: BLUE }}>${usd(targets[0].p.price).toLocaleString()}</b> <span style={{ color: SUB }}>≈ {won(targets[0].p.price)}</span></p>
-        <p style={{ fontSize: 12.5, color: GREEN, margin: "0 0 22px" }}><Check size={13} /> {tr("Your entries autosave as a draft in My bookings.", lang)}</p>
 
         {/* 예약 신청 개수 + 카드별 작성 완료 표기 */}
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 22 }}>
