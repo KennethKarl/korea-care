@@ -331,12 +331,59 @@ function NotFoundBlock({ lang, navigate }) {
    예약 신청 (Figma 38개 — 복수 카드·자동입력·임시저장·항공/관광 제거·공항픽업)
    ===================================================================== */
 const NATIONALITIES = [
-  { en: "United States", ko: "미국" }, { en: "Korea", ko: "한국" }, { en: "Japan", ko: "일본" }, { en: "China", ko: "중국" },
-  { en: "Thailand", ko: "태국" }, { en: "Russia", ko: "러시아" }, { en: "UAE", ko: "UAE" }, { en: "Other", ko: "기타" },
+  { en: "Afghanistan", ko: "아프가니스탄" }, { en: "Albania", ko: "알바니아" }, { en: "Algeria", ko: "알제리" }, { en: "Andorra", ko: "안도라" },
+  { en: "Angola", ko: "앙골라" }, { en: "Antigua & Barbuda", ko: "앤티가 바부다" }, { en: "Argentina", ko: "아르헨티나" }, { en: "Armenia", ko: "아르메니아" },
+  { en: "Australia", ko: "오스트레일리아" }, { en: "Austria", ko: "오스트리아" }, { en: "Azerbaijan", ko: "아제르바이잔" }, { en: "Bahamas", ko: "바하마" },
+  { en: "Bahrain", ko: "바레인" }, { en: "Bangladesh", ko: "방글라데시" }, { en: "Barbados", ko: "바베이도스" }, { en: "Belarus", ko: "벨라루스" },
+  { en: "Belgium", ko: "벨기에" }, { en: "Belize", ko: "벨리즈" }, { en: "Benin", ko: "베냉" }, { en: "Bhutan", ko: "부탄" },
+  { en: "Bolivia", ko: "볼리비아" }, { en: "Bosnia & Herzegovina", ko: "보스니아 헤르체고비나" }, { en: "Botswana", ko: "보츠와나" }, { en: "Brazil", ko: "브라질" },
+  { en: "Brunei", ko: "브루나이" }, { en: "Bulgaria", ko: "불가리아" }, { en: "Burkina Faso", ko: "부르키나파소" }, { en: "Burundi", ko: "부룬디" },
+  { en: "Cambodia", ko: "캄보디아" }, { en: "Cameroon", ko: "카메룬" }, { en: "Canada", ko: "캐나다" }, { en: "Cape Verde", ko: "카보베르데" },
+  { en: "Central African Republic", ko: "중앙 아프리카 공화국" }, { en: "Chad", ko: "차드" }, { en: "Chile", ko: "칠레" }, { en: "China", ko: "중국" },
+  { en: "Colombia", ko: "콜롬비아" }, { en: "Comoros", ko: "코모로" }, { en: "Congo - Brazzaville", ko: "콩고-브라자빌" }, { en: "Congo - Kinshasa", ko: "콩고-킨샤사" },
+  { en: "Costa Rica", ko: "코스타리카" }, { en: "Côte d’Ivoire", ko: "코트디부아르" }, { en: "Croatia", ko: "크로아티아" }, { en: "Cuba", ko: "쿠바" },
+  { en: "Cyprus", ko: "키프로스" }, { en: "Czechia", ko: "체코" }, { en: "Denmark", ko: "덴마크" }, { en: "Djibouti", ko: "지부티" },
+  { en: "Dominica", ko: "도미니카" }, { en: "Dominican Republic", ko: "도미니카 공화국" }, { en: "Ecuador", ko: "에콰도르" }, { en: "Egypt", ko: "이집트" },
+  { en: "El Salvador", ko: "엘살바도르" }, { en: "Equatorial Guinea", ko: "적도 기니" }, { en: "Eritrea", ko: "에리트리아" }, { en: "Estonia", ko: "에스토니아" },
+  { en: "Eswatini", ko: "에스와티니" }, { en: "Ethiopia", ko: "에티오피아" }, { en: "Fiji", ko: "피지" }, { en: "Finland", ko: "핀란드" },
+  { en: "France", ko: "프랑스" }, { en: "Gabon", ko: "가봉" }, { en: "Gambia", ko: "감비아" }, { en: "Georgia", ko: "조지아" },
+  { en: "Germany", ko: "독일" }, { en: "Ghana", ko: "가나" }, { en: "Greece", ko: "그리스" }, { en: "Grenada", ko: "그레나다" },
+  { en: "Guatemala", ko: "과테말라" }, { en: "Guinea", ko: "기니" }, { en: "Guinea-Bissau", ko: "기니비사우" }, { en: "Guyana", ko: "가이아나" },
+  { en: "Haiti", ko: "아이티" }, { en: "Honduras", ko: "온두라스" }, { en: "Hong Kong SAR China", ko: "홍콩(중국 특별행정구)" }, { en: "Hungary", ko: "헝가리" },
+  { en: "Iceland", ko: "아이슬란드" }, { en: "India", ko: "인도" }, { en: "Indonesia", ko: "인도네시아" }, { en: "Iran", ko: "이란" },
+  { en: "Iraq", ko: "이라크" }, { en: "Ireland", ko: "아일랜드" }, { en: "Israel", ko: "이스라엘" }, { en: "Italy", ko: "이탈리아" },
+  { en: "Jamaica", ko: "자메이카" }, { en: "Japan", ko: "일본" }, { en: "Jordan", ko: "요르단" }, { en: "Kazakhstan", ko: "카자흐스탄" },
+  { en: "Kenya", ko: "케냐" }, { en: "Kiribati", ko: "키리바시" }, { en: "Kuwait", ko: "쿠웨이트" }, { en: "Kyrgyzstan", ko: "키르기스스탄" },
+  { en: "Laos", ko: "라오스" }, { en: "Latvia", ko: "라트비아" }, { en: "Lebanon", ko: "레바논" }, { en: "Lesotho", ko: "레소토" },
+  { en: "Liberia", ko: "라이베리아" }, { en: "Libya", ko: "리비아" }, { en: "Liechtenstein", ko: "리히텐슈타인" }, { en: "Lithuania", ko: "리투아니아" },
+  { en: "Luxembourg", ko: "룩셈부르크" }, { en: "Macao SAR China", ko: "마카오(중국 특별행정구)" }, { en: "Madagascar", ko: "마다가스카르" }, { en: "Malawi", ko: "말라위" },
+  { en: "Malaysia", ko: "말레이시아" }, { en: "Maldives", ko: "몰디브" }, { en: "Mali", ko: "말리" }, { en: "Malta", ko: "몰타" },
+  { en: "Marshall Islands", ko: "마셜 제도" }, { en: "Mauritania", ko: "모리타니" }, { en: "Mauritius", ko: "모리셔스" }, { en: "Mexico", ko: "멕시코" },
+  { en: "Micronesia", ko: "미크로네시아" }, { en: "Moldova", ko: "몰도바" }, { en: "Monaco", ko: "모나코" }, { en: "Mongolia", ko: "몽골" },
+  { en: "Montenegro", ko: "몬테네그로" }, { en: "Morocco", ko: "모로코" }, { en: "Mozambique", ko: "모잠비크" }, { en: "Myanmar (Burma)", ko: "미얀마" },
+  { en: "Namibia", ko: "나미비아" }, { en: "Nauru", ko: "나우루" }, { en: "Nepal", ko: "네팔" }, { en: "Netherlands", ko: "네덜란드" },
+  { en: "New Zealand", ko: "뉴질랜드" }, { en: "Nicaragua", ko: "니카라과" }, { en: "Niger", ko: "니제르" }, { en: "Nigeria", ko: "나이지리아" },
+  { en: "North Korea", ko: "북한" }, { en: "North Macedonia", ko: "북마케도니아" }, { en: "Norway", ko: "노르웨이" }, { en: "Oman", ko: "오만" },
+  { en: "Pakistan", ko: "파키스탄" }, { en: "Palau", ko: "팔라우" }, { en: "Palestinian Territories", ko: "팔레스타인 지구" }, { en: "Panama", ko: "파나마" },
+  { en: "Papua New Guinea", ko: "파푸아뉴기니" }, { en: "Paraguay", ko: "파라과이" }, { en: "Peru", ko: "페루" }, { en: "Philippines", ko: "필리핀" },
+  { en: "Poland", ko: "폴란드" }, { en: "Portugal", ko: "포르투갈" }, { en: "Qatar", ko: "카타르" }, { en: "Romania", ko: "루마니아" },
+  { en: "Russia", ko: "러시아" }, { en: "Rwanda", ko: "르완다" }, { en: "Samoa", ko: "사모아" }, { en: "San Marino", ko: "산마리노" },
+  { en: "São Tomé & Príncipe", ko: "상투메 프린시페" }, { en: "Saudi Arabia", ko: "사우디아라비아" }, { en: "Senegal", ko: "세네갈" }, { en: "Serbia", ko: "세르비아" },
+  { en: "Seychelles", ko: "세이셸" }, { en: "Sierra Leone", ko: "시에라리온" }, { en: "Singapore", ko: "싱가포르" }, { en: "Slovakia", ko: "슬로바키아" },
+  { en: "Slovenia", ko: "슬로베니아" }, { en: "Solomon Islands", ko: "솔로몬 제도" }, { en: "Somalia", ko: "소말리아" }, { en: "South Africa", ko: "남아프리카" },
+  { en: "South Korea", ko: "대한민국" }, { en: "South Sudan", ko: "남수단" }, { en: "Spain", ko: "스페인" }, { en: "Sri Lanka", ko: "스리랑카" },
+  { en: "St. Kitts & Nevis", ko: "세인트키츠 네비스" }, { en: "St. Lucia", ko: "세인트루시아" }, { en: "St. Vincent & Grenadines", ko: "세인트빈센트그레나딘" }, { en: "Sudan", ko: "수단" },
+  { en: "Suriname", ko: "수리남" }, { en: "Sweden", ko: "스웨덴" }, { en: "Switzerland", ko: "스위스" }, { en: "Syria", ko: "시리아" },
+  { en: "Taiwan", ko: "대만" }, { en: "Tajikistan", ko: "타지키스탄" }, { en: "Tanzania", ko: "탄자니아" }, { en: "Thailand", ko: "태국" },
+  { en: "Timor-Leste", ko: "동티모르" }, { en: "Togo", ko: "토고" }, { en: "Tonga", ko: "통가" }, { en: "Trinidad & Tobago", ko: "트리니다드 토바고" },
+  { en: "Tunisia", ko: "튀니지" }, { en: "Türkiye", ko: "튀르키예" }, { en: "Turkmenistan", ko: "투르크메니스탄" }, { en: "Tuvalu", ko: "투발루" },
+  { en: "Uganda", ko: "우간다" }, { en: "Ukraine", ko: "우크라이나" }, { en: "United Arab Emirates", ko: "아랍에미리트" }, { en: "United Kingdom", ko: "영국" },
+  { en: "United States", ko: "미국" }, { en: "Uruguay", ko: "우루과이" }, { en: "Uzbekistan", ko: "우즈베키스탄" }, { en: "Vanuatu", ko: "바누아투" },
+  { en: "Vatican City", ko: "바티칸 시국" }, { en: "Venezuela", ko: "베네수엘라" }, { en: "Vietnam", ko: "베트남" }, { en: "Yemen", ko: "예멘" },
+  { en: "Zambia", ko: "잠비아" }, { en: "Zimbabwe", ko: "짐바브웨" },
 ];
 const INTERPRETERS = [
-  { en: "English", ko: "영어" }, { en: "Japanese", ko: "일본어" }, { en: "Chinese", ko: "중국어" },
-  { en: "Russian", ko: "러시아어" }, { en: "Thai", ko: "태국어" }, { en: "Vietnamese", ko: "베트남어" }, { en: "Arabic", ko: "아랍어" },
+  { en: "English", ko: "영어" }, { en: "Arabic", ko: "아랍어" },
 ];
 const GENDERS = { en: ["Male", "Female", "Transgender (MtF)", "Transgender (FtM)"], ko: ["남성", "여성", "트랜스젠더(남→여)", "트랜스젠더(여→남)"] };
 const blankCustomer = (profile) => ({
@@ -490,7 +537,7 @@ function BookingInner({ lang, navigate }) {
             <Field label={tr("Phone", lang)}><input type="tel" style={inp} value={cur.phone} onChange={(e) => setField("phone", e.target.value)} placeholder="+1 555 0100" /></Field>
             <Field label={tr("Date of birth", lang)}><input type="date" style={inp} value={cur.dob} onChange={(e) => setField("dob", e.target.value)} /></Field>
             <Field label={tr("Gender", lang)}><select style={inp} value={cur.gender} onChange={(e) => setField("gender", e.target.value)}><option value="">—</option>{(GENDERS[lang] || GENDERS.en).map((g) => <option key={g}>{g}</option>)}</select></Field>
-            <Field label={tr("Citizenship", lang)} hint={cur.nationality === "Korea" ? (tr("Korean nationals: national health insurance guidance applies.", lang)) : null}>
+            <Field label={tr("Citizenship", lang)} hint={cur.nationality === "South Korea" ? (tr("Korean nationals: national health insurance guidance applies.", lang)) : null}>
               <select style={inp} value={cur.nationality} onChange={(e) => setField("nationality", e.target.value)}><option value="">—</option>{NATIONALITIES.map((n) => <option key={n.en} value={n.en}>{tx(n, lang)}</option>)}</select>
             </Field>
             <Field label={tr("Passport no. (optional)", lang)}><input style={inp} value={cur.passportNo} onChange={(e) => setField("passportNo", e.target.value)} /></Field>
