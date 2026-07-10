@@ -242,7 +242,7 @@ function LandingStyles() {
 function SafedocLogo({ onClick, dark = false }) {
   return (
     <button onClick={onClick} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 4, padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
-      <img src={`${import.meta.env.BASE_URL}safedoc-wordmark.svg`} alt="SafeDoc" style={{ height: 26, width: "auto", display: "block", filter: dark ? "brightness(0) invert(1)" : "none" }} />
+      <img src={`${import.meta.env.BASE_URL}${dark ? "safedoc-wordmark-white.svg" : "safedoc-wordmark.svg"}`} alt="SafeDoc" style={{ height: 26, width: "auto", display: "block" }} />
       <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: dark ? "rgba(255,255,255,.6)" : MUTE, paddingLeft: 2 }}>GLOBAL SERVICE</span>
     </button>
   );
