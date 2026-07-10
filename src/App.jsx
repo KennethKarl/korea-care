@@ -1080,8 +1080,13 @@ function ProvidersPage() {
           breadcrumbJsonLd([{ name: "Home", path: "/" }, { name: "Providers", path: "/providers" }]),
           providersJsonLd(PROVIDERS.map((p) => ({ id: p.id, name: p.name.en, area: p.area.en, specialties: p.departments.map((d) => deptLabel(d, "en")), rating: p.reviews ? p.rating : 0, reviews: p.reviews }))),
         ]} />
-      {/* 헤더 — 공통 블루 배너(FAQ·블로그와 통일) */}
-      <PageHeader eyebrow={tr("Providers", lang)} title={tr("Find trusted Korean providers", lang)} sub={tr("Explore verified hospitals and clinics with international patient support.", lang)} />
+      {/* 헤더 */}
+      <div style={{ ...WRAP, padding: "44px 28px 8px" }}>
+        <button onClick={() => navigate("/")} style={{ border: "none", background: "transparent", cursor: "pointer", color: SUB, display: "inline-flex", alignItems: "center", gap: 6, fontSize: 14, padding: 0, marginBottom: 16 }}><ArrowLeft size={16} /> {tr("Back", lang)}</button>
+        <Eyebrow>{tr("Providers", lang)}</Eyebrow>
+        <h1 style={{ fontFamily: DISPLAY, fontSize: "clamp(32px, 4.4vw, 52px)", fontWeight: 800, color: INK, margin: "0 0 12px", letterSpacing: "-0.025em" }}>{tr("Find trusted Korean providers", lang)}</h1>
+        <p style={{ fontSize: 16, color: SUB, margin: 0, maxWidth: 620 }}>{tr("Explore verified hospitals and clinics with international patient support.", lang)}</p>
+      </div>
       {/* 필터 바 — #1 전문영역 · #2 지역 · #3 언어 (#4 국제환자지원 체크박스 제거) */}
       <div style={{ background: BG_SOFT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}`, margin: "24px 0 0" }}>
         <div style={{ ...WRAP, padding: "22px 28px", display: "flex", alignItems: "flex-end", gap: 24, flexWrap: "wrap" }}>
