@@ -225,7 +225,7 @@ function TreatmentDetailInner({ p, lang, navigate }) {
               <Card title={tr("Options", lang)}>
                 {p.options.map((g, i) => (
                   <div key={i} style={{ background: SECTION_TINT, border: `1px solid #dbe5fb`, borderRadius: 12, padding: 16, marginBottom: i < p.options.length - 1 ? 10 : 0 }}>
-                    <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, marginBottom: 8 }}>{tx(g.group, lang)} <span style={{ color: BLUE, fontWeight: 800 }}>· {lang === "ko" ? `${g.pick}개 선택` : `pick ${g.pick}`}</span></div>
+                    <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, marginBottom: 8 }}>{tx(g.group, lang)} <span style={{ color: BLUE, fontWeight: 800 }}>· {g.multi ? (lang === "ko" ? "복수 선택 가능" : "select any") : (lang === "ko" ? `${g.pick}개 선택` : `pick ${g.pick}`)}</span></div>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>{tx(g.items, lang).map((it, j) => <span key={j} style={{ fontSize: 12.5, color: SUB, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 999, padding: "5px 12px" }}>{it}</span>)}</div>
                   </div>
                 ))}
@@ -347,7 +347,7 @@ const blankCustomer = (profile) => ({
 // #12 여권번호는 선택항목 — 작성완료 조건에서 제외 (주요 이탈 원인)
 const cardComplete = (c) => Boolean(c.fullName && c.d1);
 // #20 옵션 그룹별 정확한 개수 선택 여부
-const optionsSatisfied = (c, proc) => (proc.options || []).every((g, gi) => (c.selectedOptions?.[gi]?.length || 0) === g.pick);
+const optionsSatisfied = (c, proc) => (proc.options || []).every((g, gi) => g.multi ? true : (c.selectedOptions?.[gi]?.length || 0) === g.pick);
 
 export function BookingPage() {
   const { lang, navigate } = useOutletContext();
@@ -515,13 +515,14 @@ function BookingInner({ lang, navigate }) {
           {/* #20 해당 시술 옵션항목 — 그룹별 정확한 개수 선택 (미선택 시 예약완료 불가) */}
           {proc.options?.length > 0 && (
             <>
-              <SubTitle style={{ marginTop: 22 }}>{tr("Options (selection required)", lang)}</SubTitle>
+              <SubTitle style={{ marginTop: 22 }}>{tr("Options", lang)}</SubTitle>
               {proc.options.map((g, gi) => {
                 const sel = cur.selectedOptions?.[gi] || [];
-                const done = sel.length === g.pick;
+                const done = g.multi ? sel.length > 0 : sel.length === g.pick;
                 const toggle = (it) => {
                   let next;
                   if (sel.includes(it)) next = sel.filter((x) => x !== it);
+                  else if (g.multi) next = [...sel, it];
                   else if (g.pick === 1) next = [it];
                   else if (sel.length < g.pick) next = [...sel, it];
                   else next = sel;
@@ -530,8 +531,8 @@ function BookingInner({ lang, navigate }) {
                 return (
                   <div key={gi} style={{ border: `1px solid ${done ? GREEN : "#dbe5fb"}`, background: SECTION_TINT, borderRadius: 12, padding: 16, marginBottom: 10 }}>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, marginBottom: 10 }}>
-                      <span style={{ fontSize: 13.5, fontWeight: 700, color: INK }}>{tx(g.group, lang)} <span style={{ color: BLUE, fontWeight: 800 }}>· {lang === "ko" ? `${g.pick}개 선택` : `pick ${g.pick}`}</span></span>
-                      <span style={{ fontSize: 12, fontWeight: 800, color: done ? GREEN : "#9a6a00" }}>{sel.length}/{g.pick}{done ? " ✓" : ""}</span>
+                      <span style={{ fontSize: 13.5, fontWeight: 700, color: INK }}>{tx(g.group, lang)} <span style={{ color: BLUE, fontWeight: 800 }}>· {g.multi ? (lang === "ko" ? "복수 선택 가능" : "select any") : (lang === "ko" ? `${g.pick}개 선택` : `pick ${g.pick}`)}</span></span>
+                      <span style={{ fontSize: 12, fontWeight: 800, color: done ? GREEN : "#9a6a00" }}>{g.multi ? (sel.length > 0 ? `${sel.length}${lang === "ko" ? "개 선택" : " selected"} ✓` : "") : `${sel.length}/${g.pick}${done ? " ✓" : ""}`}</span>
                     </div>
                     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                       {tx(g.items, lang).map((it, ii) => {
@@ -883,7 +884,7 @@ function BookingDetail({ id, booking, lang, navigate, onBack }) {
 
   // 선택항목(있을시) — 시술에 옵션 그룹이 있으면 노출
   const optionText = p?.options?.length
-    ? p.options.map((g) => `${tx(g.group, lang)} (${lang === "ko" ? `${g.pick}개 선택` : `pick ${g.pick}`})`).join("\n")
+    ? p.options.map((g) => `${tx(g.group, lang)} (${g.multi ? (lang === "ko" ? "복수 선택" : "multi") : (lang === "ko" ? `${g.pick}개 선택` : `pick ${g.pick}`)})`).join("\n")
     : "—";
 
   return (
