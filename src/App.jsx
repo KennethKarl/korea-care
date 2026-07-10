@@ -1284,11 +1284,11 @@ function ProviderDetailPage() {
               ))}
             </div>
           </Block>
-          {/* Departments (chips → 목록 필터) */}
+          {/* Departments (chips — 표시 전용, 클릭 불가) */}
           <Block eyebrow={tr("Departments", lang)}>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               {p.departments.map((d) => (
-                <button key={d} onClick={() => navigate("/providers")} style={{ cursor: "pointer", fontSize: 13, fontWeight: 600, color: SUB, background: CLOUD, border: "none", borderRadius: 999, padding: "7px 14px" }}>{deptLabel(d, lang)}</button>
+                <span key={d} style={{ fontSize: 13, fontWeight: 600, color: SUB, background: CLOUD, borderRadius: 999, padding: "7px 14px" }}>{deptLabel(d, lang)}</span>
               ))}
             </div>
           </Block>
