@@ -1321,6 +1321,23 @@ function ProviderDetailPage() {
               {(p.languages || []).map((l) => <span key={l} style={{ fontSize: 13, fontWeight: 600, color: INK, border: `1px solid ${LINE}`, borderRadius: 999, padding: "6px 13px" }}>{langLabel(l, lang)}</span>)}
             </div>
           </Block>
+          {/* 의료진 (어드민 CMS: providers[].doctors — 사진/이름/전공/약력) */}
+          {(p.doctors || []).length > 0 && (
+            <Block eyebrow={lang === "ko" ? "의료진" : "Medical Staff"}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(158px, 1fr))", gap: 16 }}>
+                {p.doctors.map((doc, i) => (
+                  <div key={i} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, padding: "20px 16px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 4 }}>
+                    {doc.photo
+                      ? <img src={doc.photo} alt={tx(doc.name, lang)} loading="lazy" style={{ width: 84, height: 84, borderRadius: "50%", objectFit: "cover", background: CLOUD, marginBottom: 8 }} />
+                      : <div style={{ width: 84, height: 84, borderRadius: "50%", background: CLOUD, display: "grid", placeItems: "center", color: MUTE, marginBottom: 8 }}><Stethoscope size={30} /></div>}
+                    <div style={{ fontSize: 15, fontWeight: 800, color: INK, lineHeight: 1.3 }}>{tx(doc.name, lang)}</div>
+                    {doc.title && <div style={{ fontSize: 13, fontWeight: 700, color: BLUE, marginTop: 2 }}>{tx(doc.title, lang)}</div>}
+                    {doc.credentials && <div style={{ fontSize: 12, color: MUTE, marginTop: 5, lineHeight: 1.45 }}>{tx(doc.credentials, lang)}</div>}
+                  </div>
+                ))}
+              </div>
+            </Block>
+          )}
           {/* 시술 (진료과 매칭) — 접이식 카드 + 금액/포함항목/시술상세/장바구니 */}
           {procs.length > 0 && (
             <Block eyebrow={tr("Treatments", lang)}>
