@@ -257,6 +257,16 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
   useContent();                       // 언어 레지스트리 발행/편집 시 드롭다운 리렌더
   const active = (p) => (p === "/" ? pathname === "/" : pathname.startsWith(p));
   const go = (p) => { navigate(p); setOpen(false); };
+  // 아랍어일 때 '문의하기'는 WhatsApp(상담 채널)로 연결 (그 외 언어는 /contact 페이지)
+  const waCh = (getCollection("channels") || []).find((c) => c.type === "whatsapp" && c.enabled !== false);
+  const waLink = waCh ? CHANNEL_LINK("whatsapp", waCh.value) : null;
+  const goNav = (n) => {
+    if (n.id === "contact" && lang === "ar" && waLink) {
+      if (typeof window !== "undefined") window.open(waLink, "_blank", "noopener,noreferrer");
+      setOpen(false); return;
+    }
+    go(n.path);
+  };
   // 언어 드롭다운 (레지스트리 LANGS 구동 — 언어 추가 시 자동 반영)
   const langBtn = (
     <div style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
@@ -290,7 +300,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
           <nav style={{ display: "flex", alignItems: "center", gap: 4 }}>
             {NAV.map((n) => (
               <div key={n.id} className="g-nav-item" style={{ position: "relative" }}>
-                <button onClick={() => go(n.path)} style={{
+                <button onClick={() => goNav(n)} style={{
                   border: "none", background: "transparent", cursor: "pointer", padding: "8px 12px", borderRadius: 8,
                   fontSize: 14, fontWeight: active(n.path) ? 700 : 500, color: active(n.path) ? BLUE : SUB,
                   display: "inline-flex", alignItems: "center", gap: 4,
@@ -317,7 +327,7 @@ function Nav({ lang, onLang, isMobile, navigate, pathname }) {
         <div style={{ borderTop: `1px solid ${LINE}`, background: "#fff", padding: "8px 20px 16px" }}>
           {NAV.map((n) => (
             <div key={n.id}>
-              <button onClick={() => go(n.path)} style={{ display: "block", width: "100%", textAlign: "start", border: "none", background: "transparent", padding: "11px 4px", fontSize: 15, fontWeight: 700, color: INK, cursor: "pointer" }}>{tx(n, lang)}</button>
+              <button onClick={() => goNav(n)} style={{ display: "block", width: "100%", textAlign: "start", border: "none", background: "transparent", padding: "11px 4px", fontSize: 15, fontWeight: 700, color: INK, cursor: "pointer" }}>{tx(n, lang)}</button>
               {n.children && <div style={{ paddingLeft: 12, marginBottom: 4 }}>{n.children.map((c) => (
                 <button key={c.id} onClick={() => go(c.path)} style={{ display: "block", width: "100%", textAlign: "start", border: "none", background: "transparent", padding: "7px 4px", fontSize: 13.5, color: SUB, cursor: "pointer" }}>{tx(c, lang)}</button>
               ))}</div>}
