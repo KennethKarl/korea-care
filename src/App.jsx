@@ -23,7 +23,7 @@ import {
   REVIEWS, FAQ_CATS, FAQS, CERTS, BLOG, BLOG_CATS, UI, tx, PROCEDURES, usd, KRW_PER_USD, SCAN_MENU,
   PROVIDERS, PROVIDER_DEPTS, PROVIDER_LANGS,
 } from "./data.js";
-import { TreatmentListPage, TreatmentDetailPage, BookingPage, CartPage, MyPage } from "./functional.jsx";
+import { TreatmentListPage, TreatmentDetailPage, BookingPage, MyPage } from "./functional.jsx";
 import * as store from "./store.js";
 import { getCollection, useContent, hydrateContent } from "./content.js";
 import { getEnabledLangs, dirOf, langFromPath, withLang, stripLang, PREFIX_LANGS } from "./langs.js";
@@ -1025,7 +1025,6 @@ function RevitalPage() {
                 <div style={{ position: "relative", flexShrink: 0, width: 168, height: 168, borderRadius: 14, overflow: "hidden" }}>
                   <img src={p.before || p.hero} alt={tx(p.name, lang)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   {dc > 0 && <span style={{ position: "absolute", top: 0, left: 0, background: BLUE, color: "#fff", fontSize: 12, fontWeight: 800, padding: "4px 9px", borderRadius: "0 0 10px 0" }}>{dc}%</span>}
-                  <span style={{ position: "absolute", bottom: 8, right: 8, width: 26, height: 26, borderRadius: "50%", background: "rgba(255,255,255,.92)", display: "grid", placeItems: "center" }}><Heart size={15} color={MUTE} /></span>
                 </div>
                 <div style={{ flex: 1, minWidth: 0, paddingTop: 2 }}>
                   <div style={{ fontSize: 13, color: MUTE, marginBottom: 4 }}>{tx(p.hospital.city, lang)}</div>
@@ -1329,7 +1328,6 @@ function ProviderDetailPage() {
                 {procs.map((pr) => {
                   const open = openProc === pr.id;
                   const dc = Math.round((1 - pr.price / pr.listPrice) * 100);
-                  const inCart = mounted && store.inCart(pr.id);
                   return (
                     <div key={pr.id} style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 14, overflow: "hidden" }}>
                       <button onClick={() => setOpenProc(open ? null : pr.id)} style={{ width: "100%", textAlign: "start", cursor: "pointer", background: open ? SECTION_TINT : "#fff", border: "none", padding: "16px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14 }}>
@@ -1354,9 +1352,6 @@ function ProviderDetailPage() {
                           <p style={{ fontSize: 13.5, color: SUB, lineHeight: 1.65, margin: "0 0 16px" }}>{tx(pr.summary, lang)}</p>
                           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
                             <button onClick={() => navigate(`/treatments/${pr.id}`)} style={{ ...btn(BLUE, "#fff"), padding: "10px 18px" }}>{tr("View treatment", lang)} <ArrowRight size={14} /></button>
-                            {inCart
-                              ? <button onClick={() => navigate("/cart")} style={{ ...btn("#eaf0ff", BLUE), border: `1px solid ${BLUE}`, padding: "10px 18px", display: "inline-flex", alignItems: "center", gap: 8 }}><Check size={15} /> {tr("Saved", lang)}</button>
-                              : <button onClick={() => store.addToCart(pr.id)} style={{ ...btn("#fff", BLUE), border: `1px solid ${BLUE}`, padding: "10px 18px", display: "inline-flex", alignItems: "center", gap: 8 }}><Heart size={15} /> {tr("Save", lang)}</button>}
                           </div>
                         </div>
                       )}
@@ -1872,7 +1867,6 @@ const PAGE_ROUTES = [
   { path: "treatments", element: <TreatmentListPage /> },
   { path: "treatments/:id", element: <TreatmentDetailPage />, getStaticPaths: () => PROCEDURES.map((p) => `treatments/${p.id}`) },
   { path: "booking", element: <BookingPage /> },
-  { path: "cart", element: <CartPage /> },
   { path: "mypage", element: <MyPage /> },
   { path: "contact", element: <ContactPage /> },
   { path: "faq", element: <FaqPage /> },

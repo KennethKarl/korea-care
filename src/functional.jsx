@@ -116,7 +116,6 @@ export function TreatmentListPage() {
         {/* 카드 그리드 */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 22 }}>
           {list.map((p) => {
-            const inCart = mounted && store.inCart(p.id);
             return (
               <div key={p.id} onClick={() => navigate(`/treatments/${p.id}`)} style={{ cursor: "pointer", background: "#fff", border: "1px solid #e7ecf5", borderRadius: 18, overflow: "hidden", boxShadow: "0 6px 22px rgba(15,23,42,.05)", display: "flex", flexDirection: "column" }}>
                 {/* #10 이미지 + #9 진료과 태그 + #11 병원명 #12 시술명 오버레이 */}
@@ -134,14 +133,6 @@ export function TreatmentListPage() {
                   <p style={{ fontSize: 13, color: "#64748b", lineHeight: 1.55, margin: "0 0 12px" }}>{tx(p.summary, lang)}</p>
                   <div style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: MUTE, marginBottom: 12 }}><MapPin size={12} /> {tx(p.hospital.city, lang)}</div>
                   <Money p={p} lang={lang} />
-                  {/* #16/#17 장바구니 토글 (#18 카드 클릭과 분리 — stopPropagation) */}
-                  <div style={{ marginTop: 14 }}>
-                    {inCart ? (
-                      <button onClick={(e) => { e.stopPropagation(); store.removeFromCart(p.id); }} style={{ ...btn("#eaf7ee", GREEN), width: "100%", border: `1px solid ${GREEN}`, display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Check size={16} /> {tr("Saved", lang)}</button>
-                    ) : (
-                      <button onClick={(e) => { e.stopPropagation(); store.addToCart(p.id); }} style={{ ...btn(BLUE, "#fff"), width: "100%", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Heart size={16} /> {tr("Save", lang)}</button>
-                    )}
-                  </div>
                 </div>
               </div>
             );
@@ -179,7 +170,6 @@ function TreatmentDetailInner({ p, lang, navigate }) {
   useContent();
   const PROCEDURES = getCollection("procedures");
   const [qty, setQty] = useState(1);                 // #25 예약 수 입력
-  const isIn = store.inCart(p.id);
   // #15 같은 병원의 다른 시술. 데이터상 병원당 시술 1개라 없으면 다른 시술로 fallback (어드민 연동 시 실제 병원 시술로 대체)
   const sameHospital = PROCEDURES.filter((x) => tx(x.hospital.name, lang) === tx(p.hospital.name, lang) && x.id !== p.id);
   const othersAtHospital = sameHospital.length > 0;
@@ -308,12 +298,6 @@ function TreatmentDetailInner({ p, lang, navigate }) {
                   </div>
                 </div>
               </div>
-              {/* #19-20 장바구니 버튼 (담김 → 장바구니 보기) */}
-              {isIn ? (
-                <button onClick={() => navigate("/cart")} style={{ ...btn("#eaf7ee", GREEN), width: "100%", border: `1px solid ${GREEN}`, marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Check size={16} /> {tr("Saved — View saved", lang)} <ChevronRight size={15} /></button>
-              ) : (
-                <button onClick={() => store.addToCart(p.id, qty)} style={{ ...btn("#fff", BLUE), width: "100%", border: `1px solid ${BLUE}`, marginTop: 14, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Heart size={16} /> {tr("Save", lang)}</button>
-              )}
               {/* #21 예약신청 → 예약 페이지 */}
               <button onClick={() => navigate(`/booking?treatment=${p.id}&qty=${qty}`)} style={{ ...btn(BLUE, "#fff"), width: "100%", marginTop: 10 }}>{tr("Book this treatment now", lang)} <ChevronRight size={15} /></button>
             </div>
@@ -341,181 +325,6 @@ const stepBtn = { width: 28, height: 28, borderRadius: 8, border: `1px solid ${L
 
 function NotFoundBlock({ lang, navigate }) {
   return <div style={{ ...WRAP, padding: "90px 28px", textAlign: "center" }}><p style={{ color: MUTE }}>{tr("Treatment not found.", lang)}</p><button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff") }}>{tr("Back to list", lang)}</button></div>;
-}
-
-/* =====================================================================
-   장바구니 (Figma: 항목·수량·금액·예약 버튼 활성/비활성·삭제)
-   ===================================================================== */
-export function CartPage() {
-  const { lang, navigate } = useOutletContext();
-  return <ClientOnly>{() => <CartInner lang={lang} navigate={navigate} />}</ClientOnly>;
-}
-const hasCount = (c) => c.qty != null && c.qty !== "" && Number(c.qty) >= 1;
-function CartInner({ lang, navigate }) {
-  store.useStore();
-  const [warnId, setWarnId] = useState(null);
-  const cart = store.getCart();
-  const items = cart.map((c) => ({ ...c, p: byId(c.procedureId) })).filter((c) => c.p);
-  const ko = lang === "ko";
-
-  // 예약 신청 희망(체크 + 인원수 입력) 항목
-  const wanted = items.filter((c) => c.wanted && hasCount(c));
-  const subtotal = wanted.reduce((s, c) => s + c.p.price * (c.qty || 1), 0);
-
-  // 병원 단위 그룹 = 생성될 예약번호 (같은 병원은 하나로 번들)
-  const groups = [];
-  wanted.forEach((c) => {
-    const key = tx(c.p.hospital.name, "en");
-    let g = groups.find((x) => x.key === key);
-    if (!g) { g = { key, name: c.p.hospital.name, count: 0 }; groups.push(g); }
-    g.count += 1;
-  });
-
-  const toggleWanted = (c) => {
-    if (c.wanted) { store.setCartWanted(c.procedureId, false); return; }
-    if (!hasCount(c)) { setWarnId(c.procedureId); return; }   // ⑤ 인원수 먼저 입력 안내
-    store.setCartWanted(c.procedureId, true); setWarnId(null);
-  };
-  const onCount = (c, raw) => {
-    const v = String(raw).replace(/[^0-9]/g, "");            // ⑦ 숫자만
-    store.setCartQty(c.procedureId, v === "" ? "" : parseInt(v, 10));
-    if (v !== "") setWarnId((w) => (w === c.procedureId ? null : w));
-  };
-
-  const canContinue = wanted.length > 0;                       // ⑫ 희망 1개 이상이어야 활성
-  const countLabel = ko ? "몇 명의 예약이 필요한가요?" : "How many reservations?";
-
-  return (
-    <>
-      <Seo title={UI[lang].cart} path="/cart" noindex />
-      <div style={{ ...WRAP, maxWidth: 1100, padding: "44px 28px 80px" }}>
-        <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginBottom: 18 }}>
-          <div>
-            <h1 style={{ fontFamily: DISPLAY, fontSize: 28, fontWeight: 800, color: INK, margin: 0 }}>{ko ? "관심시술" : "Saved treatments"}</h1>
-            {items.length > 0 && (
-              <p style={{ fontSize: 13.5, color: MUTE, margin: "8px 0 0", maxWidth: 560, lineHeight: 1.5 }}>
-                {ko ? "예약을 원하는 시술을 선택하고 인원수를 입력하세요. 같은 병원의 시술은 하나의 예약번호로 묶입니다." : "Select the treatments you want and enter how many reservations you need. Treatments at the same hospital are bundled into one reservation number."}
-              </p>
-            )}
-          </div>
-          {items.length > 0 && (   /* ⑩ 장바구니 총 상품 수 */
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 6, background: BLUE_SOFT, color: BLUE, fontWeight: 700, fontSize: 12.5, padding: "7px 13px", borderRadius: 999, whiteSpace: "nowrap" }}>
-              {items.length} · {ko ? "시술" : "Treatments"}
-            </span>
-          )}
-        </div>
-
-        {items.length === 0 ? (
-          <div style={{ textAlign: "center", padding: "60px 0", color: MUTE }}>
-            <Heart size={40} style={{ opacity: .4 }} />
-            <p>{ko ? "관심시술이 비어 있습니다." : "No saved treatments yet."}</p>
-            <button onClick={() => navigate("/treatments")} style={{ ...btn(BLUE, "#fff") }}>{ko ? "시술 둘러보기" : "Browse treatments"}</button>
-          </div>
-        ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(300px, 340px)", gap: 24, alignItems: "start" }}>
-            {/* 좌측: 시술 카드 목록 */}
-            <div style={{ display: "grid", gap: 14, minWidth: 0 }}>
-              {items.map((c) => {
-                const checkable = hasCount(c);
-                const on = Boolean(c.wanted) && checkable;
-                const lineTotal = c.p.price * (c.qty || 1);
-                return (
-                  <div key={c.procedureId} style={{ background: "#fff", border: `1px solid ${on ? BLUE : LINE}`, borderRadius: 14, padding: 16, transition: "border-color .15s", boxShadow: on ? "0 0 0 1px " + BLUE : "none" }}>
-                    <div style={{ display: "flex", gap: 16 }}>
-                      <img src={c.p.hospital.square} alt="" style={{ width: 72, height: 72, borderRadius: 12, objectFit: "cover", flexShrink: 0 }} />{/* ① 정사각 병원 이미지 */}
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.06em", color: MUTE, textTransform: "uppercase" }}>{tx(c.p.dept, lang)}</div>{/* ② 카테고리 */}
-                        <div style={{ fontSize: 16, fontWeight: 800, color: INK, margin: "2px 0 2px" }}>{tx(c.p.name, lang)}</div>{/* ④ 시술명 */}
-                        <div style={{ fontSize: 12.5, color: SUB }}>{tx(c.p.hospital.name, lang)}</div>{/* ③ 병원명 */}
-                      </div>
-                      {/* ⑤ 예약 신청 희망 체크박스 + ⑥ 제거 */}
-                      <div style={{ display: "flex", alignItems: "flex-start", gap: 14, flexShrink: 0 }}>
-                        <button onClick={() => toggleWanted(c)} aria-pressed={on} title={ko ? "예약 신청 희망" : "Request this"}
-                          style={{ width: 26, height: 26, borderRadius: 7, border: `2px solid ${on ? BLUE : (checkable ? EDGE : LINE)}`, background: on ? BLUE : "#fff", color: "#fff", display: "grid", placeItems: "center", cursor: "pointer", flexShrink: 0 }}>
-                          {on && <Check size={16} strokeWidth={3.2} />}
-                        </button>
-                        <button onClick={() => store.removeFromCart(c.procedureId)} title={ko ? "삭제" : "Remove"}
-                          style={{ border: "none", background: "transparent", cursor: "pointer", color: MUTE, display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12.5, padding: 0 }}>
-                          <Trash2 size={15} /> {ko ? "삭제" : "Remove"}
-                        </button>
-                      </div>
-                    </div>
-                    {/* 하단: ⑦ 인원수 입력 + ⑧ 금액 */}
-                    <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 16, flexWrap: "wrap", marginTop: 14, paddingTop: 14, borderTop: `1px solid ${LINE}` }}>
-                      <div>
-                        <label style={{ display: "block", fontSize: 12, color: SUB, fontWeight: 600, marginBottom: 6 }}>{countLabel}</label>
-                        <input type="text" inputMode="numeric" value={c.qty ?? ""} onChange={(e) => onCount(c, e.target.value)} placeholder={ko ? "인원수" : "e.g. 1"}
-                          style={{ width: 120, padding: "10px 12px", border: `1px solid ${warnId === c.procedureId ? ACCENT : EDGE}`, borderRadius: 8, fontSize: 14, color: INK, outline: "none", fontFamily: DISPLAY }} />
-                        {warnId === c.procedureId && (
-                          <div style={{ display: "flex", alignItems: "center", gap: 5, color: ACCENT, fontSize: 11.5, marginTop: 6 }}>
-                            <AlertCircle size={13} /> {ko ? "예약 인원수를 먼저 입력해 주세요." : "Enter the number of reservations first."}
-                          </div>
-                        )}
-                      </div>
-                      <div style={{ textAlign: "right" }}>
-                        <div style={{ fontFamily: DISPLAY, fontSize: 20, fontWeight: 800, color: BLUE }}>${usd(lineTotal).toLocaleString()}</div>
-                        <div style={{ fontSize: 12, color: SUB }}>≈ {won(lineTotal)}</div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* 우측: 예약 그룹핑 + 합계 (sticky) */}
-            <aside style={{ position: "sticky", top: 20, display: "grid", gap: 16, minWidth: 0 }}>
-              {/* ⑨⑪ RESERVATION GROUPING */}
-              <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 20 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 800, letterSpacing: "0.06em", color: MUTE, textTransform: "uppercase", marginBottom: 10 }}>{ko ? "예약번호 묶음" : "Reservation grouping"}</div>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4 }}>
-                  <span style={{ fontFamily: DISPLAY, fontSize: 30, fontWeight: 800, color: groups.length ? BLUE : FAINT }}>{groups.length}</span>
-                  <span style={{ fontSize: 13, color: SUB }}>{ko ? "개의 예약번호가 생성됩니다" : groups.length === 1 ? "reservation number will be created" : "reservation number(s) will be created"}</span>
-                </div>
-                <p style={{ fontSize: 12, color: MUTE, margin: "0 0 14px" }}>{ko ? "같은 병원의 시술끼리 묶입니다." : "Bundled by hospital."}</p>
-                {groups.length === 0 ? (
-                  <div style={{ background: BG_SOFT, border: `1px dashed ${EDGE}`, borderRadius: 12, padding: "16px 14px", fontSize: 12.5, color: MUTE, textAlign: "center" }}>
-                    {ko ? "예약을 원하는 시술을 체크하세요." : "Check the treatments you'd like to reserve."}
-                  </div>
-                ) : (
-                  <div style={{ display: "grid", gap: 10 }}>
-                    {groups.map((g, i) => (
-                      <div key={g.key} style={{ display: "flex", alignItems: "center", gap: 12, background: BLUE_SOFT, border: `1px solid ${BLUE_100}`, borderRadius: 12, padding: "12px 14px" }}>
-                        <span style={{ width: 24, height: 24, borderRadius: 999, background: BLUE, color: "#fff", fontSize: 12.5, fontWeight: 800, display: "grid", placeItems: "center", flexShrink: 0 }}>{i + 1}</span>
-                        <div style={{ minWidth: 0, flex: 1 }}>
-                          <div style={{ fontSize: 13.5, fontWeight: 700, color: INK, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{tx(g.name, lang)}</div>
-                          <div style={{ fontSize: 11.5, color: SUB }}>{g.count} × {ko ? "시술" : "Treatments"}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* 합계 + ⑫ 진행 버튼 */}
-              <div style={{ background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 20 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13.5, color: SUB, marginBottom: 10 }}>
-                  <span>{ko ? "상품 합계" : "Items subtotal"}</span>
-                  <span style={{ fontWeight: 600, color: INK }}>${usd(subtotal).toLocaleString()}</span>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", paddingTop: 12, borderTop: `1px solid ${LINE}` }}>
-                  <span style={{ fontSize: 14, fontWeight: 800, color: INK }}>{ko ? "예상 합계" : "Estimated grand total"}</span>
-                  <span style={{ fontFamily: DISPLAY, fontSize: 22, fontWeight: 800, color: INK }}>${usd(subtotal).toLocaleString()}</span>
-                </div>
-                <div style={{ textAlign: "right", fontSize: 12, color: SUB, marginTop: 2 }}>≈ {won(subtotal)}</div>
-                <button disabled={!canContinue} onClick={() => canContinue && navigate(`/booking?from=cart`)}
-                  style={{ ...btn(canContinue ? BLUE : CLOUD, canContinue ? "#fff" : MUTE), width: "100%", marginTop: 16, cursor: canContinue ? "pointer" : "not-allowed" }}>
-                  {canContinue ? UI[lang].reserve : (ko ? "예약할 시술을 선택하세요" : "Select treatments to continue")}
-                </button>
-                <p style={{ fontSize: 11, color: MUTE, margin: "12px 0 0", lineHeight: 1.5 }}>
-                  {ko ? "방문 희망일은 다음 예약신청 단계에서 선택합니다. 결제 안내는 병원 확정 후 SafeDoc CS가 발송합니다." : "Pick your visit date in the next step. Payment instructions are sent by SafeDoc CS after hospital confirmation."}
-                </p>
-              </div>
-            </aside>
-          </div>
-        )}
-      </div>
-    </>
-  );
 }
 
 /* =====================================================================
@@ -549,10 +358,8 @@ function BookingInner({ lang, navigate }) {
   const [sp] = useSearchParams();
   const profile = store.getProfile();
   // 예약 대상 = treatment 쿼리 또는 장바구니 전체
-  const fromCart = sp.get("from") === "cart";
   const tId = sp.get("treatment");
-  const targets = fromCart ? store.getCart().filter((c) => c.wanted).map((c) => ({ p: byId(c.procedureId), qty: c.qty || 1 })).filter((t) => t.p)
-    : (byId(tId) ? [{ p: byId(tId), qty: Math.max(1, parseInt(sp.get("qty") || "1", 10)) }] : []);
+  const targets = byId(tId) ? [{ p: byId(tId), qty: Math.max(1, parseInt(sp.get("qty") || "1", 10)) }] : [];
   const totalCards = targets.reduce((s, t) => s + t.qty, 0) || 1;
   // 카드별 입력 (예약 수만큼)
   const [cards, setCards] = useState(() => Array.from({ length: totalCards }, () => blankCustomer(profile)));
@@ -584,7 +391,6 @@ function BookingInner({ lang, navigate }) {
     }
     setErr("");
     const id = store.upsertBooking({ status: "pending", no: store.genBookingNo(), procedureId: targets[0].p.id, treatmentName: tx(targets[0].p.name, lang), cards, totalCards, createdAt: "now" });
-    if (fromCart) store.clearCart();
     setSubmitted(id);
   };
 
