@@ -337,7 +337,7 @@ function Footer({ lang, navigate }) {
       { path: "/treatments", en: "Treatments", ko: "시술", ar: "العلاجات", ja: "施術" },
       { path: "/providers", en: "Providers", ko: "파트너 병원", ar: "المستشفيات الشريكة", ja: "提携病院" },
     ] },
-    { title: { en: "Company", ko: "회사" }, items: [{ path: "/company", en: "About", ko: "회사소개" }, { path: "/pricing", en: "Pricing", ko: "가격 안내", ar: "الأسعار", ja: "料金" }, { path: "/contact", en: "Contact", ko: "문의" }, { path: "/faq", en: "FAQ", ko: "FAQ" }, { path: "/blog", en: "Blog", ko: "블로그" }] },
+    { title: { en: "Company", ko: "회사" }, items: [{ path: "/contact", en: "Contact", ko: "문의" }, { path: "/faq", en: "FAQ", ko: "FAQ" }, { path: "/blog", en: "Blog", ko: "블로그" }] },
     { title: { en: "Legal", ko: "법적 고지" }, items: [{ path: "/legal/privacy", en: "Privacy Policy", ko: "개인정보처리방침" }, { path: "/legal/terms", en: "Terms of Service", ko: "이용약관" }, { path: "/legal/refund", en: "Refund Policy", ko: "환불정책" }] },
   ];
   const info = lang === "ko"
