@@ -242,15 +242,9 @@ function LandingStyles() {
 /* --------- logo --------- */
 function SafedocLogo({ onClick, dark = false }) {
   return (
-    <button onClick={onClick} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 9, padding: 0 }} aria-label="SafeDoc Global home">
-      <span style={{ position: "relative", width: 30, height: 30, borderRadius: 9, background: BRAND_GRAD, display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0, boxShadow: "0 2px 8px rgba(27,89,250,.35)" }}>
-        <span style={{ position: "absolute", width: 13, height: 3.4, borderRadius: 2, background: "#fff" }} />
-        <span style={{ position: "absolute", width: 3.4, height: 13, borderRadius: 2, background: "#fff" }} />
-      </span>
-      <span style={{ display: "inline-flex", flexDirection: "column", lineHeight: 1, gap: 3 }}>
-        <span style={{ fontFamily: DISPLAY, fontSize: 18, fontWeight: 800, letterSpacing: "-0.02em", color: dark ? "#fff" : INK }}>SafeDoc</span>
-        <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: dark ? "rgba(255,255,255,.6)" : MUTE }}>GLOBAL SERVICE</span>
-      </span>
+    <button onClick={onClick} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 4, padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
+      <img src={`${import.meta.env.BASE_URL}safedoc-wordmark.svg`} alt="SafeDoc" style={{ height: 26, width: "auto", display: "block", filter: dark ? "brightness(0) invert(1)" : "none" }} />
+      <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: dark ? "rgba(255,255,255,.6)" : MUTE, paddingLeft: 2 }}>GLOBAL SERVICE</span>
     </button>
   );
 }
