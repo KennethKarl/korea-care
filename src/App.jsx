@@ -242,10 +242,8 @@ function LandingStyles() {
 function SafedocLogo({ onClick, dark = false }) {
   return (
     <button onClick={onClick} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 5, padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
-      {/* 워드마크 SVG는 흰 lockup 배경을 포함 → 다크 배경에선 흰 라운드 칩 위에 얹어 자연스럽게 노출 */}
-      <span style={{ display: "inline-flex", alignItems: "center", ...(dark ? { background: "#fff", borderRadius: 8, padding: "6px 11px" } : {}) }}>
-        <img src={`${import.meta.env.BASE_URL}safedoc-wordmark.svg`} alt="SafeDoc" style={{ height: dark ? 20 : 26, width: "auto", display: "block" }} />
-      </span>
+      {/* 라이트=파란 워드마크 SVG, 다크=흰 knockout PNG(투명 배경) */}
+      <img src={`${import.meta.env.BASE_URL}${dark ? "safedoc-wordmark-white.png" : "safedoc-wordmark.svg"}`} alt="SafeDoc" style={{ height: 26, width: "auto", display: "block" }} />
       <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: dark ? "rgba(255,255,255,.6)" : MUTE, paddingLeft: 2 }}>GLOBAL SERVICE</span>
     </button>
   );
