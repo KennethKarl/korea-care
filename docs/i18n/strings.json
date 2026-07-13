@@ -11434,10 +11434,10 @@
   {
     "key": "Hospital category",
     "source": "ui",
-    "en": "Hospital category",
-    "ko": "병원 구분",
-    "ar": "تصنيف المستشفى",
-    "ja": "病院区分"
+    "en": "Department",
+    "ko": "진료과",
+    "ar": "التخصص",
+    "ja": "診療科"
   },
   {
     "key": "Select",

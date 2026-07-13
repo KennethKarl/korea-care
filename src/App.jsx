@@ -1537,7 +1537,7 @@ function ContactPage() {
               <label style={{ fontSize: 13, fontWeight: 700, color: INK }}>{tr("Hospital category", lang)}
                 <select required value={form.category || ""} onChange={set("category")} style={{ display: "block", width: "100%", marginTop: 6, padding: "12px 14px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 14, boxSizing: "border-box" }}>
                   <option value="" disabled>{tr("Select", lang)}</option>
-                  {(lang === "ko" ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과"] : ["Health check-up", "General hospital", "Dermatology", "Plastic surgery", "Ophthalmology", "Dental", "Obstetrics", "Urology", "Orthopedics"]).map((c) => <option key={c}>{c}</option>)}
+                  {(lang === "ko" ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과", "기타"] : ["Health check-up", "General hospital", "Dermatology", "Plastic surgery", "Ophthalmology", "Dental", "Obstetrics", "Urology", "Orthopedics", "Other"]).map((c) => <option key={c}>{c}</option>)}
                 </select>
               </label>
               <label style={{ fontSize: 13, fontWeight: 700, color: INK }}>{tr("Message", lang)}
