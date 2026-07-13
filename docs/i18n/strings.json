@@ -440,6 +440,1782 @@
     "ja": "招へい状からビザ期間に合わせた予約調整まで、書類と日程を整合させ、領事館で滞ることがないようにします。"
   },
   {
+    "key": "BLOG[6].author",
+    "source": "data.js",
+    "en": "Dr. H. Lee",
+    "ko": "이 원장",
+    "ar": "د. هـ. لي",
+    "ja": "イ・H 医師"
+  },
+  {
+    "key": "BLOG[6].title",
+    "source": "data.js",
+    "en": "K-Beauty Dermatology: What to Know Before You Go",
+    "ko": "K-뷰티 피부과: 가기 전에 알아둘 것",
+    "ar": "جلدية الجمال الكوري: ما يجب معرفته قبل الذهاب",
+    "ja": "K-ビューティー皮膚科：行く前に知っておくこと"
+  },
+  {
+    "key": "BLOG[6].excerpt",
+    "source": "data.js",
+    "en": "Lasers, injectables and skin-boosters — how to plan safe, effective treatments on a short trip.",
+    "ko": "레이저·주사·스킨부스터 — 짧은 일정에서 안전하고 효과적인 시술을 계획하는 법.",
+    "ar": "الليزر والحقن ومعزّزات البشرة — كيف تخطّط لعلاجات آمنة وفعّالة في رحلة قصيرة.",
+    "ja": "レーザー・注射・スキンブースター — 短い旅程で安全かつ効果的な施術を計画する方法。"
+  },
+  {
+    "key": "BLOG[6].sections[0].h",
+    "source": "data.js",
+    "en": "Popular treatments",
+    "ko": "인기 시술",
+    "ar": "العلاجات الشائعة",
+    "ja": "人気の施術"
+  },
+  {
+    "key": "BLOG[6].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Laser toning, fractional resurfacing, injectables and skin-boosters lead the menu. Match the treatment to your recovery time — some leave redness for a few days.",
+    "ko": "레이저 토닝·프락셔널·주사·스킨부스터가 대표적입니다. 회복 시간에 맞춰 시술을 선택하세요. 일부는 며칠간 홍조가 남습니다.",
+    "ar": "يتصدّر القائمة تفتيح الليزر والتقشير الجزئي والحقن ومعزّزات البشرة. طابِق العلاج مع وقت تعافيك — فبعضها يترك احمراراً لبضعة أيام.",
+    "ja": "レーザートーニング・フラクショナル・注射・スキンブースターが代表的です。回復時間に合わせて施術を選びましょう。一部は数日間赤みが残ります。"
+  },
+  {
+    "key": "BLOG[6].sections[1].h",
+    "source": "data.js",
+    "en": "Planning a short trip",
+    "ko": "짧은 일정 계획하기",
+    "ar": "التخطيط لرحلة قصيرة",
+    "ja": "短い旅程を計画する"
+  },
+  {
+    "key": "BLOG[6].sections[1].p[0]",
+    "source": "data.js",
+    "en": "Book a consultation first, then space sessions across a few days. SafeDoc lines up an English- or Arabic-speaking coordinator so nothing gets lost in translation.",
+    "ko": "먼저 상담을 예약하고 세션을 며칠에 나눠 배치하세요. 세이프닥은 영어·아랍어 코디네이터를 배정해 소통 착오를 막습니다.",
+    "ar": "احجز استشارة أولاً، ثم وزّع الجلسات على عدة أيام. ويوفّر SafeDoc منسّقاً يتحدّث الإنجليزية أو العربية حتى لا يضيع شيء في الترجمة.",
+    "ja": "まず相談を予約し、セッションを数日に分けて配置します。SafeDoc は英語・アラビア語対応のコーディネーターを手配し、伝達の行き違いを防ぎます。"
+  },
+  {
+    "key": "BLOG[7].author",
+    "source": "data.js",
+    "en": "Dr. S. Park",
+    "ko": "박 원장",
+    "ar": "د. س. بارك",
+    "ja": "パク・S 医師"
+  },
+  {
+    "key": "BLOG[7].title",
+    "source": "data.js",
+    "en": "Hair Transplant in Korea: Methods and Recovery",
+    "ko": "한국 모발이식: 방법과 회복",
+    "ar": "زراعة الشعر في كوريا: الطرق والتعافي",
+    "ja": "韓国の毛髪移植：方法と回復"
+  },
+  {
+    "key": "BLOG[7].excerpt",
+    "source": "data.js",
+    "en": "FUE vs. FUT, realistic graft counts, and what the first two weeks actually look like.",
+    "ko": "FUE와 FUT 비교, 현실적인 모낭 수, 그리고 첫 2주 실제 경과.",
+    "ar": "مقارنة بين FUE وFUT، وأعداد واقعية للبصيلات، وما يبدو عليه الأسبوعان الأولان فعلاً.",
+    "ja": "FUEとFUTの比較、現実的な移植株数、そして最初の2週間の実際。"
+  },
+  {
+    "key": "BLOG[7].sections[0].h",
+    "source": "data.js",
+    "en": "FUE vs. FUT",
+    "ko": "FUE와 FUT",
+    "ar": "FUE مقابل FUT",
+    "ja": "FUEとFUT"
+  },
+  {
+    "key": "BLOG[7].sections[0].p[0]",
+    "source": "data.js",
+    "en": "FUE extracts individual follicles with no linear scar and a faster return to normal; FUT can move more grafts in one session. Your density goals decide the method.",
+    "ko": "FUE는 모낭을 하나씩 채취해 선형 흉터가 없고 회복이 빠릅니다. FUT는 한 번에 더 많은 모낭을 옮길 수 있습니다. 원하는 밀도가 방법을 결정합니다.",
+    "ar": "يستخرج FUE البصيلات فردياً دون ندبة خطية ومع عودة أسرع إلى الحياة الطبيعية؛ بينما يمكن لـ FUT نقل عدد أكبر من البصيلات في جلسة واحدة. وأهداف الكثافة لديك هي التي تحدّد الطريقة.",
+    "ja": "FUEは毛包を一つずつ採取するため線状の傷跡がなく、回復が早いです。FUTは一度により多くの株を移植できます。希望する密度が方法を決めます。"
+  },
+  {
+    "key": "BLOG[7].sections[1].h",
+    "source": "data.js",
+    "en": "The first two weeks",
+    "ko": "첫 2주",
+    "ar": "الأسبوعان الأولان",
+    "ja": "最初の2週間"
+  },
+  {
+    "key": "BLOG[7].sections[1].p[0]",
+    "source": "data.js",
+    "en": "Expect mild swelling and scabbing that settles within 10–14 days. SafeDoc schedules a follow-up check and arranges a cap-friendly recovery stay.",
+    "ko": "가벼운 부기와 딱지가 10~14일 내 가라앉습니다. 세이프닥은 경과 확인을 예약하고 모자 착용이 편한 회복 숙소를 마련합니다.",
+    "ar": "توقّع تورّماً خفيفاً وقشوراً تهدأ خلال 10–14 يوماً. ويحجز SafeDoc موعد متابعة ويرتّب إقامة تعافٍ مناسبة لارتداء القبعة.",
+    "ja": "軽い腫れとかさぶたが10〜14日以内に落ち着きます。SafeDoc は経過確認を予約し、帽子を着用しやすい回復用の宿泊先を手配します。"
+  },
+  {
+    "key": "BLOG[8].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "فريق تحرير SafeDoc",
+    "ja": "SafeDoc 編集部"
+  },
+  {
+    "key": "BLOG[8].title",
+    "source": "data.js",
+    "en": "Cancer Screening Packages Explained",
+    "ko": "암 검진 패키지 완전 정리",
+    "ar": "شرح باقات الكشف عن السرطان",
+    "ja": "がん検診パッケージ徹底解説"
+  },
+  {
+    "key": "BLOG[8].excerpt",
+    "source": "data.js",
+    "en": "PET-CT, endoscopy and tumor markers — what each test finds and who should consider it.",
+    "ko": "PET-CT·내시경·종양표지자 — 각 검사가 무엇을 찾고 누구에게 권장되는지.",
+    "ar": "التصوير المقطعي بالإصدار البوزيتروني والتنظير ودلالات الأورام — ماذا يكشف كل فحص ولمن يُنصح به.",
+    "ja": "PET-CT・内視鏡・腫瘍マーカー — 各検査が何を見つけ、誰に勧められるか。"
+  },
+  {
+    "key": "BLOG[8].sections[0].h",
+    "source": "data.js",
+    "en": "What each test finds",
+    "ko": "각 검사가 찾는 것",
+    "ar": "ما يكشفه كل فحص",
+    "ja": "各検査が見つけるもの"
+  },
+  {
+    "key": "BLOG[8].sections[0].p[0]",
+    "source": "data.js",
+    "en": "PET-CT scans the whole body for metabolic hotspots, endoscopy inspects the GI tract directly, and blood tumor markers flag risk to follow up. They work best combined.",
+    "ko": "PET-CT는 전신의 대사 이상을 스캔하고, 내시경은 소화관을 직접 관찰하며, 혈액 종양표지자는 추적할 위험 신호를 알려줍니다. 함께 조합할 때 가장 효과적입니다.",
+    "ar": "يمسح التصوير المقطعي بالإصدار البوزيتروني الجسم كله بحثاً عن البؤر الأيضية، ويفحص التنظير الجهاز الهضمي مباشرة، وتشير دلالات الأورام في الدم إلى خطر يستدعي المتابعة. وتعمل بأفضل صورة مجتمعةً.",
+    "ja": "PET-CTは全身の代謝の異常をスキャンし、内視鏡は消化管を直接観察し、血液の腫瘍マーカーは追跡すべきリスクを示します。組み合わせると最も効果的です。"
+  },
+  {
+    "key": "BLOG[8].sections[1].h",
+    "source": "data.js",
+    "en": "Who should consider it",
+    "ko": "누구에게 권장될까",
+    "ar": "لمن يُنصح به",
+    "ja": "誰に勧められるか"
+  },
+  {
+    "key": "BLOG[8].sections[1].p[0]",
+    "source": "data.js",
+    "en": "Family history, age and lifestyle guide the choice. A coordinator helps you pick a package that screens what matters without over-testing.",
+    "ko": "가족력·나이·생활습관이 선택 기준입니다. 코디네이터가 과잉검사 없이 꼭 필요한 항목을 검진하는 패키지를 고르도록 돕습니다.",
+    "ar": "يوجّه التاريخ العائلي والعمر ونمط الحياة الاختيار. ويساعدك المنسّق على اختيار باقة تفحص ما يهمّ دون إفراط في الفحوصات.",
+    "ja": "家族歴・年齢・生活習慣が選択の基準です。コーディネーターが過剰検査なく必要な項目を検診するパッケージ選びを手伝います。"
+  },
+  {
+    "key": "BLOG[9].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "فريق تحرير SafeDoc",
+    "ja": "SafeDoc 編集部"
+  },
+  {
+    "key": "BLOG[9].title",
+    "source": "data.js",
+    "en": "Payment, Insurance and Costs for Foreign Patients",
+    "ko": "외국인 환자의 결제·보험·비용",
+    "ar": "الدفع والتأمين والتكاليف للمرضى الأجانب",
+    "ja": "外国人患者の支払い・保険・費用"
+  },
+  {
+    "key": "BLOG[9].excerpt",
+    "source": "data.js",
+    "en": "How pricing works, what to bring for insurance claims, and how to avoid surprise charges.",
+    "ko": "가격이 정해지는 방식, 보험 청구 준비물, 그리고 예상치 못한 비용을 피하는 법.",
+    "ar": "كيف يُحدَّد السعر، وما تحضره لمطالبات التأمين، وكيف تتجنّب الرسوم المفاجئة.",
+    "ja": "価格の決まり方、保険請求の持ち物、そして予想外の請求を避ける方法。"
+  },
+  {
+    "key": "BLOG[9].sections[0].h",
+    "source": "data.js",
+    "en": "How pricing works",
+    "ko": "가격이 정해지는 방식",
+    "ar": "كيف يُحدَّد السعر",
+    "ja": "価格の決まり方"
+  },
+  {
+    "key": "BLOG[9].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Elective care is quoted up front, often as a package. Ask whether imaging, anesthesia and follow-ups are included so the estimate matches the final bill.",
+    "ko": "선택 진료는 대개 패키지로 사전에 견적이 나옵니다. 영상검사·마취·경과관찰 포함 여부를 확인해 견적과 최종 청구가 일치하도록 하세요.",
+    "ar": "يُسعّر العلاج الاختياري مسبقاً، وغالباً كباقة. اسأل عمّا إذا كان التصوير والتخدير والمتابعات مشمولة حتى يتطابق التقدير مع الفاتورة النهائية.",
+    "ja": "選択診療は多くの場合パッケージとして事前に見積もられます。画像検査・麻酔・経過観察が含まれるか確認し、見積もりと最終請求が一致するようにしましょう。"
+  },
+  {
+    "key": "BLOG[9].sections[1].h",
+    "source": "data.js",
+    "en": "Insurance claims",
+    "ko": "보험 청구",
+    "ar": "مطالبات التأمين",
+    "ja": "保険請求"
+  },
+  {
+    "key": "BLOG[9].sections[1].p[0]",
+    "source": "data.js",
+    "en": "Keep itemized receipts and the medical report SafeDoc issues; most travel and private insurers need both. We can prepare documents in English on request.",
+    "ko": "항목별 영수증과 세이프닥이 발급하는 진료 리포트를 보관하세요. 대부분의 여행자·민간 보험이 둘 다 요구합니다. 요청 시 영문 서류를 준비해 드립니다.",
+    "ar": "احتفظ بالإيصالات المفصّلة وبالتقرير الطبي الذي يصدره SafeDoc؛ إذ يطلبهما معظم شركات تأمين السفر والتأمين الخاص. ويمكننا تجهيز المستندات بالإنجليزية عند الطلب.",
+    "ja": "項目別の領収書と SafeDoc が発行する診療レポートを保管してください。多くの旅行・民間保険が両方を必要とします。ご要望に応じて英文書類を準備します。"
+  },
+  {
+    "key": "BLOG[10].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "فريق تحرير SafeDoc",
+    "ja": "SafeDoc 編集部"
+  },
+  {
+    "key": "BLOG[10].title",
+    "source": "data.js",
+    "en": "Choosing a Hospital: Accreditation and Reviews",
+    "ko": "병원 고르기: 인증과 후기 보는 법",
+    "ar": "اختيار المستشفى: الاعتماد والمراجعات",
+    "ja": "病院選び：認証と口コミの見方"
+  },
+  {
+    "key": "BLOG[10].excerpt",
+    "source": "data.js",
+    "en": "How to read accreditations, verify a surgeon's experience, and weigh reviews wisely.",
+    "ko": "인증을 읽는 법, 의료진 경력 확인, 그리고 후기를 현명하게 판단하는 법.",
+    "ar": "كيف تقرأ الاعتمادات، وتتحقّق من خبرة الجرّاح، وتزن المراجعات بحكمة.",
+    "ja": "認証の読み方、医師の経歴確認、そして口コミを賢く判断する方法。"
+  },
+  {
+    "key": "BLOG[10].sections[0].h",
+    "source": "data.js",
+    "en": "What accreditation means",
+    "ko": "인증이 의미하는 것",
+    "ar": "ماذا يعني الاعتماد",
+    "ja": "認証が意味すること"
+  },
+  {
+    "key": "BLOG[10].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Look for government registration for foreign-patient care and, ideally, international accreditation. These signal audited safety and record-keeping standards.",
+    "ko": "외국인 환자 유치 정부 등록과, 가능하면 국제 인증을 확인하세요. 감사받은 안전·기록관리 기준을 보증합니다.",
+    "ar": "ابحث عن تسجيل حكومي لرعاية المرضى الأجانب، ويُفضّل اعتماد دولي. فهذه تدلّ على معايير أمان وحفظ سجلات خاضعة للتدقيق.",
+    "ja": "外国人患者診療の政府登録と、できれば国際認証を確認しましょう。これらは監査された安全・記録管理の基準を示します。"
+  },
+  {
+    "key": "BLOG[10].sections[1].h",
+    "source": "data.js",
+    "en": "Reading reviews wisely",
+    "ko": "후기를 현명하게 읽기",
+    "ar": "قراءة المراجعات بحكمة",
+    "ja": "口コミを賢く読む"
+  },
+  {
+    "key": "BLOG[10].sections[1].p[0]",
+    "source": "data.js",
+    "en": "Weight recent, detailed reviews over star averages, and confirm the surgeon named actually performs your procedure. SafeDoc verifies partners before listing them.",
+    "ko": "별점 평균보다 최근의 구체적인 후기를 중시하고, 언급된 의료진이 실제 그 시술을 하는지 확인하세요. 세이프닥은 등재 전 파트너를 검증합니다.",
+    "ar": "رجّح المراجعات الحديثة والمفصّلة على متوسّطات النجوم، وتأكّد من أنّ الجرّاح المذكور يُجري إجراءك فعلاً. ويتحقّق SafeDoc من الشركاء قبل إدراجهم.",
+    "ja": "星の平均より最近の具体的な口コミを重視し、記載された医師が実際にその施術を行うか確認しましょう。SafeDoc は掲載前にパートナーを検証します。"
+  },
+  {
+    "key": "BLOG[11].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "فريق تحرير SafeDoc",
+    "ja": "SafeDoc 編集部"
+  },
+  {
+    "key": "BLOG[11].title",
+    "source": "data.js",
+    "en": "Interpreter Services for Medical Visits",
+    "ko": "의료 방문을 위한 통역 서비스",
+    "ar": "خدمات الترجمة الفورية للزيارات الطبية",
+    "ja": "医療受診のための通訳サービス"
+  },
+  {
+    "key": "BLOG[11].excerpt",
+    "source": "data.js",
+    "en": "Why medical interpretation matters, which languages are covered, and how it's arranged.",
+    "ko": "의료 통역이 중요한 이유, 지원 언어, 그리고 준비되는 방식.",
+    "ar": "لماذا تهمّ الترجمة الطبية، وما اللغات المشمولة، وكيف تُرتَّب.",
+    "ja": "医療通訳が重要な理由、対応言語、そして手配される方法。"
+  },
+  {
+    "key": "BLOG[11].sections[0].h",
+    "source": "data.js",
+    "en": "Why it matters",
+    "ko": "왜 중요한가",
+    "ar": "لماذا تهمّ",
+    "ja": "なぜ重要か"
+  },
+  {
+    "key": "BLOG[11].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Consent, symptoms and aftercare instructions leave no room for guesswork. A trained medical interpreter reduces error and helps you decide with confidence.",
+    "ko": "동의·증상·사후관리 안내는 추측의 여지가 없어야 합니다. 훈련된 의료 통역은 오류를 줄이고 자신 있게 결정하도록 돕습니다.",
+    "ar": "لا مجال للتخمين في الموافقة والأعراض وتعليمات الرعاية اللاحقة. ويقلّل المترجم الطبي المدرَّب من الأخطاء ويساعدك على اتخاذ القرار بثقة.",
+    "ja": "同意・症状・術後の指示に推測の余地はありません。訓練された医療通訳は誤りを減らし、自信を持って判断する助けになります。"
+  },
+  {
+    "key": "BLOG[11].sections[1].h",
+    "source": "data.js",
+    "en": "How it's arranged",
+    "ko": "준비되는 방식",
+    "ar": "كيف تُرتَّب",
+    "ja": "手配される方法"
+  },
+  {
+    "key": "BLOG[11].sections[1].p[0]",
+    "source": "data.js",
+    "en": "SafeDoc pairs you with an interpreter for English, Arabic and Japanese, in person or on call, matched to your appointments across the whole trip.",
+    "ko": "세이프닥은 영어·아랍어·일본어 통역을 대면 또는 전화로 배정하고, 여정 전체의 예약 일정에 맞춰 연결합니다.",
+    "ar": "يربطك SafeDoc بمترجم للإنجليزية والعربية واليابانية، حضورياً أو عبر الهاتف، بما يتوافق مع مواعيدك طوال الرحلة.",
+    "ja": "SafeDoc は英語・アラビア語・日本語の通訳を対面または電話で手配し、旅程全体の予約に合わせて連携します。"
+  },
+  {
+    "key": "BLOG[12].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[12].title",
+    "source": "data.js",
+    "en": "Jet Lag and Your Procedure Schedule",
+    "ko": "시차와 시술 일정 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[12].excerpt",
+    "source": "data.js",
+    "en": "Time treatments around jet lag for a smoother recovery.",
+    "ko": "시차를 고려해 시술 일정을 잡아 회복을 순조롭게.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[12].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[12].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Time treatments around jet lag for a smoother recovery.",
+    "ko": "시차를 고려해 시술 일정을 잡아 회복을 순조롭게.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[13].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[13].title",
+    "source": "data.js",
+    "en": "Packing for a Medical Trip to Korea",
+    "ko": "한국 의료 여행 짐 싸기",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[13].excerpt",
+    "source": "data.js",
+    "en": "A checklist of documents, medications and essentials to bring.",
+    "ko": "서류·상비약·필수품 준비 체크리스트.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[13].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[13].sections[0].p[0]",
+    "source": "data.js",
+    "en": "A checklist of documents, medications and essentials to bring.",
+    "ko": "서류·상비약·필수품 준비 체크리스트.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[14].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[14].title",
+    "source": "data.js",
+    "en": "Halal Food Options Near Major Clinics",
+    "ko": "주요 병원 인근 할랄 음식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[14].excerpt",
+    "source": "data.js",
+    "en": "Where to eat comfortably during your stay.",
+    "ko": "체류 중 편하게 식사할 수 있는 곳.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[14].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[14].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Where to eat comfortably during your stay.",
+    "ko": "체류 중 편하게 식사할 수 있는 곳.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[15].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[15].title",
+    "source": "data.js",
+    "en": "Airport Pickup and Transfers Explained",
+    "ko": "공항 픽업과 이동 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[15].excerpt",
+    "source": "data.js",
+    "en": "How transport is arranged from arrival to clinic.",
+    "ko": "도착부터 병원까지 이동 준비 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[15].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[15].sections[0].p[0]",
+    "source": "data.js",
+    "en": "How transport is arranged from arrival to clinic.",
+    "ko": "도착부터 병원까지 이동 준비 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[16].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[16].title",
+    "source": "data.js",
+    "en": "SIM Cards and Staying Connected",
+    "ko": "유심과 통신 연결",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[16].excerpt",
+    "source": "data.js",
+    "en": "Getting online the moment you land.",
+    "ko": "도착 즉시 인터넷을 연결하는 법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[16].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[16].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Getting online the moment you land.",
+    "ko": "도착 즉시 인터넷을 연결하는 법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[17].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[17].title",
+    "source": "data.js",
+    "en": "Bringing a Companion on Your Trip",
+    "ko": "동반자와 함께 오기",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[17].excerpt",
+    "source": "data.js",
+    "en": "How a guardian or friend can join and help.",
+    "ko": "보호자·지인이 함께 오는 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[17].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[17].sections[0].p[0]",
+    "source": "data.js",
+    "en": "How a guardian or friend can join and help.",
+    "ko": "보호자·지인이 함께 오는 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[18].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[18].title",
+    "source": "data.js",
+    "en": "Seasonal Weather and What to Wear",
+    "ko": "계절 날씨와 옷차림",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[18].excerpt",
+    "source": "data.js",
+    "en": "Dressing for Korea's four distinct seasons.",
+    "ko": "한국 사계절에 맞춘 옷차림.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[18].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[18].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Dressing for Korea's four distinct seasons.",
+    "ko": "한국 사계절에 맞춘 옷차림.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[19].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[19].title",
+    "source": "data.js",
+    "en": "How to Read a Korean Prescription",
+    "ko": "한국 처방전 읽는 법",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[19].excerpt",
+    "source": "data.js",
+    "en": "Understanding dosages and instructions.",
+    "ko": "용량과 복용 지시 이해하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[19].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[19].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Understanding dosages and instructions.",
+    "ko": "용량과 복용 지시 이해하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[20].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[20].title",
+    "source": "data.js",
+    "en": "Pharmacies and Over-the-Counter Basics",
+    "ko": "약국과 일반의약품 기초",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[20].excerpt",
+    "source": "data.js",
+    "en": "Finding pharmacies and common remedies.",
+    "ko": "약국 찾기와 상비약 기본.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[20].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[20].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Finding pharmacies and common remedies.",
+    "ko": "약국 찾기와 상비약 기본.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[21].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[21].title",
+    "source": "data.js",
+    "en": "Wellness Add-Ons: Spas and Recovery",
+    "ko": "웰니스 부가: 스파와 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[21].excerpt",
+    "source": "data.js",
+    "en": "Relaxing extras to round out your trip.",
+    "ko": "여정을 채우는 편안한 부가 옵션.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[21].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[21].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Relaxing extras to round out your trip.",
+    "ko": "여정을 채우는 편안한 부가 옵션.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[22].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[22].title",
+    "source": "data.js",
+    "en": "Your First 24 Hours in Seoul",
+    "ko": "서울에서의 첫 24시간",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[22].excerpt",
+    "source": "data.js",
+    "en": "A calm, practical plan for day one.",
+    "ko": "차분하고 실용적인 첫날 계획.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[22].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[22].sections[0].p[0]",
+    "source": "data.js",
+    "en": "A calm, practical plan for day one.",
+    "ko": "차분하고 실용적인 첫날 계획.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[23].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[23].title",
+    "source": "data.js",
+    "en": "Understanding Korean Hospital Etiquette",
+    "ko": "한국 병원 이용 에티켓",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[23].excerpt",
+    "source": "data.js",
+    "en": "Small customs that make clinic visits smoother.",
+    "ko": "진료를 매끄럽게 하는 작은 관습들.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[23].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[23].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Small customs that make clinic visits smoother.",
+    "ko": "진료를 매끄럽게 하는 작은 관습들.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[24].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[24].title",
+    "source": "data.js",
+    "en": "Currency, Cards and Cash in Korea",
+    "ko": "한국의 환전·카드·현금",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[24].excerpt",
+    "source": "data.js",
+    "en": "Paying for care and daily expenses with ease.",
+    "ko": "진료비와 생활비를 편하게 결제하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[24].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[24].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Paying for care and daily expenses with ease.",
+    "ko": "진료비와 생활비를 편하게 결제하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[25].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[25].title",
+    "source": "data.js",
+    "en": "Follow-Up Care After You Fly Home",
+    "ko": "귀국 후 사후 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[25].excerpt",
+    "source": "data.js",
+    "en": "Staying connected with your care team remotely.",
+    "ko": "귀국 후에도 의료진과 원격으로 연결.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[25].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[25].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Staying connected with your care team remotely.",
+    "ko": "귀국 후에도 의료진과 원격으로 연결.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[26].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[26].title",
+    "source": "data.js",
+    "en": "Common Myths About Medical Tourism",
+    "ko": "의료관광 흔한 오해",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[26].excerpt",
+    "source": "data.js",
+    "en": "Separating fact from fiction before you travel.",
+    "ko": "여행 전 사실과 오해 구분하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[26].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[26].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Separating fact from fiction before you travel.",
+    "ko": "여행 전 사실과 오해 구분하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[27].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[27].title",
+    "source": "data.js",
+    "en": "Booking Consultations Remotely",
+    "ko": "원격 상담 예약",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[27].excerpt",
+    "source": "data.js",
+    "en": "Start your treatment plan before you arrive.",
+    "ko": "도착 전에 진료 계획을 시작하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[27].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[27].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Start your treatment plan before you arrive.",
+    "ko": "도착 전에 진료 계획을 시작하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[28].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[28].title",
+    "source": "data.js",
+    "en": "Second Opinions and How to Get One",
+    "ko": "세컨드 오피니언 받는 법",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[28].excerpt",
+    "source": "data.js",
+    "en": "When and how to seek another view.",
+    "ko": "다른 소견을 구하는 시점과 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[28].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[28].sections[0].p[0]",
+    "source": "data.js",
+    "en": "When and how to seek another view.",
+    "ko": "다른 소견을 구하는 시점과 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[29].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[29].title",
+    "source": "data.js",
+    "en": "Managing Medical Records Across Borders",
+    "ko": "국경을 넘는 의료 기록 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[29].excerpt",
+    "source": "data.js",
+    "en": "Keeping your history organized and portable.",
+    "ko": "진료 기록을 정리하고 이동성 있게 관리.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[29].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[29].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Keeping your history organized and portable.",
+    "ko": "진료 기록을 정리하고 이동성 있게 관리.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[30].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[30].title",
+    "source": "data.js",
+    "en": "Choosing Between Public and Private Care",
+    "ko": "공공·민간 의료 선택하기",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[30].excerpt",
+    "source": "data.js",
+    "en": "Trade-offs in cost, speed and comfort.",
+    "ko": "비용·속도·편의의 장단점.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[30].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[30].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Trade-offs in cost, speed and comfort.",
+    "ko": "비용·속도·편의의 장단점.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[31].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[31].title",
+    "source": "data.js",
+    "en": "Data Privacy for Foreign Patients",
+    "ko": "외국인 환자의 개인정보 보호",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[31].excerpt",
+    "source": "data.js",
+    "en": "How your medical data is protected.",
+    "ko": "의료 정보가 보호되는 방식.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[31].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[31].sections[0].p[0]",
+    "source": "data.js",
+    "en": "How your medical data is protected.",
+    "ko": "의료 정보가 보호되는 방식.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[32].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[32].title",
+    "source": "data.js",
+    "en": "Comprehensive vs. Targeted Checkups",
+    "ko": "종합검진 vs 표적검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[32].excerpt",
+    "source": "data.js",
+    "en": "Which package fits your goals and budget.",
+    "ko": "목표와 예산에 맞는 패키지 고르기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[32].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[32].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Which package fits your goals and budget.",
+    "ko": "목표와 예산에 맞는 패키지 고르기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[33].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[33].title",
+    "source": "data.js",
+    "en": "Fasting and Prep Before Your Exam",
+    "ko": "검진 전 금식과 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[33].excerpt",
+    "source": "data.js",
+    "en": "How to prepare the night before.",
+    "ko": "검진 전날 준비 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[33].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[33].sections[0].p[0]",
+    "source": "data.js",
+    "en": "How to prepare the night before.",
+    "ko": "검진 전날 준비 방법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[34].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[34].title",
+    "source": "data.js",
+    "en": "Understanding Your Blood Panel",
+    "ko": "혈액검사 결과 이해하기",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[34].excerpt",
+    "source": "data.js",
+    "en": "What common markers actually mean.",
+    "ko": "주요 수치가 의미하는 것.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[34].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[34].sections[0].p[0]",
+    "source": "data.js",
+    "en": "What common markers actually mean.",
+    "ko": "주요 수치가 의미하는 것.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[35].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[35].title",
+    "source": "data.js",
+    "en": "Endoscopy: What to Expect",
+    "ko": "내시경, 무엇을 기대할까",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[35].excerpt",
+    "source": "data.js",
+    "en": "Sedation options and the day-of flow.",
+    "ko": "수면 옵션과 당일 흐름.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[35].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[35].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Sedation options and the day-of flow.",
+    "ko": "수면 옵션과 당일 흐름.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[36].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[36].title",
+    "source": "data.js",
+    "en": "Heart Health Screening Basics",
+    "ko": "심장 건강 검진 기초",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[36].excerpt",
+    "source": "data.js",
+    "en": "ECG, echo and when to add them.",
+    "ko": "심전도·심초음파, 언제 추가할까.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[36].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[36].sections[0].p[0]",
+    "source": "data.js",
+    "en": "ECG, echo and when to add them.",
+    "ko": "심전도·심초음파, 언제 추가할까.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[37].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[37].title",
+    "source": "data.js",
+    "en": "Women's Health Checkup Guide",
+    "ko": "여성 건강검진 가이드",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[37].excerpt",
+    "source": "data.js",
+    "en": "Screenings tailored to women's needs.",
+    "ko": "여성 맞춤 검진 항목.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[37].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[37].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Screenings tailored to women's needs.",
+    "ko": "여성 맞춤 검진 항목.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[38].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[38].title",
+    "source": "data.js",
+    "en": "Reading Imaging: CT vs. MRI",
+    "ko": "영상검사: CT와 MRI",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[38].excerpt",
+    "source": "data.js",
+    "en": "When each scan is the right call.",
+    "ko": "각 검사가 적절한 경우.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[38].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[38].sections[0].p[0]",
+    "source": "data.js",
+    "en": "When each scan is the right call.",
+    "ko": "각 검사가 적절한 경우.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[39].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[39].title",
+    "source": "data.js",
+    "en": "Annual Checkups: Building a Baseline",
+    "ko": "정기검진으로 기준선 만들기",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[39].excerpt",
+    "source": "data.js",
+    "en": "Why yearly data pays off.",
+    "ko": "매년 데이터가 주는 이점.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[39].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[39].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Why yearly data pays off.",
+    "ko": "매년 데이터가 주는 이점.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[40].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[40].title",
+    "source": "data.js",
+    "en": "Post-Op Skincare Essentials",
+    "ko": "시술 후 피부 관리 필수템",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[40].excerpt",
+    "source": "data.js",
+    "en": "How to care for treated skin during recovery.",
+    "ko": "회복 기간 시술 부위 피부 관리법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[40].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[40].sections[0].p[0]",
+    "source": "data.js",
+    "en": "How to care for treated skin during recovery.",
+    "ko": "회복 기간 시술 부위 피부 관리법.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[41].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[41].title",
+    "source": "data.js",
+    "en": "A Week-by-Week Recovery Timeline",
+    "ko": "주차별 회복 타임라인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[41].excerpt",
+    "source": "data.js",
+    "en": "What healing typically looks like, week by week.",
+    "ko": "주차별 일반적인 회복 경과.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[41].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[41].sections[0].p[0]",
+    "source": "data.js",
+    "en": "What healing typically looks like, week by week.",
+    "ko": "주차별 일반적인 회복 경과.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[42].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[42].title",
+    "source": "data.js",
+    "en": "Anesthesia Options Explained",
+    "ko": "마취 옵션 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[42].excerpt",
+    "source": "data.js",
+    "en": "Local, sedation and general — the basics.",
+    "ko": "국소·수면·전신 마취 기본.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[42].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[42].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Local, sedation and general — the basics.",
+    "ko": "국소·수면·전신 마취 기본.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[43].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[43].title",
+    "source": "data.js",
+    "en": "Scar Care After Surgery",
+    "ko": "수술 후 흉터 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[43].excerpt",
+    "source": "data.js",
+    "en": "Minimizing marks as you heal.",
+    "ko": "회복하며 흉터 최소화하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[43].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[43].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Minimizing marks as you heal.",
+    "ko": "회복하며 흉터 최소화하기.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[44].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[44].title",
+    "source": "data.js",
+    "en": "Non-Surgical vs. Surgical Options",
+    "ko": "비수술 vs 수술 옵션",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[44].excerpt",
+    "source": "data.js",
+    "en": "Weighing downtime against results.",
+    "ko": "회복 기간과 결과 비교.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[44].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[44].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Weighing downtime against results.",
+    "ko": "회복 기간과 결과 비교.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[45].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[45].title",
+    "source": "data.js",
+    "en": "Rhinoplasty: Planning and Recovery",
+    "ko": "코성형: 계획과 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[45].excerpt",
+    "source": "data.js",
+    "en": "Timelines and realistic expectations.",
+    "ko": "일정과 현실적인 기대치.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[45].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[45].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Timelines and realistic expectations.",
+    "ko": "일정과 현실적인 기대치.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[46].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[46].title",
+    "source": "data.js",
+    "en": "Body Contouring Overview",
+    "ko": "바디 컨투어링 개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[46].excerpt",
+    "source": "data.js",
+    "en": "Options, candidacy and aftercare.",
+    "ko": "옵션·대상·사후관리.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[46].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[46].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Options, candidacy and aftercare.",
+    "ko": "옵션·대상·사후관리.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[47].author",
+    "source": "data.js",
+    "en": "SafeDoc Editorial",
+    "ko": "세이프닥 편집팀",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[47].title",
+    "source": "data.js",
+    "en": "Orthopedic Procedures for Travelers",
+    "ko": "여행자를 위한 정형외과 시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[47].excerpt",
+    "source": "data.js",
+    "en": "Joint care with a recovery plan.",
+    "ko": "회복 계획이 있는 관절 치료.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[47].sections[0].h",
+    "source": "data.js",
+    "en": "Overview",
+    "ko": "개요",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "BLOG[47].sections[0].p[0]",
+    "source": "data.js",
+    "en": "Joint care with a recovery plan.",
+    "ko": "회복 계획이 있는 관절 치료.",
+    "ar": "",
+    "ja": ""
+  },
+  {
     "key": "BLOG_CATS[0]",
     "source": "data.js",
     "en": "Health Checkup",
@@ -502,6 +2278,54 @@
     "ko": "한국보건산업진흥원",
     "ar": "المعهد الكوري لتطوير الصناعة الصحية",
     "ja": "韓国保健産業振興院"
+  },
+  {
+    "key": "CHANNELS[0].label",
+    "source": "data.js",
+    "en": "WhatsApp",
+    "ko": "왓츠앱",
+    "ar": "واتساب",
+    "ja": "WhatsApp"
+  },
+  {
+    "key": "CHANNELS[1].label",
+    "source": "data.js",
+    "en": "LINE",
+    "ko": "라인",
+    "ar": "لاين",
+    "ja": "LINE"
+  },
+  {
+    "key": "CHANNELS[2].label",
+    "source": "data.js",
+    "en": "WeChat",
+    "ko": "위챗",
+    "ar": "وي تشات",
+    "ja": "WeChat"
+  },
+  {
+    "key": "CHANNELS[3].label",
+    "source": "data.js",
+    "en": "KakaoTalk",
+    "ko": "카카오톡",
+    "ar": "كاكاو توك",
+    "ja": "カカオトーク"
+  },
+  {
+    "key": "CHANNELS[4].label",
+    "source": "data.js",
+    "en": "Email",
+    "ko": "이메일",
+    "ar": "البريد الإلكتروني",
+    "ja": "メール"
+  },
+  {
+    "key": "CHANNELS[5].label",
+    "source": "data.js",
+    "en": "Call",
+    "ko": "전화",
+    "ar": "اتصال",
+    "ja": "電話"
   },
   {
     "key": "CHECKUP.eyebrow",
@@ -872,22 +2696,6 @@
     "ja": "SafeDocのウェブサイトでは、PayPalまたは主要なクレジットカードでお支払いいただけます。病院での現地決済はカードと現金に対応しています。"
   },
   {
-    "key": "FAQS[5].q",
-    "source": "data.js",
-    "en": "Can I book Revital treatments on the same trip as my checkup?",
-    "ko": "검진과 같은 일정에 리바이탈 시술을 예약할 수 있나요?",
-    "ar": "هل يمكنني حجز علاجات Revital في نفس الرحلة مع فحصي الصحي؟",
-    "ja": "検診と同じ旅程でRevitalの施術を予約できますか？"
-  },
-  {
-    "key": "FAQS[5].a",
-    "source": "data.js",
-    "en": "Absolutely. Our coordinators schedule Revital procedures around your checkup so you can complete everything in one visit to Korea.",
-    "ko": "물론입니다. 코디네이터가 검진 일정에 맞춰 리바이탈 시술을 조율하여 한 번의 한국 방문으로 모두 마칠 수 있도록 합니다.",
-    "ar": "بالتأكيد. ينسّق فريق التنسيق لدينا إجراءات Revital حول موعد فحصك لتتمكن من إنجاز كل شيء في زيارة واحدة إلى كوريا.",
-    "ja": "もちろんです。コーディネーターが検診の日程に合わせてRevitalの施術を調整し、一度の韓国訪問ですべてを完了できるようにいたします。"
-  },
-  {
     "key": "FAQ_CATS[0]",
     "source": "data.js",
     "en": "All",
@@ -905,14 +2713,6 @@
   },
   {
     "key": "FAQ_CATS[2]",
-    "source": "data.js",
-    "en": "Revital",
-    "ko": "리바이탈",
-    "ar": "ريفيتال",
-    "ja": "Revital"
-  },
-  {
-    "key": "FAQ_CATS[3]",
     "source": "data.js",
     "en": "Common",
     "ko": "공통",
@@ -1050,77 +2850,13 @@
   {
     "key": "NAV[1]",
     "source": "data.js",
-    "en": "Company",
-    "ko": "회사소개",
-    "ar": "الشركة",
-    "ja": "会社紹介"
+    "en": "Treatments",
+    "ko": "시술",
+    "ar": "العلاجات",
+    "ja": "施術"
   },
   {
     "key": "NAV[2]",
-    "source": "data.js",
-    "en": "Service",
-    "ko": "서비스",
-    "ar": "الخدمات",
-    "ja": "サービス"
-  },
-  {
-    "key": "NAV[2].children[0]",
-    "source": "data.js",
-    "en": "Treatments (Book)",
-    "ko": "시술 예약",
-    "ar": "العلاجات (الحجز)",
-    "ja": "施術予約"
-  },
-  {
-    "key": "NAV[2].children[1]",
-    "source": "data.js",
-    "en": "Health Check-up",
-    "ko": "건강검진",
-    "ar": "الفحص الصحي",
-    "ja": "健康診断"
-  },
-  {
-    "key": "NAV[2].children[2]",
-    "source": "data.js",
-    "en": "Revital",
-    "ko": "리바이탈",
-    "ar": "ريفيتال",
-    "ja": "Revital"
-  },
-  {
-    "key": "NAV[2].children[3]",
-    "source": "data.js",
-    "en": "Transportation",
-    "ko": "교통",
-    "ar": "النقل",
-    "ja": "交通"
-  },
-  {
-    "key": "NAV[2].children[4]",
-    "source": "data.js",
-    "en": "Accommodation",
-    "ko": "숙박",
-    "ar": "الإقامة",
-    "ja": "宿泊"
-  },
-  {
-    "key": "NAV[2].children[5]",
-    "source": "data.js",
-    "en": "Tour",
-    "ko": "투어",
-    "ar": "الجولات",
-    "ja": "ツアー"
-  },
-  {
-    "key": "NAV[2].children[6]",
-    "source": "data.js",
-    "en": "Association",
-    "ko": "제휴",
-    "ar": "الشراكات",
-    "ja": "提携"
-  },
-  {
-    "key": "NAV[3]",
     "source": "data.js",
     "en": "Providers",
     "ko": "파트너 병원",
@@ -1128,7 +2864,7 @@
     "ja": "提携病院"
   },
   {
-    "key": "NAV[4]",
+    "key": "NAV[3]",
     "source": "data.js",
     "en": "Contact Us",
     "ko": "문의하기",
@@ -1136,7 +2872,7 @@
     "ja": "お問い合わせ"
   },
   {
-    "key": "NAV[5]",
+    "key": "NAV[4]",
     "source": "data.js",
     "en": "FAQ",
     "ko": "자주 묻는 질문",
@@ -1144,12 +2880,180 @@
     "ja": "よくある質問"
   },
   {
-    "key": "NAV[6]",
+    "key": "NAV[5]",
     "source": "data.js",
     "en": "Blog",
     "ko": "블로그",
     "ar": "المدونة",
     "ja": "ブログ"
+  },
+  {
+    "key": "PRICING.eyebrow",
+    "source": "data.js",
+    "en": "Pricing",
+    "ko": "가격 안내",
+    "ar": "الأسعار",
+    "ja": "料金"
+  },
+  {
+    "key": "PRICING.title",
+    "source": "data.js",
+    "en": "Transparent prices for international patients",
+    "ko": "해외 환자를 위한 투명한 가격",
+    "ar": "أسعار شفافة للمرضى الدوليين",
+    "ja": "海外の患者様のための明確な料金"
+  },
+  {
+    "key": "PRICING.note",
+    "source": "data.js",
+    "en": "Indicative ranges — the final quote depends on your case and is confirmed by the hospital after consultation. All prices in USD.",
+    "ko": "참고용 범위입니다 — 최종 견적은 상태에 따라 상담 후 병원이 확정합니다. 모든 가격은 USD 기준.",
+    "ar": "نطاقات إرشادية — يعتمد العرض النهائي على حالتك ويؤكده المستشفى بعد الاستشارة. جميع الأسعار بالدولار الأمريكي.",
+    "ja": "参考範囲です — 最終見積もりは状態により相談後に病院が確定します。価格はすべてUSD。"
+  },
+  {
+    "key": "PRICING.rows[0].category",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "الفحص الصحي",
+    "ja": "健康診断"
+  },
+  {
+    "key": "PRICING.rows[0].name",
+    "source": "data.js",
+    "en": "Comprehensive Check-up",
+    "ko": "종합 건강검진",
+    "ar": "الفحص الشامل",
+    "ja": "総合健診"
+  },
+  {
+    "key": "PRICING.rows[0].note",
+    "source": "data.js",
+    "en": "Blood, imaging & core organs",
+    "ko": "혈액·영상·주요 장기",
+    "ar": "الدم والتصوير والأعضاء الأساسية",
+    "ja": "血液・画像・主要臓器"
+  },
+  {
+    "key": "PRICING.rows[1].category",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "الفحص الصحي",
+    "ja": "健康診断"
+  },
+  {
+    "key": "PRICING.rows[1].name",
+    "source": "data.js",
+    "en": "Whole-Body MRI",
+    "ko": "전신 MRI",
+    "ar": "فحص MRI للجسم بالكامل",
+    "ja": "全身MRI検査"
+  },
+  {
+    "key": "PRICING.rows[1].note",
+    "source": "data.js",
+    "en": "No radiation, high resolution",
+    "ko": "무방사선·고해상도",
+    "ar": "بدون إشعاع، دقة عالية",
+    "ja": "放射線なし・高解像度"
+  },
+  {
+    "key": "PRICING.rows[2].category",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "طب العيون",
+    "ja": "眼科"
+  },
+  {
+    "key": "PRICING.rows[2].name",
+    "source": "data.js",
+    "en": "SMILE LASIK",
+    "ko": "스마일 라식",
+    "ar": "SMILE LASIK",
+    "ja": "SMILE LASIK"
+  },
+  {
+    "key": "PRICING.rows[2].note",
+    "source": "data.js",
+    "en": "Both eyes, incl. pre-op exam",
+    "ko": "양안·수술 전 검사 포함",
+    "ar": "كلتا العينين، يشمل فحص ما قبل الجراحة",
+    "ja": "両眼・術前検査込み"
+  },
+  {
+    "key": "PRICING.rows[3].category",
+    "source": "data.js",
+    "en": "Dental",
+    "ko": "치과",
+    "ar": "طب الأسنان",
+    "ja": "歯科"
+  },
+  {
+    "key": "PRICING.rows[3].name",
+    "source": "data.js",
+    "en": "Dental Implant",
+    "ko": "임플란트",
+    "ar": "زراعة الأسنان",
+    "ja": "インプラント"
+  },
+  {
+    "key": "PRICING.rows[3].note",
+    "source": "data.js",
+    "en": "Fixture + abutment + crown",
+    "ko": "픽스처+어버트먼트+크라운",
+    "ar": "الدعامة والتاج",
+    "ja": "フィクスチャー+アバットメント+クラウン"
+  },
+  {
+    "key": "PRICING.rows[4].category",
+    "source": "data.js",
+    "en": "Plastic Surgery",
+    "ko": "성형외과",
+    "ar": "الجراحة التجميلية",
+    "ja": "美容外科"
+  },
+  {
+    "key": "PRICING.rows[4].name",
+    "source": "data.js",
+    "en": "FUE Hair Transplant",
+    "ko": "모발이식(FUE)",
+    "ar": "زراعة الشعر",
+    "ja": "植毛（FUE）"
+  },
+  {
+    "key": "PRICING.rows[4].note",
+    "source": "data.js",
+    "en": "Priced by grafts",
+    "ko": "이식 모낭 수 기준",
+    "ar": "حسب عدد البصيلات",
+    "ja": "移植株数による"
+  },
+  {
+    "key": "PRICING.rows[5].category",
+    "source": "data.js",
+    "en": "Dermatology",
+    "ko": "피부과",
+    "ar": "الجلدية",
+    "ja": "皮膚科"
+  },
+  {
+    "key": "PRICING.rows[5].name",
+    "source": "data.js",
+    "en": "Skin Rejuvenation Laser",
+    "ko": "피부 재생 레이저",
+    "ar": "ليزر تجديد البشرة",
+    "ja": "肌再生レーザー"
+  },
+  {
+    "key": "PRICING.rows[5].note",
+    "source": "data.js",
+    "en": "Per session",
+    "ko": "회당",
+    "ar": "لكل جلسة",
+    "ja": "1回あたり"
   },
   {
     "key": "PROCEDURES[0].dept",
@@ -2128,6 +4032,4846 @@
     "ja": "当日の朝に洗髪する"
   },
   {
+    "key": "PROCEDURES[6].dept",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].hospital.name",
+    "source": "data.js",
+    "en": "Gangnam Seoul Bright Eye Clinic",
+    "ko": "강남서울밝은안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].name",
+    "source": "data.js",
+    "en": "LASEK",
+    "ko": "라섹(LASEK)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].summary",
+    "source": "data.js",
+    "en": "Surface-based vision correction suitable even for thin corneas.",
+    "ko": "각막 표면을 다듬는 시력교정 — 얇은 각막에도 적합.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].duration",
+    "source": "data.js",
+    "en": "1–2 days in Korea",
+    "ko": "한국 체류 1–2일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].recovery",
+    "source": "data.js",
+    "en": "48h recovery",
+    "ko": "48시간 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].includes[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op eye exam",
+    "ko": "수술 전 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].includes[1]",
+    "source": "data.js",
+    "en": "Procedure (both eyes)",
+    "ko": "시술(양안)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].includes[2]",
+    "source": "data.js",
+    "en": "Protective eyewear kit",
+    "ko": "보호 안경 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].includes[3]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].options[0].group",
+    "source": "data.js",
+    "en": "Add-on examination",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].options[0].items[0]",
+    "source": "data.js",
+    "en": "Dry-eye screening",
+    "ko": "안구건조 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].options[0].items[1]",
+    "source": "data.js",
+    "en": "Corneal topography",
+    "ko": "각막 지형도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].steps[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op exam",
+    "ko": "정밀 사전 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].steps[1]",
+    "source": "data.js",
+    "en": "Surgeon consultation",
+    "ko": "집도의 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].steps[3]",
+    "source": "data.js",
+    "en": "Same-day discharge",
+    "ko": "당일 퇴원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].steps[4]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].prepare[0]",
+    "source": "data.js",
+    "en": "Stop wearing contact lenses 1 week prior",
+    "ko": "1주 전부터 콘택트렌즈 착용 중단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[6].prepare[1]",
+    "source": "data.js",
+    "en": "Arrange someone to accompany you home",
+    "ko": "귀가 시 동반자 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].dept",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].hospital.name",
+    "source": "data.js",
+    "en": "Gangnam Seoul Bright Eye Clinic",
+    "ko": "강남서울밝은안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].name",
+    "source": "data.js",
+    "en": "Presbyopia & Cataract Lens",
+    "ko": "노안·백내장 교정",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].summary",
+    "source": "data.js",
+    "en": "Multifocal IOL correcting presbyopia and cataract together.",
+    "ko": "다초점 인공수정체로 노안과 백내장을 함께 교정.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].duration",
+    "source": "data.js",
+    "en": "1–2 days in Korea",
+    "ko": "한국 체류 1–2일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].recovery",
+    "source": "data.js",
+    "en": "48h recovery",
+    "ko": "48시간 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].includes[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op eye exam",
+    "ko": "수술 전 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].includes[1]",
+    "source": "data.js",
+    "en": "Procedure (both eyes)",
+    "ko": "시술(양안)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].includes[2]",
+    "source": "data.js",
+    "en": "Protective eyewear kit",
+    "ko": "보호 안경 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].includes[3]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].options[0].group",
+    "source": "data.js",
+    "en": "Add-on examination",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].options[0].items[0]",
+    "source": "data.js",
+    "en": "Dry-eye screening",
+    "ko": "안구건조 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].options[0].items[1]",
+    "source": "data.js",
+    "en": "Corneal topography",
+    "ko": "각막 지형도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].steps[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op exam",
+    "ko": "정밀 사전 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].steps[1]",
+    "source": "data.js",
+    "en": "Surgeon consultation",
+    "ko": "집도의 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].steps[3]",
+    "source": "data.js",
+    "en": "Same-day discharge",
+    "ko": "당일 퇴원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].steps[4]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].prepare[0]",
+    "source": "data.js",
+    "en": "Stop wearing contact lenses 1 week prior",
+    "ko": "1주 전부터 콘택트렌즈 착용 중단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[7].prepare[1]",
+    "source": "data.js",
+    "en": "Arrange someone to accompany you home",
+    "ko": "귀가 시 동반자 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].dept",
+    "source": "data.js",
+    "en": "Dental",
+    "ko": "치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].hospital.name",
+    "source": "data.js",
+    "en": "Apgujeong Premium Dental",
+    "ko": "압구정 프리미엄 치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].name",
+    "source": "data.js",
+    "en": "Ceramic Veneer",
+    "ko": "세라믹 라미네이트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].summary",
+    "source": "data.js",
+    "en": "Premium ceramic veneers with minimal tooth reduction.",
+    "ko": "치아 삭제를 최소화한 프리미엄 세라믹 라미네이트.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].duration",
+    "source": "data.js",
+    "en": "2 visits over 3 months",
+    "ko": "3개월간 2회 방문",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].includes[0]",
+    "source": "data.js",
+    "en": "3D CT imaging & planning",
+    "ko": "3D CT 촬영·계획",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].includes[2]",
+    "source": "data.js",
+    "en": "Crown / prosthesis",
+    "ko": "크라운·보철",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].includes[3]",
+    "source": "data.js",
+    "en": "Post-care scaling",
+    "ko": "사후 스케일링",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].options[0].group",
+    "source": "data.js",
+    "en": "Material",
+    "ko": "재질",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].options[0].items[0]",
+    "source": "data.js",
+    "en": "Zirconia",
+    "ko": "지르코니아",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].options[0].items[1]",
+    "source": "data.js",
+    "en": "Gold",
+    "ko": "골드",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis & imaging",
+    "ko": "진단·촬영",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].steps[3]",
+    "source": "data.js",
+    "en": "Post-care follow-up",
+    "ko": "사후 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[8].prepare[0]",
+    "source": "data.js",
+    "en": "Bring previous dental records if available",
+    "ko": "기존 치과 진료 기록 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].dept",
+    "source": "data.js",
+    "en": "Dental",
+    "ko": "치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].hospital.name",
+    "source": "data.js",
+    "en": "Apgujeong Premium Dental",
+    "ko": "압구정 프리미엄 치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].name",
+    "source": "data.js",
+    "en": "Clear Aligner",
+    "ko": "투명교정",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].summary",
+    "source": "data.js",
+    "en": "Discreet clear aligners for tooth alignment.",
+    "ko": "눈에 띄지 않는 투명 장치로 치아 배열 교정.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].duration",
+    "source": "data.js",
+    "en": "2 visits over 3 months",
+    "ko": "3개월간 2회 방문",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].includes[0]",
+    "source": "data.js",
+    "en": "3D CT imaging & planning",
+    "ko": "3D CT 촬영·계획",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].includes[2]",
+    "source": "data.js",
+    "en": "Crown / prosthesis",
+    "ko": "크라운·보철",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].includes[3]",
+    "source": "data.js",
+    "en": "Post-care scaling",
+    "ko": "사후 스케일링",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].options[0].group",
+    "source": "data.js",
+    "en": "Material",
+    "ko": "재질",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].options[0].items[0]",
+    "source": "data.js",
+    "en": "Zirconia",
+    "ko": "지르코니아",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].options[0].items[1]",
+    "source": "data.js",
+    "en": "Gold",
+    "ko": "골드",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis & imaging",
+    "ko": "진단·촬영",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].steps[3]",
+    "source": "data.js",
+    "en": "Post-care follow-up",
+    "ko": "사후 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[9].prepare[0]",
+    "source": "data.js",
+    "en": "Bring previous dental records if available",
+    "ko": "기존 치과 진료 기록 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].dept",
+    "source": "data.js",
+    "en": "Dermatology",
+    "ko": "피부과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].hospital.name",
+    "source": "data.js",
+    "en": "Cheongdam Glow Dermatology",
+    "ko": "청담 글로우 피부과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].name",
+    "source": "data.js",
+    "en": "Lifting Laser",
+    "ko": "리프팅 레이저",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].summary",
+    "source": "data.js",
+    "en": "Ultrasound lifting for firmness and wrinkles.",
+    "ko": "초음파 리프팅으로 탄력·주름을 개선.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].duration",
+    "source": "data.js",
+    "en": "Per session",
+    "ko": "회당",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].includes[0]",
+    "source": "data.js",
+    "en": "Skin analysis",
+    "ko": "피부 분석",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].includes[1]",
+    "source": "data.js",
+    "en": "Laser/treatment session",
+    "ko": "레이저·시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].includes[2]",
+    "source": "data.js",
+    "en": "Soothing care",
+    "ko": "진정 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].includes[3]",
+    "source": "data.js",
+    "en": "After-care kit",
+    "ko": "사후 케어 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].options[0].group",
+    "source": "data.js",
+    "en": "Add-on care",
+    "ko": "추가 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].options[0].items[0]",
+    "source": "data.js",
+    "en": "LDM soothing",
+    "ko": "LDM 진정",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].options[0].items[1]",
+    "source": "data.js",
+    "en": "Regeneration ampoule",
+    "ko": "재생 앰플",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].steps[0]",
+    "source": "data.js",
+    "en": "Skin analysis",
+    "ko": "피부 분석",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].steps[2]",
+    "source": "data.js",
+    "en": "Treatment session",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].steps[3]",
+    "source": "data.js",
+    "en": "Soothing care",
+    "ko": "진정 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[10].prepare[0]",
+    "source": "data.js",
+    "en": "Remove makeup before the session",
+    "ko": "시술 전 메이크업 제거",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].dept",
+    "source": "data.js",
+    "en": "Dermatology",
+    "ko": "피부과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].hospital.name",
+    "source": "data.js",
+    "en": "Cheongdam Glow Dermatology",
+    "ko": "청담 글로우 피부과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].name",
+    "source": "data.js",
+    "en": "Pigment & Brightening",
+    "ko": "색소·미백 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].summary",
+    "source": "data.js",
+    "en": "Toning laser program for pigment and blemishes.",
+    "ko": "기미·잡티·색소를 개선하는 토닝 레이저 프로그램.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].duration",
+    "source": "data.js",
+    "en": "Per session",
+    "ko": "회당",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].includes[0]",
+    "source": "data.js",
+    "en": "Skin analysis",
+    "ko": "피부 분석",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].includes[1]",
+    "source": "data.js",
+    "en": "Laser/treatment session",
+    "ko": "레이저·시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].includes[2]",
+    "source": "data.js",
+    "en": "Soothing care",
+    "ko": "진정 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].includes[3]",
+    "source": "data.js",
+    "en": "After-care kit",
+    "ko": "사후 케어 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].options[0].group",
+    "source": "data.js",
+    "en": "Add-on care",
+    "ko": "추가 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].options[0].items[0]",
+    "source": "data.js",
+    "en": "LDM soothing",
+    "ko": "LDM 진정",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].options[0].items[1]",
+    "source": "data.js",
+    "en": "Regeneration ampoule",
+    "ko": "재생 앰플",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].steps[0]",
+    "source": "data.js",
+    "en": "Skin analysis",
+    "ko": "피부 분석",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].steps[2]",
+    "source": "data.js",
+    "en": "Treatment session",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].steps[3]",
+    "source": "data.js",
+    "en": "Soothing care",
+    "ko": "진정 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[11].prepare[0]",
+    "source": "data.js",
+    "en": "Remove makeup before the session",
+    "ko": "시술 전 메이크업 제거",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].hospital.name",
+    "source": "data.js",
+    "en": "Seoul Premier Health Center",
+    "ko": "서울 프리미어 검진센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].hospital.city",
+    "source": "data.js",
+    "en": "Jongno-gu, Seoul",
+    "ko": "서울 종로구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].name",
+    "source": "data.js",
+    "en": "Cancer Screening",
+    "ko": "암 정밀 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].summary",
+    "source": "data.js",
+    "en": "Precision package centered on cancer markers and imaging.",
+    "ko": "주요 암 표지자·영상 중심 정밀 검진 패키지.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[12].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].dept",
+    "source": "data.js",
+    "en": "Hair Restoration",
+    "ko": "모발이식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].hospital.name",
+    "source": "data.js",
+    "en": "Seoul Forest Hair Clinic",
+    "ko": "서울숲 모발센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].hospital.city",
+    "source": "data.js",
+    "en": "Seongdong-gu, Seoul",
+    "ko": "서울 성동구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].name",
+    "source": "data.js",
+    "en": "Scalp SMP",
+    "ko": "두피 문신(SMP)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].summary",
+    "source": "data.js",
+    "en": "Non-surgical scalp micropigmentation for density.",
+    "ko": "두피 색소 착색으로 밀도감을 표현하는 비수술 시술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].duration",
+    "source": "data.js",
+    "en": "1 day + follow-up",
+    "ko": "당일 + 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].includes[0]",
+    "source": "data.js",
+    "en": "Hair & scalp diagnosis",
+    "ko": "모발·두피 진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].includes[2]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].options[0].group",
+    "source": "data.js",
+    "en": "Graft count",
+    "ko": "이식 모수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].options[0].items[0]",
+    "source": "data.js",
+    "en": "2,000 grafts",
+    "ko": "2,000모",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].options[0].items[1]",
+    "source": "data.js",
+    "en": "3,000 grafts",
+    "ko": "3,000모",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis",
+    "ko": "진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].steps[1]",
+    "source": "data.js",
+    "en": "Hairline design",
+    "ko": "헤어라인 디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].steps[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[13].prepare[0]",
+    "source": "data.js",
+    "en": "Guidance on trimming the treatment area",
+    "ko": "시술 부위 삭발 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].dept",
+    "source": "data.js",
+    "en": "Hair Restoration",
+    "ko": "모발이식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].hospital.name",
+    "source": "data.js",
+    "en": "Seoul Forest Hair Clinic",
+    "ko": "서울숲 모발센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].hospital.city",
+    "source": "data.js",
+    "en": "Seongdong-gu, Seoul",
+    "ko": "서울 성동구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].name",
+    "source": "data.js",
+    "en": "Hair Regeneration",
+    "ko": "모발 재생 치료",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].summary",
+    "source": "data.js",
+    "en": "Combined injection and low-level laser hair therapy.",
+    "ko": "재생 주사·저출력 레이저 복합 탈모 치료.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].duration",
+    "source": "data.js",
+    "en": "1 day + follow-up",
+    "ko": "당일 + 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].includes[0]",
+    "source": "data.js",
+    "en": "Hair & scalp diagnosis",
+    "ko": "모발·두피 진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].includes[2]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].options[0].group",
+    "source": "data.js",
+    "en": "Graft count",
+    "ko": "이식 모수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].options[0].items[0]",
+    "source": "data.js",
+    "en": "2,000 grafts",
+    "ko": "2,000모",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].options[0].items[1]",
+    "source": "data.js",
+    "en": "3,000 grafts",
+    "ko": "3,000모",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis",
+    "ko": "진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].steps[1]",
+    "source": "data.js",
+    "en": "Hairline design",
+    "ko": "헤어라인 디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].steps[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[14].prepare[0]",
+    "source": "data.js",
+    "en": "Guidance on trimming the treatment area",
+    "ko": "시술 부위 삭발 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].hospital.name",
+    "source": "data.js",
+    "en": "Samsung Medical Center",
+    "ko": "삼성서울병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].name",
+    "source": "data.js",
+    "en": "Premium Check-up",
+    "ko": "프리미엄 종합검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].summary",
+    "source": "data.js",
+    "en": "Premium check-up spanning blood, imaging and endoscopy.",
+    "ko": "혈액·영상·내시경을 아우르는 프리미엄 종합 건강검진.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[15].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].hospital.name",
+    "source": "data.js",
+    "en": "Samsung Medical Center",
+    "ko": "삼성서울병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].name",
+    "source": "data.js",
+    "en": "Cardiovascular Screening",
+    "ko": "심혈관 정밀검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].summary",
+    "source": "data.js",
+    "en": "Coronary CT and echocardiography-focused cardiac screening.",
+    "ko": "관상동맥 CT·심장 초음파 중심의 심혈관 정밀 검진.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[16].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].dept",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].hospital.name",
+    "source": "data.js",
+    "en": "Samsung Medical Center",
+    "ko": "삼성서울병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].name",
+    "source": "data.js",
+    "en": "Cataract & Presbyopia Surgery",
+    "ko": "백내장·노안 수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].summary",
+    "source": "data.js",
+    "en": "Premium multifocal IOL cataract surgery.",
+    "ko": "프리미엄 다초점 인공수정체 백내장 수술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].duration",
+    "source": "data.js",
+    "en": "1–2 days in Korea",
+    "ko": "한국 체류 1–2일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].recovery",
+    "source": "data.js",
+    "en": "48h recovery",
+    "ko": "48시간 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].includes[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op eye exam",
+    "ko": "수술 전 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].includes[1]",
+    "source": "data.js",
+    "en": "Procedure (both eyes)",
+    "ko": "시술(양안)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].includes[2]",
+    "source": "data.js",
+    "en": "Protective eyewear kit",
+    "ko": "보호 안경 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].includes[3]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].options[0].group",
+    "source": "data.js",
+    "en": "Add-on examination",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].options[0].items[0]",
+    "source": "data.js",
+    "en": "Dry-eye screening",
+    "ko": "안구건조 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].options[0].items[1]",
+    "source": "data.js",
+    "en": "Corneal topography",
+    "ko": "각막 지형도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].steps[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op exam",
+    "ko": "정밀 사전 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].steps[1]",
+    "source": "data.js",
+    "en": "Surgeon consultation",
+    "ko": "집도의 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].steps[3]",
+    "source": "data.js",
+    "en": "Same-day discharge",
+    "ko": "당일 퇴원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].steps[4]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].prepare[0]",
+    "source": "data.js",
+    "en": "Stop wearing contact lenses 1 week prior",
+    "ko": "1주 전부터 콘택트렌즈 착용 중단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[17].prepare[1]",
+    "source": "data.js",
+    "en": "Arrange someone to accompany you home",
+    "ko": "귀가 시 동반자 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].hospital.name",
+    "source": "data.js",
+    "en": "Asan Medical Center",
+    "ko": "서울아산병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].hospital.city",
+    "source": "data.js",
+    "en": "Songpa-gu, Seoul",
+    "ko": "서울 송파구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].name",
+    "source": "data.js",
+    "en": "GI Endoscopy Screening",
+    "ko": "소화기 내시경 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].summary",
+    "source": "data.js",
+    "en": "Sedated gastroscopy and colonoscopy package.",
+    "ko": "위·대장 내시경 수면 검진 패키지.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[18].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].hospital.name",
+    "source": "data.js",
+    "en": "Asan Medical Center",
+    "ko": "서울아산병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].hospital.city",
+    "source": "data.js",
+    "en": "Songpa-gu, Seoul",
+    "ko": "서울 송파구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].name",
+    "source": "data.js",
+    "en": "Premium Check-up",
+    "ko": "프리미엄 종합검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].summary",
+    "source": "data.js",
+    "en": "Comprehensive check-up at a top tertiary hospital.",
+    "ko": "상급종합병원의 정밀 종합 건강검진.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[19].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].dept",
+    "source": "data.js",
+    "en": "Orthopedics",
+    "ko": "정형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].hospital.name",
+    "source": "data.js",
+    "en": "Asan Medical Center",
+    "ko": "서울아산병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].hospital.city",
+    "source": "data.js",
+    "en": "Songpa-gu, Seoul",
+    "ko": "서울 송파구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].name",
+    "source": "data.js",
+    "en": "Joint Arthroscopy",
+    "ko": "관절 내시경 시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].summary",
+    "source": "data.js",
+    "en": "Minimally-invasive knee/shoulder arthroscopy.",
+    "ko": "무릎·어깨 관절 내시경 최소 침습 시술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].duration",
+    "source": "data.js",
+    "en": "1 day + rehab",
+    "ko": "당일 + 재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].recovery",
+    "source": "data.js",
+    "en": "1–2 weeks",
+    "ko": "1–2주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].includes[0]",
+    "source": "data.js",
+    "en": "Detailed imaging (MRI/X-ray)",
+    "ko": "정밀 영상 검사(MRI/X-ray)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].includes[2]",
+    "source": "data.js",
+    "en": "Rehabilitation guidance",
+    "ko": "재활 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].options[0].items[0]",
+    "source": "data.js",
+    "en": "MRI",
+    "ko": "MRI",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].options[0].items[1]",
+    "source": "data.js",
+    "en": "Bone density",
+    "ko": "골밀도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis",
+    "ko": "진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].steps[3]",
+    "source": "data.js",
+    "en": "Rehabilitation",
+    "ko": "재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[20].prepare[0]",
+    "source": "data.js",
+    "en": "Bring prior imaging if available",
+    "ko": "기존 영상 자료 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].dept",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].hospital.name",
+    "source": "data.js",
+    "en": "Severance Hospital (Yonsei)",
+    "ko": "연세세브란스병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].hospital.city",
+    "source": "data.js",
+    "en": "Seodaemun-gu, Seoul",
+    "ko": "서울 서대문구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].name",
+    "source": "data.js",
+    "en": "Robotic LASIK",
+    "ko": "로봇 시력교정 라식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].summary",
+    "source": "data.js",
+    "en": "Robot-assisted precision LASIK vision correction.",
+    "ko": "로봇 보조 정밀 라식 시력교정.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].duration",
+    "source": "data.js",
+    "en": "1–2 days in Korea",
+    "ko": "한국 체류 1–2일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].recovery",
+    "source": "data.js",
+    "en": "48h recovery",
+    "ko": "48시간 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].includes[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op eye exam",
+    "ko": "수술 전 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].includes[1]",
+    "source": "data.js",
+    "en": "Procedure (both eyes)",
+    "ko": "시술(양안)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].includes[2]",
+    "source": "data.js",
+    "en": "Protective eyewear kit",
+    "ko": "보호 안경 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].includes[3]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].options[0].group",
+    "source": "data.js",
+    "en": "Add-on examination",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].options[0].items[0]",
+    "source": "data.js",
+    "en": "Dry-eye screening",
+    "ko": "안구건조 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].options[0].items[1]",
+    "source": "data.js",
+    "en": "Corneal topography",
+    "ko": "각막 지형도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].steps[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op exam",
+    "ko": "정밀 사전 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].steps[1]",
+    "source": "data.js",
+    "en": "Surgeon consultation",
+    "ko": "집도의 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].steps[3]",
+    "source": "data.js",
+    "en": "Same-day discharge",
+    "ko": "당일 퇴원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].steps[4]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].prepare[0]",
+    "source": "data.js",
+    "en": "Stop wearing contact lenses 1 week prior",
+    "ko": "1주 전부터 콘택트렌즈 착용 중단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[21].prepare[1]",
+    "source": "data.js",
+    "en": "Arrange someone to accompany you home",
+    "ko": "귀가 시 동반자 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].hospital.name",
+    "source": "data.js",
+    "en": "Severance Hospital (Yonsei)",
+    "ko": "연세세브란스병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].hospital.city",
+    "source": "data.js",
+    "en": "Seodaemun-gu, Seoul",
+    "ko": "서울 서대문구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].name",
+    "source": "data.js",
+    "en": "Women's Check-up",
+    "ko": "여성 종합검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].summary",
+    "source": "data.js",
+    "en": "Women's check-up specialized in breast and OB/GYN.",
+    "ko": "유방·부인과 특화 여성 종합 건강검진.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[22].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].dept",
+    "source": "data.js",
+    "en": "Orthopedics",
+    "ko": "정형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].hospital.name",
+    "source": "data.js",
+    "en": "Severance Hospital (Yonsei)",
+    "ko": "연세세브란스병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].hospital.city",
+    "source": "data.js",
+    "en": "Seodaemun-gu, Seoul",
+    "ko": "서울 서대문구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].name",
+    "source": "data.js",
+    "en": "Spine Procedure",
+    "ko": "척추 시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].summary",
+    "source": "data.js",
+    "en": "Non-surgical, minimally-invasive spine pain procedure.",
+    "ko": "비수술·최소 침습 척추 통증 시술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].duration",
+    "source": "data.js",
+    "en": "1 day + rehab",
+    "ko": "당일 + 재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].recovery",
+    "source": "data.js",
+    "en": "1–2 weeks",
+    "ko": "1–2주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].includes[0]",
+    "source": "data.js",
+    "en": "Detailed imaging (MRI/X-ray)",
+    "ko": "정밀 영상 검사(MRI/X-ray)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].includes[2]",
+    "source": "data.js",
+    "en": "Rehabilitation guidance",
+    "ko": "재활 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].options[0].items[0]",
+    "source": "data.js",
+    "en": "MRI",
+    "ko": "MRI",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].options[0].items[1]",
+    "source": "data.js",
+    "en": "Bone density",
+    "ko": "골밀도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis",
+    "ko": "진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].steps[3]",
+    "source": "data.js",
+    "en": "Rehabilitation",
+    "ko": "재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[23].prepare[0]",
+    "source": "data.js",
+    "en": "Bring prior imaging if available",
+    "ko": "기존 영상 자료 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].hospital.name",
+    "source": "data.js",
+    "en": "Seoul St. Mary's Hospital",
+    "ko": "서울성모병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].hospital.city",
+    "source": "data.js",
+    "en": "Seocho-gu, Seoul",
+    "ko": "서울 서초구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].name",
+    "source": "data.js",
+    "en": "Comprehensive Check-up",
+    "ko": "종합 건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].summary",
+    "source": "data.js",
+    "en": "Comprehensive check-up focused on core organs.",
+    "ko": "핵심 장기 중심의 종합 건강검진.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[24].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].dept",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].hospital.name",
+    "source": "data.js",
+    "en": "Seoul St. Mary's Hospital",
+    "ko": "서울성모병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].hospital.city",
+    "source": "data.js",
+    "en": "Seocho-gu, Seoul",
+    "ko": "서울 서초구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].name",
+    "source": "data.js",
+    "en": "Cataract Surgery",
+    "ko": "백내장 수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].summary",
+    "source": "data.js",
+    "en": "Standard IOL cataract surgery.",
+    "ko": "표준 인공수정체 백내장 수술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].duration",
+    "source": "data.js",
+    "en": "1–2 days in Korea",
+    "ko": "한국 체류 1–2일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].recovery",
+    "source": "data.js",
+    "en": "48h recovery",
+    "ko": "48시간 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].includes[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op eye exam",
+    "ko": "수술 전 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].includes[1]",
+    "source": "data.js",
+    "en": "Procedure (both eyes)",
+    "ko": "시술(양안)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].includes[2]",
+    "source": "data.js",
+    "en": "Protective eyewear kit",
+    "ko": "보호 안경 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].includes[3]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].options[0].group",
+    "source": "data.js",
+    "en": "Add-on examination",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].options[0].items[0]",
+    "source": "data.js",
+    "en": "Dry-eye screening",
+    "ko": "안구건조 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].options[0].items[1]",
+    "source": "data.js",
+    "en": "Corneal topography",
+    "ko": "각막 지형도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].steps[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op exam",
+    "ko": "정밀 사전 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].steps[1]",
+    "source": "data.js",
+    "en": "Surgeon consultation",
+    "ko": "집도의 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].steps[3]",
+    "source": "data.js",
+    "en": "Same-day discharge",
+    "ko": "당일 퇴원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].steps[4]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].prepare[0]",
+    "source": "data.js",
+    "en": "Stop wearing contact lenses 1 week prior",
+    "ko": "1주 전부터 콘택트렌즈 착용 중단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[25].prepare[1]",
+    "source": "data.js",
+    "en": "Arrange someone to accompany you home",
+    "ko": "귀가 시 동반자 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].dept",
+    "source": "data.js",
+    "en": "Orthopedics",
+    "ko": "정형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].hospital.name",
+    "source": "data.js",
+    "en": "Seoul St. Mary's Hospital",
+    "ko": "서울성모병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].hospital.city",
+    "source": "data.js",
+    "en": "Seocho-gu, Seoul",
+    "ko": "서울 서초구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].name",
+    "source": "data.js",
+    "en": "Knee Joint Procedure",
+    "ko": "무릎 관절 시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].summary",
+    "source": "data.js",
+    "en": "Minimally-invasive procedure for degenerative knees.",
+    "ko": "퇴행성 무릎 관절 최소 침습 시술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].duration",
+    "source": "data.js",
+    "en": "1 day + rehab",
+    "ko": "당일 + 재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].recovery",
+    "source": "data.js",
+    "en": "1–2 weeks",
+    "ko": "1–2주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].includes[0]",
+    "source": "data.js",
+    "en": "Detailed imaging (MRI/X-ray)",
+    "ko": "정밀 영상 검사(MRI/X-ray)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].includes[2]",
+    "source": "data.js",
+    "en": "Rehabilitation guidance",
+    "ko": "재활 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].options[0].items[0]",
+    "source": "data.js",
+    "en": "MRI",
+    "ko": "MRI",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].options[0].items[1]",
+    "source": "data.js",
+    "en": "Bone density",
+    "ko": "골밀도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis",
+    "ko": "진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].steps[3]",
+    "source": "data.js",
+    "en": "Rehabilitation",
+    "ko": "재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[26].prepare[0]",
+    "source": "data.js",
+    "en": "Bring prior imaging if available",
+    "ko": "기존 영상 자료 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].dept",
+    "source": "data.js",
+    "en": "Plastic Surgery",
+    "ko": "성형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].hospital.name",
+    "source": "data.js",
+    "en": "JK Plastic Surgery Center",
+    "ko": "JK성형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].name",
+    "source": "data.js",
+    "en": "Facial Contouring",
+    "ko": "안면윤곽",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].summary",
+    "source": "data.js",
+    "en": "Precision surgery for facial asymmetry and contour.",
+    "ko": "안면 비대칭·윤곽을 개선하는 정밀 수술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].duration",
+    "source": "data.js",
+    "en": "1 day + follow-up",
+    "ko": "당일 + 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].recovery",
+    "source": "data.js",
+    "en": "2–4 weeks",
+    "ko": "2–4주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & design",
+    "ko": "상담·디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].includes[1]",
+    "source": "data.js",
+    "en": "Surgery",
+    "ko": "수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].includes[2]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].options[0].group",
+    "source": "data.js",
+    "en": "Add-on",
+    "ko": "추가 옵션",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].options[0].items[0]",
+    "source": "data.js",
+    "en": "Scar care",
+    "ko": "흉터 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].options[0].items[1]",
+    "source": "data.js",
+    "en": "Swelling management",
+    "ko": "붓기 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].steps[0]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].steps[1]",
+    "source": "data.js",
+    "en": "Design",
+    "ko": "디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].steps[2]",
+    "source": "data.js",
+    "en": "Surgery",
+    "ko": "수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].steps[3]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].prepare[0]",
+    "source": "data.js",
+    "en": "Blood test before surgery",
+    "ko": "수술 전 혈액검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[27].prepare[1]",
+    "source": "data.js",
+    "en": "Stop smoking 2 weeks prior",
+    "ko": "2주 전 금연",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].dept",
+    "source": "data.js",
+    "en": "Plastic Surgery",
+    "ko": "성형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].hospital.name",
+    "source": "data.js",
+    "en": "JK Plastic Surgery Center",
+    "ko": "JK성형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].name",
+    "source": "data.js",
+    "en": "Rhinoplasty",
+    "ko": "코 성형",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].summary",
+    "source": "data.js",
+    "en": "Rhinoplasty balancing function and aesthetics.",
+    "ko": "기능·미용을 함께 고려한 코 성형.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].duration",
+    "source": "data.js",
+    "en": "1 day + follow-up",
+    "ko": "당일 + 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].recovery",
+    "source": "data.js",
+    "en": "2–4 weeks",
+    "ko": "2–4주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & design",
+    "ko": "상담·디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].includes[1]",
+    "source": "data.js",
+    "en": "Surgery",
+    "ko": "수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].includes[2]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].options[0].group",
+    "source": "data.js",
+    "en": "Add-on",
+    "ko": "추가 옵션",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].options[0].items[0]",
+    "source": "data.js",
+    "en": "Scar care",
+    "ko": "흉터 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].options[0].items[1]",
+    "source": "data.js",
+    "en": "Swelling management",
+    "ko": "붓기 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].steps[0]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].steps[1]",
+    "source": "data.js",
+    "en": "Design",
+    "ko": "디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].steps[2]",
+    "source": "data.js",
+    "en": "Surgery",
+    "ko": "수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].steps[3]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].prepare[0]",
+    "source": "data.js",
+    "en": "Blood test before surgery",
+    "ko": "수술 전 혈액검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[28].prepare[1]",
+    "source": "data.js",
+    "en": "Stop smoking 2 weeks prior",
+    "ko": "2주 전 금연",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].dept",
+    "source": "data.js",
+    "en": "Plastic Surgery",
+    "ko": "성형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].hospital.name",
+    "source": "data.js",
+    "en": "JK Plastic Surgery Center",
+    "ko": "JK성형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].name",
+    "source": "data.js",
+    "en": "Eyelid Surgery",
+    "ko": "눈 성형",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].summary",
+    "source": "data.js",
+    "en": "Eyelid surgery for a natural eye line.",
+    "ko": "자연스러운 라인의 눈매 교정.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].duration",
+    "source": "data.js",
+    "en": "1 day + follow-up",
+    "ko": "당일 + 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].recovery",
+    "source": "data.js",
+    "en": "2–4 weeks",
+    "ko": "2–4주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & design",
+    "ko": "상담·디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].includes[1]",
+    "source": "data.js",
+    "en": "Surgery",
+    "ko": "수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].includes[2]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].options[0].group",
+    "source": "data.js",
+    "en": "Add-on",
+    "ko": "추가 옵션",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].options[0].items[0]",
+    "source": "data.js",
+    "en": "Scar care",
+    "ko": "흉터 케어",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].options[0].items[1]",
+    "source": "data.js",
+    "en": "Swelling management",
+    "ko": "붓기 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].steps[0]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].steps[1]",
+    "source": "data.js",
+    "en": "Design",
+    "ko": "디자인",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].steps[2]",
+    "source": "data.js",
+    "en": "Surgery",
+    "ko": "수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].steps[3]",
+    "source": "data.js",
+    "en": "Recovery care",
+    "ko": "회복 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].prepare[0]",
+    "source": "data.js",
+    "en": "Blood test before surgery",
+    "ko": "수술 전 혈액검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[29].prepare[1]",
+    "source": "data.js",
+    "en": "Stop smoking 2 weeks prior",
+    "ko": "2주 전 금연",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].dept",
+    "source": "data.js",
+    "en": "Dental",
+    "ko": "치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].hospital.name",
+    "source": "data.js",
+    "en": "Oracle Dental Clinic (Gangnam)",
+    "ko": "오라클치과 (강남)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].name",
+    "source": "data.js",
+    "en": "Dental Implant",
+    "ko": "임플란트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].summary",
+    "source": "data.js",
+    "en": "Digitally-guided dental implant placement.",
+    "ko": "디지털 가이드 임플란트 식립.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].duration",
+    "source": "data.js",
+    "en": "2 visits over 3 months",
+    "ko": "3개월간 2회 방문",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].includes[0]",
+    "source": "data.js",
+    "en": "3D CT imaging & planning",
+    "ko": "3D CT 촬영·계획",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].includes[2]",
+    "source": "data.js",
+    "en": "Crown / prosthesis",
+    "ko": "크라운·보철",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].includes[3]",
+    "source": "data.js",
+    "en": "Post-care scaling",
+    "ko": "사후 스케일링",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].options[0].group",
+    "source": "data.js",
+    "en": "Material",
+    "ko": "재질",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].options[0].items[0]",
+    "source": "data.js",
+    "en": "Zirconia",
+    "ko": "지르코니아",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].options[0].items[1]",
+    "source": "data.js",
+    "en": "Gold",
+    "ko": "골드",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis & imaging",
+    "ko": "진단·촬영",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].steps[3]",
+    "source": "data.js",
+    "en": "Post-care follow-up",
+    "ko": "사후 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[30].prepare[0]",
+    "source": "data.js",
+    "en": "Bring previous dental records if available",
+    "ko": "기존 치과 진료 기록 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].dept",
+    "source": "data.js",
+    "en": "Dental",
+    "ko": "치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].hospital.name",
+    "source": "data.js",
+    "en": "Oracle Dental Clinic (Gangnam)",
+    "ko": "오라클치과 (강남)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].name",
+    "source": "data.js",
+    "en": "Ceramic Veneer",
+    "ko": "세라믹 라미네이트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].summary",
+    "source": "data.js",
+    "en": "Natural-looking ceramic veneers.",
+    "ko": "자연스러운 세라믹 라미네이트.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].duration",
+    "source": "data.js",
+    "en": "2 visits over 3 months",
+    "ko": "3개월간 2회 방문",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].includes[0]",
+    "source": "data.js",
+    "en": "3D CT imaging & planning",
+    "ko": "3D CT 촬영·계획",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].includes[2]",
+    "source": "data.js",
+    "en": "Crown / prosthesis",
+    "ko": "크라운·보철",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].includes[3]",
+    "source": "data.js",
+    "en": "Post-care scaling",
+    "ko": "사후 스케일링",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].options[0].group",
+    "source": "data.js",
+    "en": "Material",
+    "ko": "재질",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].options[0].items[0]",
+    "source": "data.js",
+    "en": "Zirconia",
+    "ko": "지르코니아",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].options[0].items[1]",
+    "source": "data.js",
+    "en": "Gold",
+    "ko": "골드",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis & imaging",
+    "ko": "진단·촬영",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].steps[3]",
+    "source": "data.js",
+    "en": "Post-care follow-up",
+    "ko": "사후 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[31].prepare[0]",
+    "source": "data.js",
+    "en": "Bring previous dental records if available",
+    "ko": "기존 치과 진료 기록 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].dept",
+    "source": "data.js",
+    "en": "Dental",
+    "ko": "치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].hospital.name",
+    "source": "data.js",
+    "en": "Oracle Dental Clinic (Gangnam)",
+    "ko": "오라클치과 (강남)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].hospital.city",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].name",
+    "source": "data.js",
+    "en": "Clear Aligner",
+    "ko": "투명교정",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].summary",
+    "source": "data.js",
+    "en": "Tooth alignment with clear aligners.",
+    "ko": "투명 장치를 이용한 치아 교정.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].duration",
+    "source": "data.js",
+    "en": "2 visits over 3 months",
+    "ko": "3개월간 2회 방문",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].recovery",
+    "source": "data.js",
+    "en": "About 1 month",
+    "ko": "약 1개월",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].includes[0]",
+    "source": "data.js",
+    "en": "3D CT imaging & planning",
+    "ko": "3D CT 촬영·계획",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].includes[2]",
+    "source": "data.js",
+    "en": "Crown / prosthesis",
+    "ko": "크라운·보철",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].includes[3]",
+    "source": "data.js",
+    "en": "Post-care scaling",
+    "ko": "사후 스케일링",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].options[0].group",
+    "source": "data.js",
+    "en": "Material",
+    "ko": "재질",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].options[0].items[0]",
+    "source": "data.js",
+    "en": "Zirconia",
+    "ko": "지르코니아",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].options[0].items[1]",
+    "source": "data.js",
+    "en": "Gold",
+    "ko": "골드",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis & imaging",
+    "ko": "진단·촬영",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].steps[3]",
+    "source": "data.js",
+    "en": "Post-care follow-up",
+    "ko": "사후 관리",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[32].prepare[0]",
+    "source": "data.js",
+    "en": "Bring previous dental records if available",
+    "ko": "기존 치과 진료 기록 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].dept",
+    "source": "data.js",
+    "en": "Health Check-up",
+    "ko": "건강검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].hospital.name",
+    "source": "data.js",
+    "en": "Seoul National University Hospital",
+    "ko": "서울대학교병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].hospital.city",
+    "source": "data.js",
+    "en": "Jongno-gu, Seoul",
+    "ko": "서울 종로구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].name",
+    "source": "data.js",
+    "en": "Premium Check-up",
+    "ko": "프리미엄 종합검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].summary",
+    "source": "data.js",
+    "en": "Precision comprehensive check-up at a national hospital.",
+    "ko": "중앙병원급 정밀 종합 건강검진.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].duration",
+    "source": "data.js",
+    "en": "Half-day",
+    "ko": "반나절",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].recovery",
+    "source": "data.js",
+    "en": "Same day",
+    "ko": "당일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].includes[0]",
+    "source": "data.js",
+    "en": "Consultation & basic measurements",
+    "ko": "문진·기본 신체 계측",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].includes[1]",
+    "source": "data.js",
+    "en": "Blood & urine panel",
+    "ko": "혈액·소변 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].includes[2]",
+    "source": "data.js",
+    "en": "Imaging (ultrasound/CT)",
+    "ko": "영상 검사(초음파/CT)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].includes[3]",
+    "source": "data.js",
+    "en": "Specialist result review",
+    "ko": "전문의 결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].options[0].items[0]",
+    "source": "data.js",
+    "en": "Cardiac CT",
+    "ko": "심장 CT",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].options[0].items[1]",
+    "source": "data.js",
+    "en": "Endoscopy (gastro/colon)",
+    "ko": "위·대장 내시경",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].options[0].items[2]",
+    "source": "data.js",
+    "en": "Tumor markers",
+    "ko": "종양표지자 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].steps[0]",
+    "source": "data.js",
+    "en": "Check-in & intake",
+    "ko": "접수·문진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].steps[1]",
+    "source": "data.js",
+    "en": "Screening tests",
+    "ko": "검사 진행",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].steps[2]",
+    "source": "data.js",
+    "en": "Radiology reading",
+    "ko": "영상 판독",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].steps[3]",
+    "source": "data.js",
+    "en": "Result consultation",
+    "ko": "결과 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].prepare[0]",
+    "source": "data.js",
+    "en": "Fast for 8 hours before the exam",
+    "ko": "검사 전 8시간 금식",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[33].prepare[1]",
+    "source": "data.js",
+    "en": "Wear comfortable clothing",
+    "ko": "편안한 복장 착용",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].dept",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].hospital.name",
+    "source": "data.js",
+    "en": "Seoul National University Hospital",
+    "ko": "서울대학교병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].hospital.city",
+    "source": "data.js",
+    "en": "Jongno-gu, Seoul",
+    "ko": "서울 종로구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].name",
+    "source": "data.js",
+    "en": "Cataract Surgery",
+    "ko": "백내장 수술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].summary",
+    "source": "data.js",
+    "en": "IOL cataract surgery.",
+    "ko": "백내장 인공수정체 수술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].duration",
+    "source": "data.js",
+    "en": "1–2 days in Korea",
+    "ko": "한국 체류 1–2일",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].recovery",
+    "source": "data.js",
+    "en": "48h recovery",
+    "ko": "48시간 회복",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].includes[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op eye exam",
+    "ko": "수술 전 정밀 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].includes[1]",
+    "source": "data.js",
+    "en": "Procedure (both eyes)",
+    "ko": "시술(양안)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].includes[2]",
+    "source": "data.js",
+    "en": "Protective eyewear kit",
+    "ko": "보호 안경 키트",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].includes[3]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].options[0].group",
+    "source": "data.js",
+    "en": "Add-on examination",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].options[0].items[0]",
+    "source": "data.js",
+    "en": "Dry-eye screening",
+    "ko": "안구건조 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].options[0].items[1]",
+    "source": "data.js",
+    "en": "Corneal topography",
+    "ko": "각막 지형도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].steps[0]",
+    "source": "data.js",
+    "en": "Detailed pre-op exam",
+    "ko": "정밀 사전 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].steps[1]",
+    "source": "data.js",
+    "en": "Surgeon consultation",
+    "ko": "집도의 상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].steps[3]",
+    "source": "data.js",
+    "en": "Same-day discharge",
+    "ko": "당일 퇴원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].steps[4]",
+    "source": "data.js",
+    "en": "Next-day check-up",
+    "ko": "익일 경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].prepare[0]",
+    "source": "data.js",
+    "en": "Stop wearing contact lenses 1 week prior",
+    "ko": "1주 전부터 콘택트렌즈 착용 중단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[34].prepare[1]",
+    "source": "data.js",
+    "en": "Arrange someone to accompany you home",
+    "ko": "귀가 시 동반자 준비",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].dept",
+    "source": "data.js",
+    "en": "Orthopedics",
+    "ko": "정형외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].hospital.name",
+    "source": "data.js",
+    "en": "Seoul National University Hospital",
+    "ko": "서울대학교병원",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].hospital.city",
+    "source": "data.js",
+    "en": "Jongno-gu, Seoul",
+    "ko": "서울 종로구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].name",
+    "source": "data.js",
+    "en": "Spine & Joint Procedure",
+    "ko": "척추·관절 시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].summary",
+    "source": "data.js",
+    "en": "Minimally-invasive spine and joint pain procedure.",
+    "ko": "척추·관절 통증 최소 침습 시술.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].duration",
+    "source": "data.js",
+    "en": "1 day + rehab",
+    "ko": "당일 + 재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].recovery",
+    "source": "data.js",
+    "en": "1–2 weeks",
+    "ko": "1–2주",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].includes[0]",
+    "source": "data.js",
+    "en": "Detailed imaging (MRI/X-ray)",
+    "ko": "정밀 영상 검사(MRI/X-ray)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].includes[1]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].includes[2]",
+    "source": "data.js",
+    "en": "Rehabilitation guidance",
+    "ko": "재활 안내",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].includes[3]",
+    "source": "data.js",
+    "en": "Progress check-up",
+    "ko": "경과 검진",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].options[0].group",
+    "source": "data.js",
+    "en": "Add-on tests",
+    "ko": "추가 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].options[0].items[0]",
+    "source": "data.js",
+    "en": "MRI",
+    "ko": "MRI",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].options[0].items[1]",
+    "source": "data.js",
+    "en": "Bone density",
+    "ko": "골밀도 검사",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].steps[0]",
+    "source": "data.js",
+    "en": "Diagnosis",
+    "ko": "진단",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].steps[1]",
+    "source": "data.js",
+    "en": "Consultation",
+    "ko": "상담",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].steps[2]",
+    "source": "data.js",
+    "en": "Procedure",
+    "ko": "시술",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].steps[3]",
+    "source": "data.js",
+    "en": "Rehabilitation",
+    "ko": "재활",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROCEDURES[35].prepare[0]",
+    "source": "data.js",
+    "en": "Bring prior imaging if available",
+    "ko": "기존 영상 자료 지참(있을 경우)",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROMOS[0].text",
+    "source": "data.js",
+    "en": "Summer Health Check-up — up to 20% off for international patients",
+    "ko": "여름 건강검진 — 해외 환자 최대 20% 할인",
+    "ar": "الفحص الصحي الصيفي — خصم يصل إلى 20٪ للمرضى الدوليين",
+    "ja": "夏の健康診断 — 海外の患者様に最大20%オフ"
+  },
+  {
+    "key": "PROMOS[0].cta",
+    "source": "data.js",
+    "en": "See offers",
+    "ko": "혜택 보기",
+    "ar": "شاهد العروض",
+    "ja": "特典を見る"
+  },
+  {
+    "key": "PROMOS[1].text",
+    "source": "data.js",
+    "en": "First consultation is free. Tell us your treatment plan and get a quote within 24 hours.",
+    "ko": "첫 상담은 무료입니다. 시술 계획을 알려주시면 24시간 내 견적을 드립니다.",
+    "ar": "الاستشارة الأولى مجانية. أخبرنا بخطة علاجك واحصل على عرض سعر خلال 24 ساعة.",
+    "ja": "初回相談は無料です。治療プランをお知らせいただければ24時間以内にお見積もりします。"
+  },
+  {
+    "key": "PROMOS[1].cta",
+    "source": "data.js",
+    "en": "Get a free quote",
+    "ko": "무료 견적 받기",
+    "ar": "احصل على عرض مجاني",
+    "ja": "無料見積もり"
+  },
+  {
     "key": "PROVIDERS[0].name",
     "source": "data.js",
     "en": "Samsung Medical Center",
@@ -2150,6 +8894,102 @@
     "ko": "종양학·심장 치료·임원 건강검진으로 잘 알려진 대표 3차 병원. 국제진료센터에 영어·중국어·러시아어 코디네이터가 상주합니다.",
     "ar": "مستشفى ثالثي رائد، معروف بعلاج الأورام ورعاية القلب وبرامج الفحص الصحي للمديرين التنفيذيين. تضم خدمات الرعاية الصحية الدولية منسّقين يتحدثون الإنجليزية والصينية والروسية.",
     "ja": "腫瘍学・心臓治療・エグゼクティブ健診プログラムで高く評価される、韓国有数の第三次医療機関。国際診療センターには英語・中国語・ロシア語のコーディネーターが常駐しています。"
+  },
+  {
+    "key": "PROVIDERS[0].doctors[0].name",
+    "source": "data.js",
+    "en": "Prof. Woo-sung Jung",
+    "ko": "정우성 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[0].title",
+    "source": "data.js",
+    "en": "Medical Oncology",
+    "ko": "종양내과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[0].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 25 yrs",
+    "ko": "MD, PhD · 25년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[1].name",
+    "source": "data.js",
+    "en": "Dr. Ji-min Han",
+    "ko": "한지민 과장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[1].title",
+    "source": "data.js",
+    "en": "Cardiothoracic Surgery",
+    "ko": "심장혈관흉부외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[1].credentials",
+    "source": "data.js",
+    "en": "MD · 20 yrs",
+    "ko": "MD · 20년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[2].name",
+    "source": "data.js",
+    "en": "Dr. Seo-jun Park",
+    "ko": "박서준 과장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[2].title",
+    "source": "data.js",
+    "en": "Gastroenterology",
+    "ko": "소화기내과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[2].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 18 yrs",
+    "ko": "MD, PhD · 18년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[3].name",
+    "source": "data.js",
+    "en": "Dr. Tae-ri Kim",
+    "ko": "김태리 센터장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[3].title",
+    "source": "data.js",
+    "en": "Director, Int'l Health Services",
+    "ko": "국제진료센터장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[0].doctors[3].credentials",
+    "source": "data.js",
+    "en": "MD · 15 yrs",
+    "ko": "MD · 15년",
+    "ar": "",
+    "ja": ""
   },
   {
     "key": "PROVIDERS[1].name",
@@ -2176,6 +9016,78 @@
     "ja": "韓国最大規模の第三次医療機関で、肝移植・心臓胸部外科・プレミアム エグゼクティブ健診の分野で世界的に知られています。24時間対応の国際診療ホットラインを運営。"
   },
   {
+    "key": "PROVIDERS[1].doctors[0].name",
+    "source": "data.js",
+    "en": "Prof. Do-hyun Lee",
+    "ko": "이도현 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[0].title",
+    "source": "data.js",
+    "en": "Liver Transplant & HBP Surgery",
+    "ko": "간이식·간담도외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[0].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 22 yrs",
+    "ko": "MD, PhD · 22년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[1].name",
+    "source": "data.js",
+    "en": "Prof. Hyun-woo Seo",
+    "ko": "서현우 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[1].title",
+    "source": "data.js",
+    "en": "Cardiothoracic Surgery",
+    "ko": "심장혈관흉부외과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[1].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 24 yrs",
+    "ko": "MD, PhD · 24년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[2].name",
+    "source": "data.js",
+    "en": "Dr. Su-bin Choi",
+    "ko": "최수빈 과장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[2].title",
+    "source": "data.js",
+    "en": "Health Screening",
+    "ko": "건강의학과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[1].doctors[2].credentials",
+    "source": "data.js",
+    "en": "MD · 16 yrs",
+    "ko": "MD · 16년",
+    "ar": "",
+    "ja": ""
+  },
+  {
     "key": "PROVIDERS[2].name",
     "source": "data.js",
     "en": "Severance Hospital (Yonsei)",
@@ -2198,6 +9110,78 @@
     "ko": "국내 최초의 서양식 병원으로, 연세대학교 의과대학 부속병원. 안과·로봇 수술·여성건강 분야에서 강세를 보입니다.",
     "ar": "أقدم مستشفى على النمط الغربي في كوريا، تابع لكلية الطب بجامعة يونسي. متميّز في طب العيون والجراحة الروبوتية وصحة المرأة.",
     "ja": "韓国最古の西洋式病院で、延世大学校医科大学の付属病院。眼科・ロボット手術・女性の健康の分野に強みを持ちます。"
+  },
+  {
+    "key": "PROVIDERS[2].doctors[0].name",
+    "source": "data.js",
+    "en": "Prof. A-reum Yoon",
+    "ko": "윤아름 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[0].title",
+    "source": "data.js",
+    "en": "Ophthalmology",
+    "ko": "안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[0].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 19 yrs",
+    "ko": "MD, PhD · 19년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[1].name",
+    "source": "data.js",
+    "en": "Prof. Min-ho Kang",
+    "ko": "강민호 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[1].title",
+    "source": "data.js",
+    "en": "Robotic Surgery Center",
+    "ko": "로봇수술센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[1].credentials",
+    "source": "data.js",
+    "en": "MD · 21 yrs",
+    "ko": "MD · 21년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[2].name",
+    "source": "data.js",
+    "en": "Dr. Da-eun Jang",
+    "ko": "장다은 과장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[2].title",
+    "source": "data.js",
+    "en": "Obstetrics & Gynecology",
+    "ko": "산부인과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[2].doctors[2].credentials",
+    "source": "data.js",
+    "en": "MD · 15 yrs",
+    "ko": "MD · 15년",
+    "ar": "",
+    "ja": ""
   },
   {
     "key": "PROVIDERS[3].name",
@@ -2224,6 +9208,54 @@
     "ja": "カトリック大学校を代表する付属病院で、血液学・造血幹細胞移植・母体胎児医学で高い評価を得ています。"
   },
   {
+    "key": "PROVIDERS[3].doctors[0].name",
+    "source": "data.js",
+    "en": "Prof. Se-hoon Oh",
+    "ko": "오세훈 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[3].doctors[0].title",
+    "source": "data.js",
+    "en": "Hematology",
+    "ko": "혈액내과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[3].doctors[0].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 24 yrs",
+    "ko": "MD, PhD · 24년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[3].doctors[1].name",
+    "source": "data.js",
+    "en": "Dr. Yu-na Lim",
+    "ko": "임유나 과장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[3].doctors[1].title",
+    "source": "data.js",
+    "en": "Maternal-Fetal Medicine",
+    "ko": "모체태아의학",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[3].doctors[1].credentials",
+    "source": "data.js",
+    "en": "MD · 17 yrs",
+    "ko": "MD · 17년",
+    "ar": "",
+    "ja": ""
+  },
+  {
     "key": "PROVIDERS[4].name",
     "source": "data.js",
     "en": "JK Plastic Surgery Center",
@@ -2246,6 +9278,54 @@
     "ko": "압구정 로데오 거리에 위치한 프리미엄 성형외과. 2000년부터 해외 환자를 진료해왔으며, 통역·픽업 서비스가 기본 제공됩니다.",
     "ar": "مركز جراحة تجميل راقٍ في أبغوجيونغ روديو، يخدم المرضى الدوليين منذ عام 2000. مترجمون داخليون وخدمة توصيل قياسية.",
     "ja": "狎鴎亭ロデオに位置するブティック型の美容外科センター。2000年以来、海外の患者を診療しており、専属通訳と送迎サービスを標準で提供します。"
+  },
+  {
+    "key": "PROVIDERS[4].doctors[0].name",
+    "source": "data.js",
+    "en": "Dr. In-sung Cho",
+    "ko": "조인성 대표원장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[4].doctors[0].title",
+    "source": "data.js",
+    "en": "Chief Plastic Surgeon",
+    "ko": "성형외과 · 대표원장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[4].doctors[0].credentials",
+    "source": "data.js",
+    "en": "MD · 23 yrs",
+    "ko": "MD · 23년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[4].doctors[1].name",
+    "source": "data.js",
+    "en": "Dr. Min-a Shin",
+    "ko": "신민아 원장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[4].doctors[1].title",
+    "source": "data.js",
+    "en": "Dermatology",
+    "ko": "피부과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[4].doctors[1].credentials",
+    "source": "data.js",
+    "en": "MD · 14 yrs",
+    "ko": "MD · 14년",
+    "ar": "",
+    "ja": ""
   },
   {
     "key": "PROVIDERS[5].name",
@@ -2272,6 +9352,54 @@
     "ja": "プレミアムな複合診療型の歯科グループ。インプラント、デジタル ラミネート、マウスピース矯正、フルマウス リハビリテーションに対応。"
   },
   {
+    "key": "PROVIDERS[5].doctors[0].name",
+    "source": "data.js",
+    "en": "Dr. Hae-in Jung",
+    "ko": "정해인 원장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[5].doctors[0].title",
+    "source": "data.js",
+    "en": "Implant & Prosthodontics",
+    "ko": "임플란트·보철과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[5].doctors[0].credentials",
+    "source": "data.js",
+    "en": "DDS · 18 yrs",
+    "ko": "DDS · 18년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[5].doctors[1].name",
+    "source": "data.js",
+    "en": "Dr. Su-ji Bae",
+    "ko": "배수지 원장",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[5].doctors[1].title",
+    "source": "data.js",
+    "en": "Orthodontics",
+    "ko": "교정과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[5].doctors[1].credentials",
+    "source": "data.js",
+    "en": "DDS, PhD · 12 yrs",
+    "ko": "DDS, PhD · 12년",
+    "ar": "",
+    "ja": ""
+  },
+  {
     "key": "PROVIDERS[6].name",
     "source": "data.js",
     "en": "Seoul National University Hospital",
@@ -2294,6 +9422,174 @@
     "ko": "국내 대표 공공 상급종합병원으로, 국제진료센터와 희귀질환 클리닉을 운영합니다.",
     "ar": "المستشفى العام الثالثي الرائد في كوريا، ويضم مركزًا للرعاية الصحية الدولية وعيادة للأمراض النادرة.",
     "ja": "韓国を代表する公共の第三次医療機関で、国際診療センターと希少疾患クリニックを運営しています。"
+  },
+  {
+    "key": "PROVIDERS[6].doctors[0].name",
+    "source": "data.js",
+    "en": "Prof. Ye-jin Son",
+    "ko": "손예진 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[6].doctors[0].title",
+    "source": "data.js",
+    "en": "Endocrinology",
+    "ko": "내분비내과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[6].doctors[0].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 20 yrs",
+    "ko": "MD, PhD · 20년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[6].doctors[1].name",
+    "source": "data.js",
+    "en": "Prof. Jun-yeol Ryu",
+    "ko": "류준열 교수",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[6].doctors[1].title",
+    "source": "data.js",
+    "en": "Rare Disease Center",
+    "ko": "희귀질환센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[6].doctors[1].credentials",
+    "source": "data.js",
+    "en": "MD, PhD · 16 yrs",
+    "ko": "MD, PhD · 16년",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[7].name",
+    "source": "data.js",
+    "en": "Gangnam Seoul Bright Eye Clinic",
+    "ko": "강남서울밝은안과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[7].area",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[7].blurb",
+    "source": "data.js",
+    "en": "A Gangnam ophthalmology clinic specialized in SMILE and LASIK vision correction, with English-speaking coordinators for international patients.",
+    "ko": "스마일·라식 시력교정에 특화된 강남 안과 전문 클리닉으로, 해외 환자를 위한 영어 코디네이터가 상주합니다.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[8].name",
+    "source": "data.js",
+    "en": "Apgujeong Premium Dental",
+    "ko": "압구정 프리미엄 치과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[8].area",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[8].blurb",
+    "source": "data.js",
+    "en": "Premium dental clinic on Apgujeong Rodeo offering digital-guided implants and natural crowns, with international patient support.",
+    "ko": "압구정 로데오에 위치한 프리미엄 치과로, 디지털 가이드 임플란트와 자연스러운 크라운을 제공하며 해외 환자 지원을 갖췄습니다.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[9].name",
+    "source": "data.js",
+    "en": "Cheongdam Glow Dermatology",
+    "ko": "청담 글로우 피부과",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[9].area",
+    "source": "data.js",
+    "en": "Gangnam-gu, Seoul",
+    "ko": "서울 강남구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[9].blurb",
+    "source": "data.js",
+    "en": "Cheongdam dermatology clinic focused on skin-rejuvenation lasers and K-beauty programs for tone, pores, and texture.",
+    "ko": "피부 재생 레이저와 톤·모공·결 개선 K-뷰티 프로그램에 특화된 청담 피부과입니다.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[10].name",
+    "source": "data.js",
+    "en": "Seoul Premier Health Center",
+    "ko": "서울 프리미어 검진센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[10].area",
+    "source": "data.js",
+    "en": "Jongno-gu, Seoul",
+    "ko": "서울 종로구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[10].blurb",
+    "source": "data.js",
+    "en": "Dedicated health-screening center offering comprehensive check-ups and whole-body MRI with same-day radiologist reading.",
+    "ko": "종합 건강검진과 전신 MRI를 당일 판독으로 제공하는 건강검진 전문 센터입니다.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[11].name",
+    "source": "data.js",
+    "en": "Seoul Forest Hair Clinic",
+    "ko": "서울숲 모발센터",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[11].area",
+    "source": "data.js",
+    "en": "Seongdong-gu, Seoul",
+    "ko": "서울 성동구",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "PROVIDERS[11].blurb",
+    "source": "data.js",
+    "en": "Hair-restoration clinic near Seoul Forest specializing in FUE transplants with natural hairline design.",
+    "ko": "서울숲 인근의 모발이식 전문 클리닉으로, 자연스러운 헤어라인 디자인의 FUE 이식에 특화되어 있습니다.",
+    "ar": "",
+    "ja": ""
   },
   {
     "key": "PROVIDER_DEPTS[0]",
@@ -2366,6 +9662,14 @@
     "ko": "정형외과",
     "ar": "جراحة العظام",
     "ja": "整形外科"
+  },
+  {
+    "key": "PROVIDER_DEPTS[9]",
+    "source": "data.js",
+    "en": "Hair Transplant",
+    "ko": "모발이식",
+    "ar": "",
+    "ja": ""
   },
   {
     "key": "PROVIDER_LANGS[0]",
@@ -3120,6 +10424,62 @@
     "ja": "MRI技師とともに開発し、放射線科医が承認したスキャンプロトコルを使用します。"
   },
   {
+    "key": "SEO_OVERRIDES[0].title",
+    "source": "data.js",
+    "en": "Korea Medical Tourism & Health Checkups for International Patients",
+    "ko": "외국인을 위한 한국 의료관광·건강검진",
+    "ar": "السياحة العلاجية والفحوصات الصحية في كوريا للمرضى الدوليين",
+    "ja": "海外の患者様のための韓国医療ツーリズム・健康診断"
+  },
+  {
+    "key": "SEO_OVERRIDES[0].description",
+    "source": "data.js",
+    "en": "Plan health checkups and treatments in Korea with SafeDoc — trusted hospitals, transparent USD pricing, interpreter and end-to-end coordination for international patients.",
+    "ko": "세이프닥과 함께 한국에서 건강검진·시술을 계획하세요 — 신뢰 병원, 투명한 USD 가격, 통역·원스톱 코디네이션.",
+    "ar": "خطط للفحوصات والعلاجات في كوريا مع سيف دوك — مستشفيات موثوقة وأسعار شفافة بالدولار وترجمة وتنسيق شامل للمرضى الدوليين.",
+    "ja": "セイフドックで韓国の健康診断・施術を計画 — 信頼できる病院、明確なUSD料金、通訳と一括コーディネート。"
+  },
+  {
+    "key": "SEO_OVERRIDES[0].keywords",
+    "source": "data.js",
+    "en": "Korea medical tourism, health checkup Korea, whole-body MRI, SMILE LASIK Korea, dental implant Korea, international patients",
+    "ko": "",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "SEO_OVERRIDES[1].title",
+    "source": "data.js",
+    "en": "Korea Treatment & Check-up Prices (USD) — Transparent for International Patients",
+    "ko": "한국 시술·검진 가격표(USD) — 해외 환자 투명 가격",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "SEO_OVERRIDES[1].description",
+    "source": "data.js",
+    "en": "Indicative USD prices for health checkups, SMILE LASIK, dental implants, hair transplant and more in Korea. Final quote confirmed after free consultation.",
+    "ko": "한국 건강검진·스마일라식·임플란트·모발이식 등 참고 USD 가격. 무료 상담 후 최종 견적 확정.",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "SEO_OVERRIDES[2].title",
+    "source": "data.js",
+    "en": "Health Check-up Packages in Korea — Comprehensive & Whole-Body MRI",
+    "ko": "한국 건강검진 패키지 — 종합검진·전신 MRI",
+    "ar": "",
+    "ja": ""
+  },
+  {
+    "key": "SEO_OVERRIDES[3].title",
+    "source": "data.js",
+    "en": "Trusted Korean Hospitals & Clinics for International Patients",
+    "ko": "외국인 진료 신뢰 한국 병원·클리닉",
+    "ar": "",
+    "ja": ""
+  },
+  {
     "key": "SERVICES[0]",
     "source": "data.js",
     "en": "Health Check-up",
@@ -3226,10 +10586,10 @@
   {
     "key": "UI.myaccount",
     "source": "data.js",
-    "en": "My account",
-    "ko": "마이페이지",
-    "ar": "حسابي",
-    "ja": "マイページ"
+    "en": "Reservations",
+    "ko": "예약 내역",
+    "ar": "حجوزاتي",
+    "ja": "予約履歴"
   },
   {
     "key": "UI.viewMore",
@@ -4096,12 +11456,12 @@
     "ja": "お問い合わせ内容"
   },
   {
-    "key": "FAQs on checkups, Revital, payment and refunds.",
+    "key": "FAQs on checkups, payment and refunds.",
     "source": "ui",
-    "en": "FAQs on checkups, Revital, payment and refunds.",
-    "ko": "건강검진·리바이탈·결제·환불 자주 묻는 질문.",
-    "ar": "الأسئلة الشائعة حول الفحوصات وRevital والدفع والاسترداد.",
-    "ja": "健康診断・Revital・お支払い・返金に関するよくある質問。"
+    "en": "FAQs on checkups, payment and refunds.",
+    "ko": "건강검진·결제·환불 자주 묻는 질문.",
+    "ar": "الأسئلة الشائعة حول الفحوصات والدفع والاسترداد.",
+    "ja": "健康診断・お支払い・返金に関するよくある質問。"
   },
   {
     "key": "Frequently asked questions",
@@ -4259,9 +11619,9 @@
     "key": "Price",
     "source": "ui",
     "en": "Price",
-    "ko": "금액순",
+    "ko": "가격",
     "ar": "السعر",
-    "ja": "価格順"
+    "ja": "料金"
   },
   {
     "key": "Most booked",
@@ -4288,12 +11648,12 @@
     "ja": "認証を受けた韓国の病院の施術をご覧ください — 二言語対応の説明・透明な価格。"
   },
   {
-    "key": "Browse every treatment across our partner hospitals — bilingual descriptions, transparent pricing, hospital details on each card.",
+    "key": "Explore verified treatments at Korea's top partner hospitals, with clear and transparent pricing on every option.",
     "source": "ui",
-    "en": "Browse every treatment across our partner hospitals — bilingual descriptions, transparent pricing, hospital details on each card.",
-    "ko": "파트너 병원의 모든 시술 — 이중언어 설명, 투명한 가격, 카드마다 병원 정보.",
-    "ar": "تصفّح جميع الإجراءات لدى مستشفياتنا الشريكة — أوصاف ثنائية اللغة وأسعار شفافة ومعلومات المستشفى على كل بطاقة.",
-    "ja": "提携病院のすべての施術をご覧ください — 二言語対応の説明、透明な価格、カードごとの病院情報。"
+    "en": "Explore verified treatments at Korea's top partner hospitals, with clear and transparent pricing on every option.",
+    "ko": "한국 대표 파트너 병원의 검증된 시술을 둘러보세요. 모든 시술을 투명한 가격으로 안내합니다.",
+    "ar": "استكشف العلاجات الموثوقة في أفضل المستشفيات الشريكة في كوريا، بأسعار واضحة وشفافة لكل خيار.",
+    "ja": "韓国有数の提携病院の信頼できる施術をご覧ください。すべての施術を明確で透明な価格でご案内します。"
   },
   {
     "key": "Search treatments, hospitals, specialties",
@@ -4307,9 +11667,9 @@
     "key": "Category",
     "source": "ui",
     "en": "Category",
-    "ko": "진료과",
-    "ar": "القسم الطبي",
-    "ja": "診療科"
+    "ko": "분류",
+    "ar": "الفئة",
+    "ja": "カテゴリー"
   },
   {
     "key": "No treatments match your filters.",
@@ -5003,9 +12363,9 @@
     "key": "Treatment",
     "source": "ui",
     "en": "Treatment",
-    "ko": "시술명",
+    "ko": "시술",
     "ar": "العلاج",
-    "ja": "施術名"
+    "ja": "施術"
   },
   {
     "key": "Reservations",
@@ -5216,339 +12576,99 @@
     "ja": "健康診断・施術・韓国医療ツーリズムの実用ガイド。"
   },
   {
-    "key": "BLOG[6].author",
-    "source": "data.js",
-    "en": "Dr. H. Lee",
-    "ko": "이 원장",
-    "ar": "د. هـ. لي",
-    "ja": "イ・H 医師"
+    "key": "Chat with us",
+    "source": "ui",
+    "en": "Chat with us",
+    "ko": "채팅 상담",
+    "ar": "تحدث معنا",
+    "ja": "チャットで相談"
   },
   {
-    "key": "BLOG[6].title",
-    "source": "data.js",
-    "en": "K-Beauty Dermatology: What to Know Before You Go",
-    "ko": "K-뷰티 피부과: 가기 전에 알아둘 것",
-    "ar": "جلدية الجمال الكوري: ما يجب معرفته قبل الذهاب",
-    "ja": "K-ビューティー皮膚科：行く前に知っておくこと"
+    "key": "Notes",
+    "source": "ui",
+    "en": "Notes",
+    "ko": "비고",
+    "ar": "ملاحظات",
+    "ja": "備考"
   },
   {
-    "key": "BLOG[6].excerpt",
-    "source": "data.js",
-    "en": "Lasers, injectables and skin-boosters — how to plan safe, effective treatments on a short trip.",
-    "ko": "레이저·주사·스킨부스터 — 짧은 일정에서 안전하고 효과적인 시술을 계획하는 법.",
-    "ar": "الليزر والحقن ومعزّزات البشرة — كيف تخطّط لعلاجات آمنة وفعّالة في رحلة قصيرة.",
-    "ja": "レーザー・注射・スキンブースター — 短い旅程で安全かつ効果的な施術を計画する方法。"
+    "key": "Get a free quote",
+    "source": "ui",
+    "en": "Get a free quote",
+    "ko": "무료 견적 받기",
+    "ar": "احصل على عرض سعر مجاني",
+    "ja": "無料見積もりを取る"
   },
   {
-    "key": "BLOG[6].sections[0].h",
-    "source": "data.js",
-    "en": "Popular treatments",
-    "ko": "인기 시술",
-    "ar": "العلاجات الشائعة",
-    "ja": "人気の施術"
+    "key": "Pricing",
+    "source": "ui",
+    "en": "Pricing",
+    "ko": "가격 안내",
+    "ar": "الأسعار",
+    "ja": "料金"
   },
   {
-    "key": "BLOG[6].sections[0].p[0]",
-    "source": "data.js",
-    "en": "Laser toning, fractional resurfacing, injectables and skin-boosters lead the menu. Match the treatment to your recovery time — some leave redness for a few days.",
-    "ko": "레이저 토닝·프락셔널·주사·스킨부스터가 대표적입니다. 회복 시간에 맞춰 시술을 선택하세요. 일부는 며칠간 홍조가 남습니다.",
-    "ar": "يتصدّر القائمة تفتيح الليزر والتقشير الجزئي والحقن ومعزّزات البشرة. طابِق العلاج مع وقت تعافيك — فبعضها يترك احمراراً لبضعة أيام.",
-    "ja": "レーザートーニング・フラクショナル・注射・スキンブースターが代表的です。回復時間に合わせて施術を選びましょう。一部は数日間赤みが残ります。"
+    "key": "Select your 1st preferred date.",
+    "source": "ui",
+    "en": "Select your 1st preferred date.",
+    "ko": "예약 희망일(1지망)을 선택해 주세요.",
+    "ar": "يرجى اختيار تاريخك المفضّل الأول.",
+    "ja": "第1希望の予約日を選択してください。"
   },
   {
-    "key": "BLOG[6].sections[1].h",
-    "source": "data.js",
-    "en": "Planning a short trip",
-    "ko": "짧은 일정 계획하기",
-    "ar": "التخطيط لرحلة قصيرة",
-    "ja": "短い旅程を計画する"
+    "key": "Choose a date from today onward.",
+    "source": "ui",
+    "en": "Choose a date from today onward.",
+    "ko": "예약 희망일은 오늘 이후로 선택해 주세요.",
+    "ar": "يرجى اختيار تاريخ من اليوم فصاعداً.",
+    "ja": "予約希望日は本日以降で選択してください。"
   },
   {
-    "key": "BLOG[6].sections[1].p[0]",
-    "source": "data.js",
-    "en": "Book a consultation first, then space sessions across a few days. SafeDoc lines up an English- or Arabic-speaking coordinator so nothing gets lost in translation.",
-    "ko": "먼저 상담을 예약하고 세션을 며칠에 나눠 배치하세요. 세이프닥은 영어·아랍어 코디네이터를 배정해 소통 착오를 막습니다.",
-    "ar": "احجز استشارة أولاً، ثم وزّع الجلسات على عدة أيام. ويوفّر SafeDoc منسّقاً يتحدّث الإنجليزية أو العربية حتى لا يضيع شيء في الترجمة.",
-    "ja": "まず相談を予約し、セッションを数日に分けて配置します。SafeDoc は英語・アラビア語対応のコーディネーターを手配し、伝達の行き違いを防ぎます。"
+    "key": "Pick a different date from the 1st choice.",
+    "source": "ui",
+    "en": "Pick a different date from the 1st choice.",
+    "ko": "1지망과 다른 날짜를 선택해 주세요.",
+    "ar": "يرجى اختيار تاريخ مختلف عن الخيار الأول.",
+    "ja": "第1希望とは異なる日付を選択してください。"
   },
   {
-    "key": "BLOG[7].author",
-    "source": "data.js",
-    "en": "Dr. S. Park",
-    "ko": "박 원장",
-    "ar": "د. س. بارك",
-    "ja": "パク・S 医師"
+    "key": "Select your arrival date in Korea.",
+    "source": "ui",
+    "en": "Select your arrival date in Korea.",
+    "ko": "한국 입국 예정일을 선택해 주세요.",
+    "ar": "يرجى اختيار تاريخ وصولك إلى كوريا.",
+    "ja": "韓国への入国予定日を選択してください。"
   },
   {
-    "key": "BLOG[7].title",
-    "source": "data.js",
-    "en": "Hair Transplant in Korea: Methods and Recovery",
-    "ko": "한국 모발이식: 방법과 회복",
-    "ar": "زراعة الشعر في كوريا: الطرق والتعافي",
-    "ja": "韓国の毛髪移植：方法と回復"
+    "key": "Select your departure date from Korea.",
+    "source": "ui",
+    "en": "Select your departure date from Korea.",
+    "ko": "한국 출국 예정일을 선택해 주세요.",
+    "ar": "يرجى اختيار تاريخ مغادرتك من كوريا.",
+    "ja": "韓国からの出国予定日を選択してください。"
   },
   {
-    "key": "BLOG[7].excerpt",
-    "source": "data.js",
-    "en": "FUE vs. FUT, realistic graft counts, and what the first two weeks actually look like.",
-    "ko": "FUE와 FUT 비교, 현실적인 모낭 수, 그리고 첫 2주 실제 경과.",
-    "ar": "مقارنة بين FUE وFUT، وأعداد واقعية للبصيلات، وما يبدو عليه الأسبوعان الأولان فعلاً.",
-    "ja": "FUEとFUTの比較、現実的な移植株数、そして最初の2週間の実際。"
+    "key": "Departure must be on/after arrival.",
+    "source": "ui",
+    "en": "Departure must be on/after arrival.",
+    "ko": "출국 예정일은 입국 예정일 이후로 선택해 주세요.",
+    "ar": "يجب أن يكون تاريخ المغادرة في يوم الوصول أو بعده.",
+    "ja": "出国予定日は入国予定日以降で選択してください。"
   },
   {
-    "key": "BLOG[7].sections[0].h",
-    "source": "data.js",
-    "en": "FUE vs. FUT",
-    "ko": "FUE와 FUT",
-    "ar": "FUE مقابل FUT",
-    "ja": "FUEとFUT"
+    "key": "Select the required number of options for each group in Reservation {n}.",
+    "source": "ui",
+    "en": "Select the required number of options for each group in Reservation {n}.",
+    "ko": "예약 {n}의 옵션 항목을 그룹별 지정 개수만큼 선택해 주세요.",
+    "ar": "يرجى اختيار العدد المطلوب من الخيارات لكل مجموعة في الحجز {n}.",
+    "ja": "予約 {n} のオプション項目をグループごとに指定された数だけ選択してください。"
   },
   {
-    "key": "BLOG[7].sections[0].p[0]",
-    "source": "data.js",
-    "en": "FUE extracts individual follicles with no linear scar and a faster return to normal; FUT can move more grafts in one session. Your density goals decide the method.",
-    "ko": "FUE는 모낭을 하나씩 채취해 선형 흉터가 없고 회복이 빠릅니다. FUT는 한 번에 더 많은 모낭을 옮길 수 있습니다. 원하는 밀도가 방법을 결정합니다.",
-    "ar": "يستخرج FUE البصيلات فردياً دون ندبة خطية ومع عودة أسرع إلى الحياة الطبيعية؛ بينما يمكن لـ FUT نقل عدد أكبر من البصيلات في جلسة واحدة. وأهداف الكثافة لديك هي التي تحدّد الطريقة.",
-    "ja": "FUEは毛包を一つずつ採取するため線状の傷跡がなく、回復が早いです。FUTは一度により多くの株を移植できます。希望する密度が方法を決めます。"
-  },
-  {
-    "key": "BLOG[7].sections[1].h",
-    "source": "data.js",
-    "en": "The first two weeks",
-    "ko": "첫 2주",
-    "ar": "الأسبوعان الأولان",
-    "ja": "最初の2週間"
-  },
-  {
-    "key": "BLOG[7].sections[1].p[0]",
-    "source": "data.js",
-    "en": "Expect mild swelling and scabbing that settles within 10–14 days. SafeDoc schedules a follow-up check and arranges a cap-friendly recovery stay.",
-    "ko": "가벼운 부기와 딱지가 10~14일 내 가라앉습니다. 세이프닥은 경과 확인을 예약하고 모자 착용이 편한 회복 숙소를 마련합니다.",
-    "ar": "توقّع تورّماً خفيفاً وقشوراً تهدأ خلال 10–14 يوماً. ويحجز SafeDoc موعد متابعة ويرتّب إقامة تعافٍ مناسبة لارتداء القبعة.",
-    "ja": "軽い腫れとかさぶたが10〜14日以内に落ち着きます。SafeDoc は経過確認を予約し、帽子を着用しやすい回復用の宿泊先を手配します。"
-  },
-  {
-    "key": "BLOG[8].author",
-    "source": "data.js",
-    "en": "SafeDoc Editorial",
-    "ko": "세이프닥 편집팀",
-    "ar": "فريق تحرير SafeDoc",
-    "ja": "SafeDoc 編集部"
-  },
-  {
-    "key": "BLOG[8].title",
-    "source": "data.js",
-    "en": "Cancer Screening Packages Explained",
-    "ko": "암 검진 패키지 완전 정리",
-    "ar": "شرح باقات الكشف عن السرطان",
-    "ja": "がん検診パッケージ徹底解説"
-  },
-  {
-    "key": "BLOG[8].excerpt",
-    "source": "data.js",
-    "en": "PET-CT, endoscopy and tumor markers — what each test finds and who should consider it.",
-    "ko": "PET-CT·내시경·종양표지자 — 각 검사가 무엇을 찾고 누구에게 권장되는지.",
-    "ar": "التصوير المقطعي بالإصدار البوزيتروني والتنظير ودلالات الأورام — ماذا يكشف كل فحص ولمن يُنصح به.",
-    "ja": "PET-CT・内視鏡・腫瘍マーカー — 各検査が何を見つけ、誰に勧められるか。"
-  },
-  {
-    "key": "BLOG[8].sections[0].h",
-    "source": "data.js",
-    "en": "What each test finds",
-    "ko": "각 검사가 찾는 것",
-    "ar": "ما يكشفه كل فحص",
-    "ja": "各検査が見つけるもの"
-  },
-  {
-    "key": "BLOG[8].sections[0].p[0]",
-    "source": "data.js",
-    "en": "PET-CT scans the whole body for metabolic hotspots, endoscopy inspects the GI tract directly, and blood tumor markers flag risk to follow up. They work best combined.",
-    "ko": "PET-CT는 전신의 대사 이상을 스캔하고, 내시경은 소화관을 직접 관찰하며, 혈액 종양표지자는 추적할 위험 신호를 알려줍니다. 함께 조합할 때 가장 효과적입니다.",
-    "ar": "يمسح التصوير المقطعي بالإصدار البوزيتروني الجسم كله بحثاً عن البؤر الأيضية، ويفحص التنظير الجهاز الهضمي مباشرة، وتشير دلالات الأورام في الدم إلى خطر يستدعي المتابعة. وتعمل بأفضل صورة مجتمعةً.",
-    "ja": "PET-CTは全身の代謝の異常をスキャンし、内視鏡は消化管を直接観察し、血液の腫瘍マーカーは追跡すべきリスクを示します。組み合わせると最も効果的です。"
-  },
-  {
-    "key": "BLOG[8].sections[1].h",
-    "source": "data.js",
-    "en": "Who should consider it",
-    "ko": "누구에게 권장될까",
-    "ar": "لمن يُنصح به",
-    "ja": "誰に勧められるか"
-  },
-  {
-    "key": "BLOG[8].sections[1].p[0]",
-    "source": "data.js",
-    "en": "Family history, age and lifestyle guide the choice. A coordinator helps you pick a package that screens what matters without over-testing.",
-    "ko": "가족력·나이·생활습관이 선택 기준입니다. 코디네이터가 과잉검사 없이 꼭 필요한 항목을 검진하는 패키지를 고르도록 돕습니다.",
-    "ar": "يوجّه التاريخ العائلي والعمر ونمط الحياة الاختيار. ويساعدك المنسّق على اختيار باقة تفحص ما يهمّ دون إفراط في الفحوصات.",
-    "ja": "家族歴・年齢・生活習慣が選択の基準です。コーディネーターが過剰検査なく必要な項目を検診するパッケージ選びを手伝います。"
-  },
-  {
-    "key": "BLOG[9].author",
-    "source": "data.js",
-    "en": "SafeDoc Editorial",
-    "ko": "세이프닥 편집팀",
-    "ar": "فريق تحرير SafeDoc",
-    "ja": "SafeDoc 編集部"
-  },
-  {
-    "key": "BLOG[9].title",
-    "source": "data.js",
-    "en": "Payment, Insurance and Costs for Foreign Patients",
-    "ko": "외국인 환자의 결제·보험·비용",
-    "ar": "الدفع والتأمين والتكاليف للمرضى الأجانب",
-    "ja": "外国人患者の支払い・保険・費用"
-  },
-  {
-    "key": "BLOG[9].excerpt",
-    "source": "data.js",
-    "en": "How pricing works, what to bring for insurance claims, and how to avoid surprise charges.",
-    "ko": "가격이 정해지는 방식, 보험 청구 준비물, 그리고 예상치 못한 비용을 피하는 법.",
-    "ar": "كيف يُحدَّد السعر، وما تحضره لمطالبات التأمين، وكيف تتجنّب الرسوم المفاجئة.",
-    "ja": "価格の決まり方、保険請求の持ち物、そして予想外の請求を避ける方法。"
-  },
-  {
-    "key": "BLOG[9].sections[0].h",
-    "source": "data.js",
-    "en": "How pricing works",
-    "ko": "가격이 정해지는 방식",
-    "ar": "كيف يُحدَّد السعر",
-    "ja": "価格の決まり方"
-  },
-  {
-    "key": "BLOG[9].sections[0].p[0]",
-    "source": "data.js",
-    "en": "Elective care is quoted up front, often as a package. Ask whether imaging, anesthesia and follow-ups are included so the estimate matches the final bill.",
-    "ko": "선택 진료는 대개 패키지로 사전에 견적이 나옵니다. 영상검사·마취·경과관찰 포함 여부를 확인해 견적과 최종 청구가 일치하도록 하세요.",
-    "ar": "يُسعّر العلاج الاختياري مسبقاً، وغالباً كباقة. اسأل عمّا إذا كان التصوير والتخدير والمتابعات مشمولة حتى يتطابق التقدير مع الفاتورة النهائية.",
-    "ja": "選択診療は多くの場合パッケージとして事前に見積もられます。画像検査・麻酔・経過観察が含まれるか確認し、見積もりと最終請求が一致するようにしましょう。"
-  },
-  {
-    "key": "BLOG[9].sections[1].h",
-    "source": "data.js",
-    "en": "Insurance claims",
-    "ko": "보험 청구",
-    "ar": "مطالبات التأمين",
-    "ja": "保険請求"
-  },
-  {
-    "key": "BLOG[9].sections[1].p[0]",
-    "source": "data.js",
-    "en": "Keep itemized receipts and the medical report SafeDoc issues; most travel and private insurers need both. We can prepare documents in English on request.",
-    "ko": "항목별 영수증과 세이프닥이 발급하는 진료 리포트를 보관하세요. 대부분의 여행자·민간 보험이 둘 다 요구합니다. 요청 시 영문 서류를 준비해 드립니다.",
-    "ar": "احتفظ بالإيصالات المفصّلة وبالتقرير الطبي الذي يصدره SafeDoc؛ إذ يطلبهما معظم شركات تأمين السفر والتأمين الخاص. ويمكننا تجهيز المستندات بالإنجليزية عند الطلب.",
-    "ja": "項目別の領収書と SafeDoc が発行する診療レポートを保管してください。多くの旅行・民間保険が両方を必要とします。ご要望に応じて英文書類を準備します。"
-  },
-  {
-    "key": "BLOG[10].author",
-    "source": "data.js",
-    "en": "SafeDoc Editorial",
-    "ko": "세이프닥 편집팀",
-    "ar": "فريق تحرير SafeDoc",
-    "ja": "SafeDoc 編集部"
-  },
-  {
-    "key": "BLOG[10].title",
-    "source": "data.js",
-    "en": "Choosing a Hospital: Accreditation and Reviews",
-    "ko": "병원 고르기: 인증과 후기 보는 법",
-    "ar": "اختيار المستشفى: الاعتماد والمراجعات",
-    "ja": "病院選び：認証と口コミの見方"
-  },
-  {
-    "key": "BLOG[10].excerpt",
-    "source": "data.js",
-    "en": "How to read accreditations, verify a surgeon's experience, and weigh reviews wisely.",
-    "ko": "인증을 읽는 법, 의료진 경력 확인, 그리고 후기를 현명하게 판단하는 법.",
-    "ar": "كيف تقرأ الاعتمادات، وتتحقّق من خبرة الجرّاح، وتزن المراجعات بحكمة.",
-    "ja": "認証の読み方、医師の経歴確認、そして口コミを賢く判断する方法。"
-  },
-  {
-    "key": "BLOG[10].sections[0].h",
-    "source": "data.js",
-    "en": "What accreditation means",
-    "ko": "인증이 의미하는 것",
-    "ar": "ماذا يعني الاعتماد",
-    "ja": "認証が意味すること"
-  },
-  {
-    "key": "BLOG[10].sections[0].p[0]",
-    "source": "data.js",
-    "en": "Look for government registration for foreign-patient care and, ideally, international accreditation. These signal audited safety and record-keeping standards.",
-    "ko": "외국인 환자 유치 정부 등록과, 가능하면 국제 인증을 확인하세요. 감사받은 안전·기록관리 기준을 보증합니다.",
-    "ar": "ابحث عن تسجيل حكومي لرعاية المرضى الأجانب، ويُفضّل اعتماد دولي. فهذه تدلّ على معايير أمان وحفظ سجلات خاضعة للتدقيق.",
-    "ja": "外国人患者診療の政府登録と、できれば国際認証を確認しましょう。これらは監査された安全・記録管理の基準を示します。"
-  },
-  {
-    "key": "BLOG[10].sections[1].h",
-    "source": "data.js",
-    "en": "Reading reviews wisely",
-    "ko": "후기를 현명하게 읽기",
-    "ar": "قراءة المراجعات بحكمة",
-    "ja": "口コミを賢く読む"
-  },
-  {
-    "key": "BLOG[10].sections[1].p[0]",
-    "source": "data.js",
-    "en": "Weight recent, detailed reviews over star averages, and confirm the surgeon named actually performs your procedure. SafeDoc verifies partners before listing them.",
-    "ko": "별점 평균보다 최근의 구체적인 후기를 중시하고, 언급된 의료진이 실제 그 시술을 하는지 확인하세요. 세이프닥은 등재 전 파트너를 검증합니다.",
-    "ar": "رجّح المراجعات الحديثة والمفصّلة على متوسّطات النجوم، وتأكّد من أنّ الجرّاح المذكور يُجري إجراءك فعلاً. ويتحقّق SafeDoc من الشركاء قبل إدراجهم.",
-    "ja": "星の平均より最近の具体的な口コミを重視し、記載された医師が実際にその施術を行うか確認しましょう。SafeDoc は掲載前にパートナーを検証します。"
-  },
-  {
-    "key": "BLOG[11].author",
-    "source": "data.js",
-    "en": "SafeDoc Editorial",
-    "ko": "세이프닥 편집팀",
-    "ar": "فريق تحرير SafeDoc",
-    "ja": "SafeDoc 編集部"
-  },
-  {
-    "key": "BLOG[11].title",
-    "source": "data.js",
-    "en": "Interpreter Services for Medical Visits",
-    "ko": "의료 방문을 위한 통역 서비스",
-    "ar": "خدمات الترجمة الفورية للزيارات الطبية",
-    "ja": "医療受診のための通訳サービス"
-  },
-  {
-    "key": "BLOG[11].excerpt",
-    "source": "data.js",
-    "en": "Why medical interpretation matters, which languages are covered, and how it's arranged.",
-    "ko": "의료 통역이 중요한 이유, 지원 언어, 그리고 준비되는 방식.",
-    "ar": "لماذا تهمّ الترجمة الطبية، وما اللغات المشمولة، وكيف تُرتَّب.",
-    "ja": "医療通訳が重要な理由、対応言語、そして手配される方法。"
-  },
-  {
-    "key": "BLOG[11].sections[0].h",
-    "source": "data.js",
-    "en": "Why it matters",
-    "ko": "왜 중요한가",
-    "ar": "لماذا تهمّ",
-    "ja": "なぜ重要か"
-  },
-  {
-    "key": "BLOG[11].sections[0].p[0]",
-    "source": "data.js",
-    "en": "Consent, symptoms and aftercare instructions leave no room for guesswork. A trained medical interpreter reduces error and helps you decide with confidence.",
-    "ko": "동의·증상·사후관리 안내는 추측의 여지가 없어야 합니다. 훈련된 의료 통역은 오류를 줄이고 자신 있게 결정하도록 돕습니다.",
-    "ar": "لا مجال للتخمين في الموافقة والأعراض وتعليمات الرعاية اللاحقة. ويقلّل المترجم الطبي المدرَّب من الأخطاء ويساعدك على اتخاذ القرار بثقة.",
-    "ja": "同意・症状・術後の指示に推測の余地はありません。訓練された医療通訳は誤りを減らし、自信を持って判断する助けになります。"
-  },
-  {
-    "key": "BLOG[11].sections[1].h",
-    "source": "data.js",
-    "en": "How it's arranged",
-    "ko": "준비되는 방식",
-    "ar": "كيف تُرتَّب",
-    "ja": "手配される方法"
-  },
-  {
-    "key": "BLOG[11].sections[1].p[0]",
-    "source": "data.js",
-    "en": "SafeDoc pairs you with an interpreter for English, Arabic and Japanese, in person or on call, matched to your appointments across the whole trip.",
-    "ko": "세이프닥은 영어·아랍어·일본어 통역을 대면 또는 전화로 배정하고, 여정 전체의 예약 일정에 맞춰 연결합니다.",
-    "ar": "يربطك SafeDoc بمترجم للإنجليزية والعربية واليابانية، حضورياً أو عبر الهاتف، بما يتوافق مع مواعيدك طوال الرحلة.",
-    "ja": "SafeDoc は英語・アラビア語・日本語の通訳を対面または電話で手配し、旅程全体の予約に合わせて連携します。"
+    "key": "Please enter your reservation number.",
+    "source": "ui",
+    "en": "Please enter your reservation number.",
+    "ko": "예약번호를 입력해 주세요.",
+    "ar": "يرجى إدخال رقم الحجز الخاص بك.",
+    "ja": "予約番号を入力してください。"
   }
 ]

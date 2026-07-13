@@ -429,12 +429,24 @@ function BookingInner({ lang, navigate }) {
   }, [cards]); // eslint-disable-line
 
   const submit = () => {
+    const today = new Date().toISOString().slice(0, 10);
     // #20 옵션 그룹별 선택 개수가 맞지 않으면 예약완료 불가
     const badIdx = cards.findIndex((c, i) => !optionsSatisfied(c, cardProc[i] || targets[0].p));
     if (badIdx >= 0) {
       setActive(badIdx);
-      setErr(lang === "ko" ? `예약 ${badIdx + 1}의 옵션 항목을 그룹별 지정 개수만큼 선택해 주세요.` : `Select the required number of options for each group in Reservation ${badIdx + 1}.`);
+      setErr(tr("Select the required number of options for each group in Reservation {n}.", lang).replace("{n}", badIdx + 1));
       return;
+    }
+    // 예약별 날짜 검증 — 희망일(1지망 필수·과거 불가·2지망 중복 불가) / 한국 입국·출국 예정일(필수·순서)
+    for (let i = 0; i < cards.length; i++) {
+      const c = cards[i];
+      const bad = (key) => { setActive(i); setErr(tr(key, lang)); };
+      if (!c.d1) { bad("Select your 1st preferred date."); return; }
+      if (c.d1 < today) { bad("Choose a date from today onward."); return; }
+      if (c.d2 && c.d2 === c.d1) { bad("Pick a different date from the 1st choice."); return; }
+      if (!c.arrival) { bad("Select your arrival date in Korea."); return; }
+      if (!c.departure) { bad("Select your departure date from Korea."); return; }
+      if (c.departure < c.arrival) { bad("Departure must be on/after arrival."); return; }
     }
     setErr("");
     const id = store.upsertBooking({ status: "pending", no: store.genBookingNo(), procedureId: targets[0].p.id, treatmentName: tx(targets[0].p.name, lang), cards, totalCards, createdAt: "now" });
@@ -657,7 +669,7 @@ function MyPageInner({ lang, navigate }) {
   const [err, setErr] = useState("");
   const runLookup = (raw) => {
     const q = String(raw).trim().toUpperCase();
-    if (!q) { setFound(null); setErr(ko ? "예약번호를 입력해 주세요." : "Please enter your reservation number."); return; }
+    if (!q) { setFound(null); setErr(tr("Please enter your reservation number.", lang)); return; }
     const hit = store.getBookings().find((b) => String(b.no || "").toUpperCase() === q);
     setErr("");
     // 실제 예약이 있으면 그 예약, 없으면 데모 샘플(입력한 번호로 표기) 조회
