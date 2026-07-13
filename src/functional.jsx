@@ -302,7 +302,7 @@ function TreatmentDetailInner({ p, lang, navigate }) {
               <button onClick={() => navigate(`/booking?treatment=${p.id}&qty=${qty}`)} style={{ ...btn(BLUE, "#fff"), width: "100%", marginTop: 10 }}>{tr("Book this treatment now", lang)} <ChevronRight size={15} /></button>
             </div>
             {/* #23 PERFORMED AT — 병원 상세 이동 (정사각 이미지·병원명·위치) */}
-            <button onClick={() => navigate("/providers")} style={{ width: "100%", textAlign: "start", cursor: "pointer", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 18, marginTop: 18, display: "flex", alignItems: "center", gap: 14 }}>
+            <button onClick={() => navigate(p.hospital.id ? `/providers/${p.hospital.id}` : "/providers")} style={{ width: "100%", textAlign: "start", cursor: "pointer", background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 18, marginTop: 18, display: "flex", alignItems: "center", gap: 14 }}>
               <img src={p.hospital.square} alt="" style={{ width: 48, height: 48, borderRadius: 10, objectFit: "cover", flexShrink: 0 }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontSize: 10.5, fontWeight: 800, color: MUTE, letterSpacing: ".1em", textTransform: "uppercase" }}>{tr("Performed at", lang)}</div>

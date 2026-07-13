@@ -305,6 +305,7 @@ export const PROVIDER_DEPTS = [
   { id: "obgyn", en: "OB/GYN", ko: "산부인과" },
   { id: "urology", en: "Urology", ko: "비뇨기과" },
   { id: "ortho", en: "Orthopedics", ko: "정형외과" },
+  { id: "hair", en: "Hair Transplant", ko: "모발이식" },
 ];
 // 통역 가능 언어(Languages) 드롭다운 — 스펙 7종
 export const PROVIDER_LANGS = [
@@ -366,6 +367,16 @@ export const PROVIDERS = [
       { name: { en: "Prof. Ye-jin Son", ko: "손예진 교수" }, title: { en: "Endocrinology", ko: "내분비내과" }, credentials: { en: "MD, PhD · 20 yrs", ko: "MD, PhD · 20년" }, photo: "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&q=80" },
       { name: { en: "Prof. Jun-yeol Ryu", ko: "류준열 교수" }, title: { en: "Rare Disease Center", ko: "희귀질환센터" }, credentials: { en: "MD, PhD · 16 yrs", ko: "MD, PhD · 16년" }, photo: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&q=80" },
     ] },
+  { id: "gangnam-bright-eye", name: { en: "Gangnam Seoul Bright Eye Clinic", ko: "강남서울밝은안과" }, image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1000&q=80", area: { en: "Gangnam-gu, Seoul", ko: "서울 강남구" }, rating: 4.8, reviews: 412, accreditation: ["ISO 9001", "KAHF"], departments: ["ophth"], languages: ["en", "zh"], english_support: true, international_ward: false,
+    blurb: { en: "A Gangnam ophthalmology clinic specialized in SMILE and LASIK vision correction, with English-speaking coordinators for international patients.", ko: "스마일·라식 시력교정에 특화된 강남 안과 전문 클리닉으로, 해외 환자를 위한 영어 코디네이터가 상주합니다." } },
+  { id: "apgujeong-dental", name: { en: "Apgujeong Premium Dental", ko: "압구정 프리미엄 치과" }, image: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=1000&q=80", area: { en: "Gangnam-gu, Seoul", ko: "서울 강남구" }, rating: 4.7, reviews: 356, accreditation: ["KDA"], departments: ["dental"], languages: ["en", "zh"], english_support: true, international_ward: false,
+    blurb: { en: "Premium dental clinic on Apgujeong Rodeo offering digital-guided implants and natural crowns, with international patient support.", ko: "압구정 로데오에 위치한 프리미엄 치과로, 디지털 가이드 임플란트와 자연스러운 크라운을 제공하며 해외 환자 지원을 갖췄습니다." } },
+  { id: "cheongdam-glow-derm", name: { en: "Cheongdam Glow Dermatology", ko: "청담 글로우 피부과" }, image: "https://images.unsplash.com/photo-1612908689435-744b8b0a0c46?w=1000&q=80", area: { en: "Gangnam-gu, Seoul", ko: "서울 강남구" }, rating: 4.8, reviews: 528, accreditation: ["ISO 9001"], departments: ["derm"], languages: ["en", "zh", "ja"], english_support: true, international_ward: false,
+    blurb: { en: "Cheongdam dermatology clinic focused on skin-rejuvenation lasers and K-beauty programs for tone, pores, and texture.", ko: "피부 재생 레이저와 톤·모공·결 개선 K-뷰티 프로그램에 특화된 청담 피부과입니다." } },
+  { id: "seoul-premier-checkup", name: { en: "Seoul Premier Health Center", ko: "서울 프리미어 검진센터" }, image: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=1000&q=80", area: { en: "Jongno-gu, Seoul", ko: "서울 종로구" }, rating: 4.7, reviews: 640, accreditation: ["JCI", "KAHF"], departments: ["screen"], languages: ["en", "zh", "ru"], english_support: true, international_ward: true,
+    blurb: { en: "Dedicated health-screening center offering comprehensive check-ups and whole-body MRI with same-day radiologist reading.", ko: "종합 건강검진과 전신 MRI를 당일 판독으로 제공하는 건강검진 전문 센터입니다." } },
+  { id: "seoul-forest-hair", name: { en: "Seoul Forest Hair Clinic", ko: "서울숲 모발센터" }, image: "https://images.unsplash.com/photo-1559599101-f09722fb4948?w=1000&q=80", area: { en: "Seongdong-gu, Seoul", ko: "서울 성동구" }, rating: 4.6, reviews: 287, accreditation: ["KAHF"], departments: ["hair"], languages: ["en"], english_support: true, international_ward: false,
+    blurb: { en: "Hair-restoration clinic near Seoul Forest specializing in FUE transplants with natural hairline design.", ko: "서울숲 인근의 모발이식 전문 클리닉으로, 자연스러운 헤어라인 디자인의 FUE 이식에 특화되어 있습니다." } },
 ];
 
 /* ---------------- 방문자 후기 ---------------- */
@@ -753,7 +764,7 @@ export const RECOVERY_BANDS = [
 export const PROCEDURES = [
   {
     id: "smile-lasik", category: "ophthalmology", dept: { en: "Ophthalmology", ko: "안과" }, recoveryBand: "lt1w",
-    hospital: { name: { en: "Gangnam Seoul Bright Eye Clinic", ko: "강남서울밝은안과" }, city: { en: "Gangnam, Seoul", ko: "서울 강남" }, square: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" },
+    hospital: { id: "gangnam-bright-eye", name: { en: "Gangnam Seoul Bright Eye Clinic", ko: "강남서울밝은안과" }, city: { en: "Gangnam, Seoul", ko: "서울 강남" }, square: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=400&q=80" },
     name: { en: "SMILE LASIK", ko: "스마일 라식" },
     hero: "https://images.unsplash.com/photo-1577003833619-76bbd7f82948?w=1200&q=80",
     before: "https://images.unsplash.com/photo-1645066928295-2506defde470?w=600&q=80",
@@ -768,7 +779,7 @@ export const PROCEDURES = [
   },
   {
     id: "dental-implant", category: "dental", dept: { en: "Dental", ko: "치과" }, recoveryBand: "1m",
-    hospital: { name: { en: "Apgujeong Premium Dental", ko: "압구정 프리미엄 치과" }, city: { en: "Gangnam, Seoul", ko: "서울 강남" }, square: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80" },
+    hospital: { id: "apgujeong-dental", name: { en: "Apgujeong Premium Dental", ko: "압구정 프리미엄 치과" }, city: { en: "Gangnam, Seoul", ko: "서울 강남" }, square: "https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=400&q=80" },
     name: { en: "Dental Implant", ko: "임플란트" },
     hero: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=1200&q=80",
     before: "https://images.unsplash.com/photo-1609840114035-3c981b782dfe?w=600&q=80",
@@ -783,7 +794,7 @@ export const PROCEDURES = [
   },
   {
     id: "skin-rejuvenation", category: "dermatology", dept: { en: "Dermatology", ko: "피부과" }, recoveryBand: "lt1w",
-    hospital: { name: { en: "Cheongdam Glow Dermatology", ko: "청담 글로우 피부과" }, city: { en: "Gangnam, Seoul", ko: "서울 강남" }, square: "https://images.unsplash.com/photo-1612908689435-744b8b0a0c46?w=400&q=80" },
+    hospital: { id: "cheongdam-glow-derm", name: { en: "Cheongdam Glow Dermatology", ko: "청담 글로우 피부과" }, city: { en: "Gangnam, Seoul", ko: "서울 강남" }, square: "https://images.unsplash.com/photo-1612908689435-744b8b0a0c46?w=400&q=80" },
     name: { en: "Skin Rejuvenation Laser", ko: "피부 재생 레이저" },
     hero: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1200&q=80",
     before: "https://images.unsplash.com/photo-1614859324967-bdf413c35d4d?w=600&q=80",
@@ -798,7 +809,7 @@ export const PROCEDURES = [
   },
   {
     id: "comprehensive-checkup", category: "checkup", dept: { en: "Health Check-up", ko: "건강검진" }, recoveryBand: "lt1w",
-    hospital: { name: { en: "Seoul Premier Health Center", ko: "서울 프리미어 검진센터" }, city: { en: "Jongno, Seoul", ko: "서울 종로" }, square: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&q=80" },
+    hospital: { id: "seoul-premier-checkup", name: { en: "Seoul Premier Health Center", ko: "서울 프리미어 검진센터" }, city: { en: "Jongno, Seoul", ko: "서울 종로" }, square: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&q=80" },
     name: { en: "Comprehensive Check-up", ko: "종합 건강검진" },
     hero: "https://images.unsplash.com/photo-1581595219315-a187dd40c322?w=1200&q=80",
     before: null, after: null,
@@ -812,7 +823,7 @@ export const PROCEDURES = [
   },
   {
     id: "whole-body-mri", category: "checkup", dept: { en: "Health Check-up", ko: "건강검진" }, recoveryBand: "lt1w",
-    hospital: { name: { en: "Seoul Premier Health Center", ko: "서울 프리미어 검진센터" }, city: { en: "Jongno, Seoul", ko: "서울 종로" }, square: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&q=80" },
+    hospital: { id: "seoul-premier-checkup", name: { en: "Seoul Premier Health Center", ko: "서울 프리미어 검진센터" }, city: { en: "Jongno, Seoul", ko: "서울 종로" }, square: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?w=400&q=80" },
     name: { en: "Whole Body MRI Check-up", ko: "전신 MRI 검진" },
     hero: "https://images.unsplash.com/photo-1516069677018-378515003435?w=1200&q=80",
     before: null, after: null,
@@ -826,7 +837,7 @@ export const PROCEDURES = [
   },
   {
     id: "hair-transplant", category: "hair-loss", dept: { en: "Hair Transplant", ko: "모발이식" }, recoveryBand: "1-2w",
-    hospital: { name: { en: "Seoul Forest Hair Clinic", ko: "서울숲 모발센터" }, city: { en: "Seongdong, Seoul", ko: "서울 성동" }, square: "https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80" },
+    hospital: { id: "seoul-forest-hair", name: { en: "Seoul Forest Hair Clinic", ko: "서울숲 모발센터" }, city: { en: "Seongdong, Seoul", ko: "서울 성동" }, square: "https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80" },
     name: { en: "FUE Hair Transplant", ko: "FUE 모발이식" },
     hero: "https://images.unsplash.com/photo-1559599101-f09722fb4948?w=1200&q=80",
     before: "https://images.unsplash.com/photo-1626954079979-ec4f7b05e032?w=600&q=80",
