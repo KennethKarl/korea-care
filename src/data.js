@@ -392,11 +392,10 @@ export const REVIEWS = [
     author: { en: "James T.", ko: "제임스 T." }, source: { en: "Gangnam Seoul Bright Eye Clinic", ko: "강남서울밝은안과" }, treatment: { en: "SMILE LASIK", ko: "스마일 라식" } },
 ];
 
-/* ---------------- FAQ (필터: All / Checkup / Revital / Common) ---------------- */
+/* ---------------- FAQ (필터: All / Checkup / Common) ---------------- */
 export const FAQ_CATS = [
   { id: "all", en: "All", ko: "전체" },
   { id: "checkup", en: "Checkup", ko: "검진" },
-  { id: "revital", en: "Revital", ko: "리바이탈" },
   { id: "common", en: "Common", ko: "공통" },
 ];
 export const FAQS = [
@@ -410,8 +409,6 @@ export const FAQS = [
     a: { en: "You pay a 50% deposit through SafeDoc at the time of booking. The remaining balance is settled directly at the hospital after your visit.", ko: "예약 시 SafeDoc을 통해 50% 예약금을 결제하고, 잔액은 방문 후 병원에서 직접 정산합니다." } },
   { cat: "common", q: { en: "What payment methods are available?", ko: "어떤 결제 수단을 사용할 수 있나요?" },
     a: { en: "On the SafeDoc website, payments can be made via PayPal or major credit cards. On-site hospital payments accept cards and cash.", ko: "SafeDoc 웹사이트에서는 PayPal 또는 주요 신용카드로 결제할 수 있습니다. 병원 현장 결제는 카드와 현금이 가능합니다." } },
-  { cat: "revital", q: { en: "Can I book Revital treatments on the same trip as my checkup?", ko: "검진과 같은 일정에 리바이탈 시술을 예약할 수 있나요?" },
-    a: { en: "Absolutely. Our coordinators schedule Revital procedures around your checkup so you can complete everything in one visit to Korea.", ko: "물론입니다. 코디네이터가 검진 일정에 맞춰 리바이탈 시술을 조율하여 한 번의 한국 방문으로 모두 마칠 수 있도록 합니다." } },
 ];
 
 /* ---------------- 인증 (Officially Certified by the Korean Government) ---------------- */

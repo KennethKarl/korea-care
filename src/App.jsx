@@ -1560,7 +1560,7 @@ function FaqPage() {
   const FAQS = getCollection("faqs");
   return (
     <>
-      <Seo title="FAQ" description={tr("FAQs on checkups, Revital, payment and refunds.", lang)} path="/faq" jsonLd={faqJsonLd(FAQS.map((f) => ({ q: tx(f.q, lang), a: tx(f.a, lang) })))} />
+      <Seo title="FAQ" description={tr("FAQs on checkups, payment and refunds.", lang)} path="/faq" jsonLd={faqJsonLd(FAQS.map((f) => ({ q: tx(f.q, lang), a: tx(f.a, lang) })))} />
       <PageHeader eyebrow="FAQ" title={tr("Frequently asked questions", lang)} />
       <FaqSection lang={lang} navigate={navigate} />
     </>
