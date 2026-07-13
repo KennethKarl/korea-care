@@ -658,37 +658,65 @@ export function MyPage() {
   const { lang, navigate } = useOutletContext();
   return <ClientOnly>{() => <MyPageInner lang={lang} navigate={navigate} />}</ClientOnly>;
 }
-// 예약 내역 = 로그인 없이 예약번호(no)로 조회. 발급된 번호와 일치하는 예약만 상세 노출.
+// 예약 내역 = 로그인 없이 이메일 + 예약번호(no)로 조회. 두 값이 일치하는 예약만 상세 노출.
+//  · 조건1) 이메일 DDL 진입(URL에 ?no=… 존재) → 예약번호는 링크에서 추출·고정, 이메일만 입력
+//  · 조건2) 상단 nav "예약 내역" 진입(?no= 없음)      → 이메일 + 예약번호 둘 다 입력
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function MyPageInner({ lang, navigate }) {
   store.useStore();
   const ko = lang === "ko";
   const [sp] = useSearchParams();
-  const preset = (sp.get("no") || "").toUpperCase();
-  const [query, setQuery] = useState(preset);
+  const preset = (sp.get("no") || "").toUpperCase();   // 이메일 DDL이 심어준 예약번호
+  const fromLink = !!preset;                            // true=조건1(이메일만) / false=조건2(둘 다)
+  const [no, setNo] = useState(preset);                 // 예약번호 (DDL이면 고정)
+  const [email, setEmail] = useState("");
   const [found, setFound] = useState(null);   // { id } 실제예약 | { booking } 데모샘플
   const [err, setErr] = useState("");
-  const runLookup = (raw) => {
-    const q = String(raw).trim().toUpperCase();
-    if (!q) { setFound(null); setErr(tr("Please enter your reservation number.", lang)); return; }
+  const runLookup = (rawNo, rawEmail) => {
+    const q = String(rawNo || "").trim().toUpperCase();
+    const em = String(rawEmail || "").trim().toLowerCase();
+    if (!q) { setErr(ko ? "예약번호를 입력해 주세요." : "Please enter your reservation number."); return; }
+    if (!EMAIL_RE.test(em)) { setErr(ko ? "이메일을 정확히 입력해 주세요." : "Please enter a valid email."); return; }
     const hit = store.getBookings().find((b) => String(b.no || "").toUpperCase() === q);
-    setErr("");
     // 실제 예약이 있으면 그 예약, 없으면 데모 샘플(입력한 번호로 표기) 조회
-    setFound(hit ? { id: hit.id } : { booking: { ...store.SAMPLE_BOOKING, no: q } });
+    const booking = hit ? store.getBooking(hit.id) : { ...store.SAMPLE_BOOKING, no: q };
+    const bkEmail = String(booking?.cards?.[0]?.email || "").trim().toLowerCase();
+    if (bkEmail && em !== bkEmail) { setErr(ko ? "이메일이 예약 정보와 일치하지 않습니다." : "This email doesn't match the reservation."); return; }
+    setErr("");
+    setFound(hit ? { id: hit.id } : { booking });
   };
-  useEffect(() => { if (preset) runLookup(preset); }, [preset]);   // eslint-disable-line react-hooks/exhaustive-deps
-  const lookup = (e) => { if (e) e.preventDefault(); runLookup(query); };
+  const lookup = (e) => { if (e) e.preventDefault(); runLookup(no, email); };
   if (found) return <div data-spec="mp-detail"><BookingDetail id={found.id} booking={found.booking} lang={lang} navigate={navigate} onBack={() => setFound(null)} /></div>;
   const inp = { padding: "13px 15px", border: `1px solid ${LINE}`, borderRadius: 10, fontSize: 15, width: "100%", boxSizing: "border-box", fontFamily: "inherit", letterSpacing: "0.03em" };
+  const lockInp = { ...inp, background: BG_SOFT, color: MUTE, cursor: "not-allowed", letterSpacing: "0.05em", fontWeight: 700 };
+  const fieldLabel = { fontSize: 12.5, fontWeight: 700, color: MUTE };
   return (
     <>
       <Seo title={UI[lang].myaccount} path="/mypage" noindex />
       <div style={{ ...WRAP, maxWidth: 520, padding: "56px 28px 100px" }}>
         <h1 data-spec="mp-title" style={{ fontFamily: DISPLAY, fontSize: 27, fontWeight: 800, color: INK, margin: "0 0 8px" }}>{UI[lang].myaccount}</h1>
-        <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: "0 0 26px" }}>{ko ? "예약 시 발급된 예약번호를 입력하면 진행 상태를 확인할 수 있습니다." : "Enter the reservation number issued at booking to check its status."}</p>
+        <p style={{ fontSize: 14.5, color: SUB, lineHeight: 1.6, margin: "0 0 26px" }}>{fromLink
+          ? (ko ? "예약 확인 메일로 접속하셨습니다. 본인 확인을 위해 예약 시 입력한 이메일을 입력하면 진행 상태를 확인할 수 있습니다." : "You arrived from your reservation email. Enter the email used at booking to verify and check your status.")
+          : (ko ? "예약 시 입력한 이메일과 발급된 예약번호를 입력하면 진행 상태를 확인할 수 있습니다." : "Enter the email and reservation number from your booking to check its status.")}</p>
         <form onSubmit={lookup} data-spec="mp-lookup" style={{ display: "grid", gap: 12, background: "#fff", border: `1px solid ${LINE}`, borderRadius: 16, padding: 22 }}>
-          <label style={{ fontSize: 12.5, fontWeight: 700, color: MUTE }}>{ko ? "예약번호" : "Reservation number"}</label>
-          <input style={inp} value={query} onChange={(e) => { setQuery(e.target.value); setErr(""); }} placeholder="SD2026-000000" autoFocus />
-          {err && <div style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600 }}>{err}</div>}
+          {fromLink ? (
+            /* 조건1 — 예약번호는 링크에서 추출(고정) + 이메일만 입력 */
+            <>
+              <label style={fieldLabel}>{ko ? "예약번호 · 메일 링크에서 확인됨" : "Reservation number · from your email link"}</label>
+              <input data-spec="mp-no-locked" style={lockInp} value={no} readOnly disabled />
+              <label style={fieldLabel}>{ko ? "이메일" : "Email"}</label>
+              <input data-spec="mp-email" type="email" style={inp} value={email} onChange={(e) => { setEmail(e.target.value); setErr(""); }} placeholder="you@email.com" autoFocus />
+            </>
+          ) : (
+            /* 조건2 — 이메일 + 예약번호 둘 다 입력 */
+            <>
+              <label style={fieldLabel}>{ko ? "이메일" : "Email"}</label>
+              <input data-spec="mp-email" type="email" style={inp} value={email} onChange={(e) => { setEmail(e.target.value); setErr(""); }} placeholder="you@email.com" autoFocus />
+              <label style={fieldLabel}>{ko ? "예약번호" : "Reservation number"}</label>
+              <input data-spec="mp-no" style={inp} value={no} onChange={(e) => { setNo(e.target.value); setErr(""); }} placeholder="SD2026-000000" />
+            </>
+          )}
+          {err && <div data-spec="mp-err" style={{ color: ACCENT, fontSize: 12.5, fontWeight: 600 }}>{err}</div>}
           <button type="submit" style={{ ...btn(BLUE, "#fff"), display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><Search size={16} /> {ko ? "조회" : "Look up"}</button>
         </form>
         <p data-spec="mp-help" style={{ fontSize: 12, color: MUTE, marginTop: 14, lineHeight: 1.6 }}>{ko ? "예약번호는 예약 신청 완료 시 발급됩니다. 확인이 어려우면 문의하기로 연락해 주세요." : "Your reservation number is issued when you submit a booking. Contact us if you can't find it."}</p>
