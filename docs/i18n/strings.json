@@ -10810,10 +10810,10 @@
   {
     "key": "Select category",
     "source": "ui",
-    "en": "Select category",
-    "ko": "병원 구분 선택",
-    "ar": "اختر الفئة",
-    "ja": "病院区分を選択"
+    "en": "Select department",
+    "ko": "진료과 선택",
+    "ar": "اختر التخصص",
+    "ja": "診療科を選択"
   },
   {
     "key": "Tell us about the treatment you're considering",

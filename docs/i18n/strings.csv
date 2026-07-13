@@ -1350,7 +1350,7 @@
 "A confirmation email was sent and our global team was notified.","A confirmation email was sent and our global team was notified.","확인 메일을 보내드렸고, 글로벌팀에 전달되었습니다.","تم إرسال بريد تأكيد وإخطار فريقنا العالمي.","確認メールをお送りし、グローバルチームに通知しました。","ui"
 "Name","Name","이름","الاسم","お名前","ui"
 "Phone (with country code)","Phone (with country code)","연락처 (국가번호 포함)","الهاتف (مع رمز الدولة)","電話番号（国番号を含む）","ui"
-"Select category","Select category","병원 구분 선택","اختر الفئة","病院区分を選択","ui"
+"Select category","Select department","진료과 선택","اختر التخصص","診療科を選択","ui"
 "Tell us about the treatment you're considering","Tell us about the treatment you're considering","고민 중인 시술/수술 등 자유롭게 적어주세요","أخبرنا عن العلاج الذي تفكّر فيه","ご検討中の施術・手術などをご自由にご記入ください","ui"
 "I'm not a robot","I'm not a robot","로봇이 아닙니다","لست روبوتاً","私はロボットではありません","ui"
 "Start Consultation","Start Consultation","상담 신청","ابدأ الاستشارة","相談を申し込む","ui"

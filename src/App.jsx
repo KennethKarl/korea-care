@@ -103,8 +103,8 @@ function FloatingInquiry({ lang }) {
 function InquiryModal({ lang, onClose }) {
   const [sent, setSent] = useState(false);
   const cats = lang === "ko"
-    ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과"]
-    : ["Health check-up", "General hospital", "Dermatology", "Plastic surgery", "Ophthalmology", "Dental", "Obstetrics", "Urology", "Orthopedics"];
+    ? ["건강검진", "종합병원", "피부과", "성형외과", "안과", "치과", "산부인과", "비뇨기과", "정형외과", "기타"]
+    : ["Health check-up", "General hospital", "Dermatology", "Plastic surgery", "Ophthalmology", "Dental", "Obstetrics", "Urology", "Orthopedics", "Other"];
   const inp = { width: "100%", padding: "11px 13px", border: `1px solid ${LINE}`, borderRadius: 9, fontSize: 13.5, boxSizing: "border-box", fontFamily: "inherit" };
   return (
     <div onClick={onClose} style={{ position: "fixed", inset: 0, background: "rgba(0,15,44,.5)", zIndex: 60, display: "grid", placeItems: "center", padding: 20 }}>
