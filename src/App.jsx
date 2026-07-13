@@ -1226,8 +1226,8 @@ function ProviderDetailPage() {
     );
   }
   const reviewsLabel = tr("reviews", lang);
-  // 병원 전문영역에 해당하는 시술 매칭 (PROVIDERS↔PROCEDURES 병원이 달라 진료과 기준 매칭)
-  const procs = PROCEDURES.filter((pr) => p.departments.includes(CAT_TO_DEPT[pr.category]));
+  // 해당 병원의 시술만 노출 (procedure.hospital.id === 이 병원 id). 시술 상세도 같은 병원으로 이동
+  const procs = PROCEDURES.filter((pr) => pr.hospital?.id === p.id);
   // 신뢰·안전 항목 (prototype pvd_trust)
   const trust = [
     [p.english_support, tr("English support", lang)],
