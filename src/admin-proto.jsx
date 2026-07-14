@@ -631,8 +631,7 @@ function HoursNote() {
 function HospitalForm({ hospital, onClose }) {
   return (
     <Card
-      title={hospital ? `병원 수정 — ${hospital.name}` : "병원 등록 — 노출 문구는 한/영/아랍어 직접 등록 · 미등록 언어는 영어 폴백 (영어 필수)"}
-      right={<button onClick={onClose} className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500">닫기</button>}>
+      title={hospital ? `병원 수정 — ${hospital.name}` : "병원 등록 — 노출 문구는 한/영/아랍어 직접 등록 · 미등록 언어는 영어 폴백 (영어 필수)"}>
       <div className="grid gap-4 sm:grid-cols-2">
         <MultiLangField label="병원명 *" values={{ ko: hospital?.name || "", en: "", ar: "" }} />
         <div><Label>전문영역 * (복수 선택 — 클릭)</Label>
