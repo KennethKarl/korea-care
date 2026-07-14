@@ -870,8 +870,7 @@ function TreatmentForm({ treatment, onClose }) {
   const [hospName, setHospName] = useState(treatment?.hospital || HOSPITALS[0].name);
   const master = ITEM_MASTER[hospName] || [];
   return (
-    <Card title={treatment ? `시술 수정 — ${treatment.name}` : "시술 등록"}
-      right={<button onClick={onClose} className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500">닫기</button>}>
+    <Card title={treatment ? `시술 수정 — ${treatment.name}` : "시술 등록"}>
       <div className="grid gap-4 sm:grid-cols-2">
         <div><Label>소속 병원 *</Label>
           <select value={hospName} onChange={(e) => setHospName(e.target.value)} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">
@@ -1174,8 +1173,7 @@ function Blog() {
 
   if (mode === "form") {
     return (
-      <Card title={editing ? "블로그 글 수정" : "블로그 글 작성 — 발행 시 웹사이트에 노출됩니다"}
-        right={<button onClick={() => setMode("list")} className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500">닫기</button>}>
+      <Card title={editing ? "블로그 글 수정" : "블로그 글 작성 — 발행 시 웹사이트에 노출됩니다"}>
         <div className="grid gap-4">
           <MultiLangField label="제목 *" values={editing?.title || { ko: "", en: "", ar: "" }} />
           <div className="grid gap-4 sm:grid-cols-3">
@@ -1253,8 +1251,7 @@ function Faq() {
 
   if (mode === "form") {
     return (
-      <Card title={editing ? "FAQ 수정" : "FAQ 작성 — 발행 시 웹사이트에 노출됩니다"}
-        right={<button onClick={() => setMode("list")} className="rounded-lg border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500">닫기</button>}>
+      <Card title={editing ? "FAQ 수정" : "FAQ 작성 — 발행 시 웹사이트에 노출됩니다"}>
         <div className="grid gap-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div><Label>카테고리</Label>
