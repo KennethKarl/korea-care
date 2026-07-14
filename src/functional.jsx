@@ -672,6 +672,7 @@ function MyPageInner({ lang, navigate }) {
   const [email, setEmail] = useState("");
   const [found, setFound] = useState(null);   // { id } 실제예약 | { booking } 데모샘플
   const [err, setErr] = useState("");
+  const tryRef = React.useRef({ key: "", n: 0 });   // 데모: 같은 입력 재시도 카운트
   const runLookup = (rawNo, rawEmail) => {
     const q = String(rawNo || "").trim().toUpperCase();
     const em = String(rawEmail || "").trim().toLowerCase();
@@ -681,7 +682,17 @@ function MyPageInner({ lang, navigate }) {
     // 실제 예약이 있으면 그 예약, 없으면 데모 샘플(입력한 번호로 표기) 조회
     const booking = hit ? store.getBooking(hit.id) : { ...store.SAMPLE_BOOKING, no: q };
     const bkEmail = String(booking?.cards?.[0]?.email || "").trim().toLowerCase();
-    if (bkEmail && em !== bkEmail) { setErr(ko ? "이메일이 예약 정보와 일치하지 않습니다." : "This email doesn't match the reservation."); return; }
+    if (bkEmail && em !== bkEmail) {
+      // 데모 페이지: 이메일이 안 맞아도 같은 입력으로 한 번 더 누르면 상세로 진입
+      const key = q + "|" + em;
+      if (tryRef.current.key !== key) tryRef.current = { key, n: 0 };
+      tryRef.current.n += 1;
+      if (tryRef.current.n < 2) {
+        setErr(ko ? "이메일이 예약 정보와 일치하지 않습니다. (데모: 한 번 더 누르면 상세로 이동)" : "This email doesn't match the reservation. (Demo: press again to view details)");
+        return;
+      }
+    }
+    tryRef.current = { key: "", n: 0 };
     setErr("");
     setFound(hit ? { id: hit.id } : { booking });
   };
