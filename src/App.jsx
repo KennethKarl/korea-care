@@ -152,6 +152,7 @@ function LandingStyles() {
       .g-step{flex:1;min-width:0}
       .g-chev{display:flex;align-items:center;color:#bcd0ff;flex:0 0 auto;padding:0 4px}
       .g-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+      .g-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
       .g-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
       .g-rev-bento{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
       .g-rev-bento .span2{grid-column:span 2}
@@ -235,6 +236,7 @@ function LandingStyles() {
         .g-hero{grid-template-columns:1fr!important}
         .g-journey{flex-wrap:wrap}.g-step{flex:1 1 45%}.g-chev{display:none}
         .g-trust{grid-template-columns:1fr 1fr!important}
+        .g-4{grid-template-columns:1fr 1fr!important}
         .blog-cards{grid-template-columns:1fr 1fr}
         .blog-news{grid-template-columns:1fr;text-align:center;gap:18px}.blog-news .illus{margin:0 auto}
         .blog-art{grid-template-columns:1fr;gap:0}.blog-toc{display:none}
@@ -243,6 +245,7 @@ function LandingStyles() {
         .blog-cards{grid-template-columns:1fr}
         .blog-lrow{grid-template-columns:1fr;gap:6px;align-items:start}
         .g-trust{grid-template-columns:1fr!important}
+        .g-4{grid-template-columns:1fr!important}
       }
       @media(max-width:560px){.g-step{flex:1 1 100%}}
     `}</style>
@@ -754,15 +757,22 @@ function Reviews({ lang }) {
 function BlogHomeSection({ lang, navigate }) {
   useContent();
   const BLOG = getCollection("blog");
-  const posts = [...BLOG].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 3);
-  if (!posts.length) return null;
+  const [cat, setCat] = useState(BLOG_CATS[0]?.id);
+  if (!BLOG.length) return null;
+  const posts = [...BLOG].filter((p) => p.category === cat).sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 4);
   return (
     <div data-spec="bh-section" style={{ background: BG_SOFT }}>
       <div style={{ ...WRAP, padding: "76px 28px" }}>
-        <div data-spec="bh-title" style={{ textAlign: "center", marginBottom: 40 }}>
+        <div data-spec="bh-title" style={{ textAlign: "center", marginBottom: 28 }}>
           <H2 center>{tr("Insights & Guides", lang)}</H2>
         </div>
-        <div data-spec="bh-grid" className="g-3">
+        <div data-spec="bh-tabs" style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap", marginBottom: 34 }}>
+          {BLOG_CATS.map((c) => {
+            const on = cat === c.id;
+            return <button key={c.id} onClick={() => setCat(c.id)} style={{ fontSize: 13.5, fontWeight: 700, cursor: "pointer", borderRadius: 999, padding: "9px 18px", background: on ? INK : "#fff", color: on ? "#fff" : SUB, border: `1px solid ${on ? INK : LINE}` }}>{tx(c, lang)}</button>;
+          })}
+        </div>
+        <div data-spec="bh-grid" className="g-4">
           {posts.map((p) => <BlogGridCard key={p.id} p={p} lang={lang} navigate={navigate} />)}
         </div>
         <div style={{ textAlign: "center", marginTop: 36 }}>

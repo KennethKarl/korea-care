@@ -1142,9 +1142,9 @@ function Treatments() {
 /* ───────────────────────── 어드민: 블로그 관리 ───────────────────────── */
 
 const INITIAL_POSTS = [
-  { id: "B-021", status: "발행", category: "의료관광 가이드", title: { ko: "한국 임플란트, 왜 인기일까?", en: "Why Korean Dental Implants?", ar: "" }, date: "2026-06-25", author: "세이프닥 에디터",
+  { id: "B-021", status: "발행", category: "By Health Concern", title: { ko: "한국 임플란트, 왜 인기일까?", en: "Why Korean Dental Implants?", ar: "" }, date: "2026-06-25", author: "세이프닥 에디터",
     body: { ko: "<h2>한국 임플란트의 강점</h2><p>한국은 <b>정밀 진단</b>과 <span style=\"color:#0E7C66\">숙련된 의료진</span>으로 잘 알려져 있습니다.</p><ul><li>당일 진단 가능</li><li>다국어 통역 지원</li></ul>", en: "<h2>Why Korea</h2><p>Precision and skilled clinicians.</p>", ar: "" } },
-  { id: "B-020", status: "임시저장", category: "건강검진", title: { ko: "종합검진 전 알아둘 것", en: "", ar: "" }, date: "2026-06-30", author: "세이프닥 에디터", body: { ko: "", en: "", ar: "" } },
+  { id: "B-020", status: "임시저장", category: "Medical Guides", title: { ko: "종합검진 전 알아둘 것", en: "", ar: "" }, date: "2026-06-30", author: "세이프닥 에디터", body: { ko: "", en: "", ar: "" } },
 ];
 
 function Blog() {
@@ -1171,8 +1171,8 @@ function Blog() {
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <div><Label>카테고리</Label>
-              <select defaultValue={editing?.category || "의료관광 가이드"} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">
-                {["의료관광 가이드","건강검진","성형·피부","치과","안과","병원 소식"].map((c) => <option key={c}>{c}</option>)}
+              <select defaultValue={editing?.category || "By Health Concern"} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">
+                {["By Health Concern","Medical Guides","Doctors & Hospitals"].map((c) => <option key={c}>{c}</option>)}
               </select></div>
             <div><Label>작성자</Label>
               <Input defaultValue={editing?.author || ""} placeholder="예: 세이프닥 에디터 / 김OO 원장" /></div>

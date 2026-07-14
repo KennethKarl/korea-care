@@ -458,10 +458,9 @@ export const CERTS = {
 /* 블로그 카테고리 레지스트리 — 리스트 필터 탭 + 아티클 카테고리 뱃지에 사용.
    ListeningMind /all 의 카테고리 필터 바 패턴. all 은 코드에서 자동 프리펜드. */
 export const BLOG_CATS = [
-  { id: "checkup", en: "Health Checkup", ko: "건강검진" },
-  { id: "procedure", en: "Procedures", ko: "시술·수술" },
-  { id: "guide", en: "Travel Guide", ko: "여행 가이드" },
-  { id: "insight", en: "Insights", ko: "인사이트" },
+  { id: "concern", en: "By Health Concern", ko: "By Health Concern" },
+  { id: "guides", en: "Medical Guides", ko: "Medical Guides" },
+  { id: "providers", en: "Doctors & Hospitals", ko: "Doctors & Hospitals" },
 ];
 
 /* ============================================================================
@@ -470,14 +469,14 @@ export const BLOG_CATS = [
    신규 배포 콘텐츠를 덮어써 옛 내용이 계속 보이는 문제를 방지한다:
    hydrate 시 저장된 버전과 다르면 옛 오버라이드를 자동 폐기 → 신규 시드 우선.
    ========================================================================== */
-export const SEED_VERSION = "2026-07-03.blog-2";
+export const SEED_VERSION = "2026-07-14.blog-cats3";
 
 /* 블로그 포스트 — ListeningMind 아티클 구조 반영:
    category(뱃지·필터) · author · read(분) · cover image · sections[](TOC 자동 생성).
    section: { id(앵커), h(제목), p[](문단) }. 첫 문단은 발췌(excerpt)로도 사용. */
 export const BLOG = [
   {
-    id: "korea-checkup-guide", date: "2026-05-20", category: "checkup", read: 7, views: 4200,
+    id: "korea-checkup-guide", date: "2026-05-20", category: "guides", read: 7, views: 4200,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1200&q=80",
     title: { en: "A Foreigner's Guide to Health Checkups in Korea", ko: "외국인을 위한 한국 건강검진 가이드" },
@@ -503,7 +502,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "smile-lasik-korea", date: "2026-05-12", category: "procedure", read: 5, views: 5100,
+    id: "smile-lasik-korea", date: "2026-05-12", category: "concern", read: 5, views: 5100,
     author: { en: "Dr. J. Kim", ko: "김 원장" },
     image: "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=1200&q=80",
     title: { en: "Why SMILE LASIK Is So Popular in Korea", ko: "한국에서 스마일 라식이 인기 있는 이유" },
@@ -524,7 +523,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "tax-refund-medical", date: "2026-04-28", category: "guide", read: 4, views: 2600,
+    id: "tax-refund-medical", date: "2026-04-28", category: "guides", read: 4, views: 2600,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1200&q=80",
     title: { en: "Medical Tax Refund for Foreign Patients", ko: "외국인 환자를 위한 의료 세금 환급" },
@@ -545,7 +544,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "recovery-stay-seoul", date: "2026-04-15", category: "guide", read: 6, views: 1800,
+    id: "recovery-stay-seoul", date: "2026-04-15", category: "guides", read: 6, views: 1800,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1200&q=80",
     title: { en: "Where to Recover in Seoul After a Procedure", ko: "시술 후 서울에서 회복하기 좋은 곳" },
@@ -566,7 +565,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "dental-implant-value", date: "2026-03-30", category: "procedure", read: 5, views: 3400,
+    id: "dental-implant-value", date: "2026-03-30", category: "concern", read: 5, views: 3400,
     author: { en: "Dr. S. Park", ko: "박 원장" },
     image: "https://images.unsplash.com/photo-1606811841689-23dfddce3e95?w=1200&q=80",
     title: { en: "Dental Implants in Korea: Quality Meets Value", ko: "한국의 임플란트: 품질과 가치의 균형" },
@@ -583,7 +582,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "medical-visa-korea", date: "2026-03-18", category: "insight", read: 6, views: 2900,
+    id: "medical-visa-korea", date: "2026-03-18", category: "providers", read: 6, views: 2900,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80",
     title: { en: "Understanding Korea's Medical Visa", ko: "한국 의료 비자 완전 정복" },
@@ -604,7 +603,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "kbeauty-dermatology", date: "2026-05-06", category: "procedure", read: 6, views: 4800,
+    id: "kbeauty-dermatology", date: "2026-05-06", category: "concern", read: 6, views: 4800,
     author: { en: "Dr. H. Lee", ko: "이 원장" },
     image: "https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=1200&q=80",
     title: { en: "K-Beauty Dermatology: What to Know Before You Go", ko: "K-뷰티 피부과: 가기 전에 알아둘 것" },
@@ -621,7 +620,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "hair-transplant-korea", date: "2026-04-22", category: "procedure", read: 6, views: 3900,
+    id: "hair-transplant-korea", date: "2026-04-22", category: "concern", read: 6, views: 3900,
     author: { en: "Dr. S. Park", ko: "박 원장" },
     image: "https://images.unsplash.com/photo-1579154204601-01588f351e67?w=1200&q=80",
     title: { en: "Hair Transplant in Korea: Methods and Recovery", ko: "한국 모발이식: 방법과 회복" },
@@ -638,7 +637,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "cancer-screening-packages", date: "2026-04-08", category: "checkup", read: 7, views: 3100,
+    id: "cancer-screening-packages", date: "2026-04-08", category: "guides", read: 7, views: 3100,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1579165466741-7f35e4755660?w=1200&q=80",
     title: { en: "Cancer Screening Packages Explained", ko: "암 검진 패키지 완전 정리" },
@@ -655,7 +654,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "payment-insurance-costs", date: "2026-03-25", category: "insight", read: 5, views: 2100,
+    id: "payment-insurance-costs", date: "2026-03-25", category: "providers", read: 5, views: 2100,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=1200&q=80",
     title: { en: "Payment, Insurance and Costs for Foreign Patients", ko: "외국인 환자의 결제·보험·비용" },
@@ -672,7 +671,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "choosing-hospital", date: "2026-03-10", category: "insight", read: 5, views: 1500,
+    id: "choosing-hospital", date: "2026-03-10", category: "providers", read: 5, views: 1500,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&q=80",
     title: { en: "Choosing a Hospital: Accreditation and Reviews", ko: "병원 고르기: 인증과 후기 보는 법" },
@@ -689,7 +688,7 @@ export const BLOG = [
     ],
   },
   {
-    id: "interpreter-services", date: "2026-02-26", category: "guide", read: 4, views: 1200,
+    id: "interpreter-services", date: "2026-02-26", category: "providers", read: 4, views: 1200,
     author: { en: "SafeDoc Editorial", ko: "세이프닥 편집팀" },
     image: "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=1200&q=80",
     title: { en: "Interpreter Services for Medical Visits", ko: "의료 방문을 위한 통역 서비스" },
