@@ -88,17 +88,50 @@ export const NAV = [
 
 /* ---------------- 히어로 ---------------- */
 export const HERO = {
-  image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1600&q=80",
+  image: import.meta.env.BASE_URL + "hero-visitor.jpg",
   badge: { en: "Korea's trusted medical expertise", ko: "한국이 신뢰하는 의료 전문성" },
-  title1: { en: "Healthier Tomorrow,", ko: "더 건강한 내일," },
-  title2: { en: "Begins Today.", ko: "오늘 시작됩니다." },
-  accent: { en: "With SafeDoc Global.", ko: "SafeDoc Global과 함께." },
+  title1: { en: "Understand Korean Healthcare.", ko: "한국 의료를 이해하고," },
+  title2: { en: "", ko: "" },
+  accent: { en: "Choose With Confidence.", ko: "확신을 갖고 선택하세요." },
   sub: {
-    en: "SafeDoc Global offers comprehensive healthcare — from preventive checkups to specialized treatments — powered by Korea's trusted medical expertise.",
-    ko: "SafeDoc Global은 예방 검진부터 전문 치료까지, 한국이 신뢰하는 의료 전문성을 바탕으로 종합 헬스케어를 제공합니다.",
+    en: "From evidence-based medical guidance by verified Korean physicians to trusted care in Korea, SafeDoc is with you every step of the way.",
+    ko: "검증된 한국 의사의 근거 기반 의료 안내부터 한국에서의 신뢰할 수 있는 치료까지, SafeDoc이 모든 여정을 함께합니다.",
   },
   cta1: { en: "Explore services", ko: "서비스 둘러보기" },
   cta2: { en: "How it works →", ko: "이용 방법 →" },
+};
+
+/* ---------------- Why Trust SafeDoc (히어로 하단 신뢰 섹션) ----------------
+   ⚠️ 내용 추후 확정(TBD) — 현재는 플레이스홀더 카피. 확정 시 items 교체. */
+export const WHYTRUST = {
+  eyebrow: { en: "Why Trust SafeDoc", ko: "SafeDoc을 신뢰하는 이유" },
+  title: { en: "Care you can verify, every step of the way.", ko: "모든 단계에서 확인 가능한 신뢰." },
+  sub: {
+    en: "Placeholder copy — to be finalized. A few reasons international patients rely on SafeDoc for their care in Korea.",
+    ko: "플레이스홀더 카피 — 추후 확정 예정. 해외 환자들이 한국에서의 치료를 SafeDoc에 맡기는 이유입니다.",
+  },
+  items: [
+    {
+      icon: "Stethoscope",
+      title: { en: "Verified Korean physicians", ko: "검증된 한국 의료진" },
+      desc: { en: "Every doctor on SafeDoc is license-verified and experienced in caring for international patients.", ko: "SafeDoc의 모든 의료진은 면허가 검증되었으며 외국인 진료 경험을 갖추고 있습니다." },
+    },
+    {
+      icon: "Sparkles",
+      title: { en: "Evidence-based guidance", ko: "근거 기반 안내" },
+      desc: { en: "Recommendations grounded in clinical evidence — not commissions or sales targets.", ko: "판매 목표가 아닌 임상적 근거에 기반한 추천을 제공합니다." },
+    },
+    {
+      icon: "MessageSquare",
+      title: { en: "One dedicated coordinator", ko: "전담 코디네이터 1인" },
+      desc: { en: "A single point of contact from your first question through post-care follow-up.", ko: "첫 문의부터 사후관리까지 한 명의 담당자가 함께합니다." },
+    },
+    {
+      icon: "Handshake",
+      title: { en: "Transparent, trusted care", ko: "투명하고 신뢰할 수 있는 케어" },
+      desc: { en: "Clear pricing and vetted partner hospitals — no surprises, no hidden fees.", ko: "명확한 가격과 검증된 제휴 병원 — 예상치 못한 비용이 없습니다." },
+    },
+  ],
 };
 
 /* ---------------- Your Health Journey, Made Simple. (5단계) ---------------- */

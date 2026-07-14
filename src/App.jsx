@@ -19,7 +19,7 @@ import {
   DISPLAY, btn, viewMoreBtn,
 } from "./theme.js";
 import {
-  BRAND, NAV, HERO, JOURNEY, CHECKUP, WHY, REVITAL, SERVICES,
+  BRAND, NAV, HERO, JOURNEY, WHYTRUST, CHECKUP, WHY, REVITAL, SERVICES,
   REVIEWS, FAQ_CATS, FAQS, CERTS, BLOG, BLOG_CATS, UI, tx, PROCEDURES, usd, KRW_PER_USD, SCAN_MENU,
   PROVIDERS, PROVIDER_DEPTS, PROVIDER_LANGS,
 } from "./data.js";
@@ -234,6 +234,7 @@ function LandingStyles() {
         .g-rev-bento .span2{grid-column:auto}
         .g-hero{grid-template-columns:1fr!important}
         .g-journey{flex-wrap:wrap}.g-step{flex:1 1 45%}.g-chev{display:none}
+        .g-trust{grid-template-columns:1fr 1fr!important}
         .blog-cards{grid-template-columns:1fr 1fr}
         .blog-news{grid-template-columns:1fr;text-align:center;gap:18px}.blog-news .illus{margin:0 auto}
         .blog-art{grid-template-columns:1fr;gap:0}.blog-toc{display:none}
@@ -241,6 +242,7 @@ function LandingStyles() {
       @media(max-width:640px){
         .blog-cards{grid-template-columns:1fr}
         .blog-lrow{grid-template-columns:1fr;gap:6px;align-items:start}
+        .g-trust{grid-template-columns:1fr!important}
       }
       @media(max-width:560px){.g-step{flex:1 1 100%}}
     `}</style>
@@ -419,6 +421,7 @@ function Home() {
     <>
       <Seo path="/" jsonLd={orgJsonLd} />
       <Hero lang={lang} navigate={navigate} />
+      <WhyTrust lang={lang} />
       <Journey lang={lang} />
       <ProvidersHomeSection lang={lang} navigate={navigate} />
       <WhyKorea lang={lang} />
@@ -453,7 +456,7 @@ function Hero({ lang, navigate }) {
         </div>
         {/* 우: 포토 + 오버레이 캡션 + 플로팅 배지 */}
         <div style={{ position: "relative", borderRadius: 16, overflow: "hidden", minHeight: 540, alignSelf: "stretch" }}>
-          <img src={HERO.image} alt="Medical care in Korea" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+          <img src={HERO.image} alt="A patient using SafeDoc on her phone" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "78% 32%" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,15,44,0) 45%, rgba(0,15,44,.55) 100%)" }} />
           <div style={{ position: "absolute", left: 22, bottom: 20, right: 22, color: "#fff" }}>
             <div style={{ fontFamily: DISPLAY, fontSize: 19, fontWeight: 700, letterSpacing: "-0.01em" }}>{tr("One journey. One coordinator. One call.", lang)}</div>
@@ -461,6 +464,32 @@ function Hero({ lang, navigate }) {
           <div style={{ position: "absolute", top: 16, right: 16, display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,.94)", backdropFilter: "blur(8px)", borderRadius: 999, padding: "8px 13px", fontSize: 12, fontWeight: 700, color: INK }}>
             <span style={{ width: 7, height: 7, borderRadius: "50%", background: GREEN }} />{tx(HERO.badge, lang)}
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WhyTrust({ lang }) {
+  return (
+    <div style={{ background: "#fff", borderBottom: `1px solid ${LINE}` }}>
+      <div style={{ ...WRAP, padding: "72px 28px" }}>
+        <div style={{ textAlign: "center", marginBottom: 44 }}>
+          <Eyebrow>{tx(WHYTRUST.eyebrow, lang)}</Eyebrow>
+          <H2 center>{tx(WHYTRUST.title, lang)}</H2>
+          <Lead center>{tx(WHYTRUST.sub, lang)}</Lead>
+        </div>
+        <div className="g-trust" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 20 }}>
+          {WHYTRUST.items.map((it, i) => {
+            const Icon = ICONS[it.icon] || Sparkles;
+            return (
+              <div key={i} style={{ background: SECTION_TINT, border: `1px solid ${LINE}`, borderRadius: 16, padding: "26px 22px" }}>
+                <div style={{ width: 46, height: 46, borderRadius: 12, background: "#fff", color: BLUE, display: "grid", placeItems: "center", marginBottom: 16, border: `1.5px solid ${BLUE}` }}><Icon size={22} /></div>
+                <div style={{ fontFamily: DISPLAY, fontSize: 17, fontWeight: 800, color: INK, letterSpacing: "-0.01em", marginBottom: 8 }}>{tx(it.title, lang)}</div>
+                <div style={{ fontSize: 13.5, lineHeight: 1.6, color: "#475569" }}>{tx(it.desc, lang)}</div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
