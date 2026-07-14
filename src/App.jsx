@@ -66,6 +66,15 @@ function Layout() {
     trackPageView(location.pathname);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "auto" });
   }, [location.pathname]);
+  // /admin 은 운영자 어드민(다크 풀스크린) — 사이트 헤더/푸터/플로팅 미노출
+  const isAdmin = /(^|\/)admin\/?$/.test(location.pathname);
+  if (isAdmin) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#F4F6F9" }}>
+        <Outlet context={{ lang, isMobile, navigate }} />
+      </div>
+    );
+  }
   return (
     <div style={{ fontFamily: "Pretendard, system-ui, sans-serif", background: "#fff", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
       <LandingStyles />

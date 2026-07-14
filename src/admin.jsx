@@ -19,6 +19,7 @@ import {
 import { publishContentJson, PUBLISH_TARGET } from "./github.js";
 import { LANG_CODES, labelOf, dirOf, SEED_CODES } from "./langs.js";
 import { BLUE, INK, SUB, MUTE, LINE, BG_SOFT, GREEN, DISPLAY, btn } from "./theme.js";
+import AdminProto from "./admin-proto.jsx";   // 프로토타입 구조 이식 어드민(다크 사이드바 5섹션)
 
 /* ---------------- 공통 스타일 ---------------- */
 const inp = { width: "100%", padding: "8px 10px", border: `1px solid ${LINE}`, borderRadius: 8, fontSize: 13, boxSizing: "border-box", fontFamily: "inherit", background: "#fff" };
@@ -565,9 +566,9 @@ export default function AdminPage() {
   const unlock = () => { try { sessionStorage.setItem("kc2_admin", "1"); } catch { /* */ } setUnlocked(true); };
   return (
     <>
-      <Seo title="콘텐츠 관리" path="/admin" noindex />
+      <Seo title="운영자 어드민" path="/admin" noindex />
       {!ready ? <div style={{ ...wrap, padding: "80px 24px", color: MUTE }}>로딩…</div>
-        : unlocked ? <AdminShell /> : <Gate onUnlock={unlock} />}
+        : unlocked ? <AdminProto /> : <Gate onUnlock={unlock} />}
     </>
   );
 }
