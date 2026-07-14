@@ -786,9 +786,9 @@ function HospitalDetail({ h, back, onEdit }) {
             <Label>운영시간 (요일별)</Label>
             <div className="grid gap-1">
               {days.map(([d, t]) => (
-                <div key={d} className="flex items-center justify-between rounded bg-slate-50 px-3 py-1 text-sm">
-                  <span className="font-bold text-slate-600">{d}</span>
-                  <span className={`ml-auto text-right tabular-nums ${t === "휴무" ? "text-rose-400" : "text-slate-700"}`}>{t}</span>
+                <div key={d} className="flex items-center gap-4 rounded bg-slate-50 px-3 py-1 text-sm">
+                  <span className="w-6 font-bold text-slate-600">{d}</span>
+                  <span className={`tabular-nums ${t === "휴무" ? "text-rose-400" : "text-slate-700"}`}>{t}</span>
                 </div>
               ))}
             </div>
