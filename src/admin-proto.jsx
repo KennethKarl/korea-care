@@ -983,6 +983,8 @@ function TreatmentForm({ treatment, onClose }) {
 
         <div className="sm:col-span-2"><MultiLangField label="안내사항" textarea values={{ ko: "", en: "", ar: "" }} /></div>
 
+        <div className="sm:col-span-2"><MultiLangField label="도착 전 준비사항" textarea values={{ ko: "", en: "", ar: "" }} /></div>
+
         <div className="sm:col-span-2 flex justify-end gap-2">
           <button onClick={onClose} className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-500">취소</button>
           <button onClick={onClose} className="rounded-lg bg-teal-700 px-6 py-2 text-sm font-bold text-white hover:bg-teal-800">{treatment ? "수정 저장" : "시술 등록"}</button>
