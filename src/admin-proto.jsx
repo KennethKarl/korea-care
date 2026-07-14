@@ -1160,6 +1160,15 @@ function Blog() {
       <Card title={editing ? "블로그 글 수정" : "블로그 글 작성 — 발행 시 웹사이트에 노출됩니다"}>
         <div className="grid gap-4">
           <MultiLangField label="제목 *" values={editing?.title || { ko: "", en: "", ar: "" }} />
+          <div>
+            <Label>URL slug</Label>
+            <div className="flex items-center rounded-lg border border-slate-200 bg-white focus-within:border-teal-600">
+              <span className="select-none pl-3 text-sm text-slate-400">/blog/</span>
+              <input defaultValue={editing?.slug || ""} placeholder="korea-checkup-guide"
+                className="w-full rounded-lg bg-transparent px-1.5 py-2 text-sm text-slate-800 outline-none" />
+            </div>
+            <p className="mt-1 text-[11px] text-slate-400">아티클 웹주소(언어 공용·단일). 영문 소문자·하이픈(-)만, 중복 불가. 비우면 제목에서 자동 생성. 발행 후 변경 시 기존 링크가 깨집니다.</p>
+          </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <div><Label>카테고리</Label>
               <select defaultValue={editing?.category || "의료관광 가이드"} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm">
@@ -1171,6 +1180,18 @@ function Blog() {
               <div className="flex h-[38px] items-center justify-center rounded-lg border-2 border-dashed border-slate-200 text-xs text-slate-400">업로드</div></div>
           </div>
           <RichEditor label="본문 * (한/영/아랍)" values={editing?.body || { ko: "", en: "", ar: "" }} />
+          <details className="rounded-lg border border-slate-200 bg-slate-50/40">
+            <summary className="cursor-pointer px-4 py-2.5 text-sm font-bold text-slate-700">
+              SEO 설정 <span className="font-normal text-slate-400">— 검색·SNS 공유 노출용 (선택 · 비우면 자동)</span>
+            </summary>
+            <div className="grid gap-4 border-t border-slate-200 p-4">
+              <MultiLangField label="메타 제목 (meta title)" values={editing?.metaTitle || { ko: "", en: "", ar: "" }} />
+              <MultiLangField label="메타 설명 (meta description)" textarea values={editing?.metaDesc || { ko: "", en: "", ar: "" }} />
+              <div><Label>OG 이미지 (공유 카드 · 권장 1200×630)</Label>
+                <div className="flex h-[38px] items-center justify-center rounded-lg border-2 border-dashed border-slate-200 text-xs text-slate-400">업로드 (비우면 대표 이미지 사용)</div></div>
+              <p className="text-[11px] text-slate-400">메타 제목·설명은 언어별 입력, 비우면 제목·본문 발췌로 자동 폴백됩니다.</p>
+            </div>
+          </details>
           <div className="flex justify-end gap-2">
             <button onClick={() => setMode("list")} className="rounded-lg border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-500">취소</button>
             <button onClick={() => setMode("list")} className="rounded-lg border border-teal-700 px-4 py-2 text-sm font-bold text-teal-700">임시저장</button>
