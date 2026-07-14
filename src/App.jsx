@@ -422,11 +422,11 @@ function Home() {
       <Seo path="/" jsonLd={orgJsonLd} />
       <Hero lang={lang} navigate={navigate} />
       <WhyTrust lang={lang} />
-      <Journey lang={lang} />
-      <ProvidersHomeSection lang={lang} navigate={navigate} />
-      <WhyKorea lang={lang} />
       <BlogHomeSection lang={lang} navigate={navigate} />
+      <WhyKorea lang={lang} />
+      <Journey lang={lang} />
       <FaqSection lang={lang} navigate={navigate} preview />
+      <ProvidersHomeSection lang={lang} navigate={navigate} />
     </>
   );
 }
