@@ -217,8 +217,10 @@ const LANGS = [
 ];
 function MultiLangField({ label, textarea, values = {} }) {
   const [lang, setLang] = useState("ko");
+  const [vals, setVals] = useState({ ko: values.ko || "", en: values.en || "", ar: values.ar || "" });
   const cur = LANGS.find((l) => l.key === lang);
-  const filled = LANGS.filter((l) => values[l.key]).map((l) => l.key);
+  const filled = LANGS.filter((l) => (vals[l.key] || "").trim()).map((l) => l.key);
+  const set = (v) => setVals((p) => ({ ...p, [lang]: v }));
   return (
     <div>
       <div className="mb-1 flex items-center justify-between">
@@ -235,11 +237,11 @@ function MultiLangField({ label, textarea, values = {} }) {
         </div>
       </div>
       {textarea ? (
-        <textarea rows={2} dir={cur.dir} defaultValue={values[lang] || ""}
+        <textarea rows={2} dir={cur.dir} value={vals[lang] || ""} onChange={(e) => set(e.target.value)}
           placeholder={lang === "ko" ? "한국어 문구 입력" : lang === "en" ? "Enter English copy" : "أدخل النص العربي"}
           className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm outline-none focus:border-teal-600" />
       ) : (
-        <Input dir={cur.dir} defaultValue={values[lang] || ""}
+        <Input dir={cur.dir} value={vals[lang] || ""} onChange={(e) => set(e.target.value)}
           placeholder={lang === "ko" ? "한국어 문구 입력" : lang === "en" ? "Enter English copy" : "أدخل النص العربي"} />
       )}
     </div>
@@ -378,7 +380,7 @@ function MiniLangInput({ value = {}, onChange, placeholderKo = "한국어", plac
           <button key={l.key} type="button" onClick={() => setLang(l.key)}
             className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${lang === l.key ? "bg-white text-teal-700 shadow-sm" : "text-slate-400"}`}>
             {l.label}
-            <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${value[l.key] ? "bg-teal-500" : "bg-slate-300"}`} />
+            <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${(value[l.key] || "").trim() ? "bg-teal-500" : "bg-slate-300"}`} />
           </button>
         ))}
       </div>
