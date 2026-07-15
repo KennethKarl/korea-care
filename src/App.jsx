@@ -254,19 +254,10 @@ function LandingStyles() {
 
 /* --------- logo --------- */
 function SafedocLogo({ onClick, dark = false }) {
-  // 라이트(헤더): 슬로건 포함 전체 CI 락업 PNG 한 장으로 교체
-  if (!dark) {
-    return (
-      <button onClick={onClick} data-spec="h-logo" style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", alignItems: "center", padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
-        <img src={`${import.meta.env.BASE_URL}safedoc-global-logo.png`} alt="SafeDoc Global Service" style={{ height: 38, width: "auto", display: "block" }} />
-      </button>
-    );
-  }
-  // 다크(푸터): 파란 CI는 네이비 배경에서 안 보이므로 흰 워드마크 + 슬로건 텍스트 유지
+  // 슬로건 포함 전체 CI 락업 PNG — 라이트(헤더)=블루, 다크(푸터)=화이트
   return (
-    <button onClick={onClick} data-spec="f-logo" style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", flexDirection: "column", alignItems: "flex-start", gap: 5, padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
-      <img src={`${import.meta.env.BASE_URL}safedoc-wordmark-white.png`} alt="SafeDoc" style={{ height: 26, width: "auto", display: "block" }} />
-      <span style={{ fontSize: 8.5, fontWeight: 700, letterSpacing: "0.22em", color: "rgba(255,255,255,.6)", paddingLeft: 2 }}>GLOBAL SERVICE</span>
+    <button onClick={onClick} data-spec={dark ? "f-logo" : "h-logo"} style={{ border: "none", background: "transparent", cursor: "pointer", display: "inline-flex", alignItems: "center", padding: 0, lineHeight: 1 }} aria-label="SafeDoc Global home">
+      <img src={`${import.meta.env.BASE_URL}${dark ? "safedoc-global-logo-white.png" : "safedoc-global-logo.png"}`} alt="SafeDoc Global Service" style={{ height: 38, width: "auto", display: "block" }} />
     </button>
   );
 }
