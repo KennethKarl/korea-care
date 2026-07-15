@@ -427,9 +427,9 @@ function Home() {
       <WhyTrust lang={lang} />
       <BlogHomeSection lang={lang} navigate={navigate} />
       <WhyKorea lang={lang} />
+      <ProvidersHomeSection lang={lang} navigate={navigate} />
       <Journey lang={lang} />
       <FaqSection lang={lang} navigate={navigate} preview />
-      <ProvidersHomeSection lang={lang} navigate={navigate} />
     </>
   );
 }
