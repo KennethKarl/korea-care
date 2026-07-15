@@ -253,6 +253,8 @@ function RichEditor({ label, values = {} }) {
   const [lang, setLang] = useState("ko");
   const cur = LANGS.find((l) => l.key === lang);
   const refs = { ko: useRef(null), en: useRef(null), ar: useRef(null) };
+  const hasContent = (html) => !!((html || "").replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim()) || /<(img|iframe|video)/i.test(html || "");
+  const [filled, setFilled] = useState({ ko: hasContent(values.ko), en: hasContent(values.en), ar: hasContent(values.ar) });
 
   const cmd = (command, value = null) => {
     const el = refs[lang].current;
@@ -283,7 +285,7 @@ function RichEditor({ label, values = {} }) {
             <button key={l.key} type="button" onClick={() => setLang(l.key)}
               className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${lang === l.key ? "bg-white text-teal-700 shadow-sm" : "text-slate-400"}`}>
               {l.label}
-              <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${values[l.key] ? "bg-teal-500" : "bg-slate-300"}`} />
+              <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${filled[l.key] ? "bg-teal-500" : "bg-slate-300"}`} />
             </button>
           ))}
         </div>
@@ -337,6 +339,7 @@ function RichEditor({ label, values = {} }) {
           contentEditable
           suppressContentEditableWarning
           dir={l.dir}
+          onInput={(e) => { const has = hasContent(e.currentTarget.innerHTML); setFilled((p) => ({ ...p, [l.key]: has })); }}
           dangerouslySetInnerHTML={{ __html: values[l.key] || "" }}
           data-ph={l.key === "ko" ? "본문을 입력하세요…" : l.key === "en" ? "Write the article body…" : "اكتب النص هنا…"}
           className={`${lang === l.key ? "block" : "hidden"} min-h-[220px] w-full rounded-b-lg border border-t-0 border-slate-200 px-3 py-2 text-sm leading-relaxed outline-none focus:border-teal-600 [&:empty:before]:text-slate-400 [&:empty:before]:content-[attr(data-ph)] [&_h2]:my-2 [&_h2]:text-lg [&_h2]:font-extrabold [&_h3]:my-1.5 [&_h3]:text-base [&_h3]:font-bold [&_blockquote]:border-l-4 [&_blockquote]:border-teal-300 [&_blockquote]:pl-3 [&_blockquote]:text-slate-500 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5 [&_a]:text-teal-700 [&_a]:underline [&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg`}
