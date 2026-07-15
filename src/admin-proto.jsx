@@ -231,7 +231,7 @@ function MultiLangField({ label, textarea, values = {} }) {
               className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${
                 lang === l.key ? "bg-white text-teal-700 shadow-sm" : "text-slate-400"}`}>
               {l.label}
-              <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${filled.includes(l.key) ? "bg-teal-500" : "bg-slate-300"}`} />
+              <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${filled.includes(l.key) ? "bg-green-500" : "bg-slate-300"}`} />
             </button>
           ))}
         </div>
@@ -285,7 +285,7 @@ function RichEditor({ label, values = {} }) {
             <button key={l.key} type="button" onClick={() => setLang(l.key)}
               className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${lang === l.key ? "bg-white text-teal-700 shadow-sm" : "text-slate-400"}`}>
               {l.label}
-              <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${filled[l.key] ? "bg-teal-500" : "bg-slate-300"}`} />
+              <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${filled[l.key] ? "bg-green-500" : "bg-slate-300"}`} />
             </button>
           ))}
         </div>
@@ -383,7 +383,7 @@ function MiniLangInput({ value = {}, onChange, placeholderKo = "한국어", plac
           <button key={l.key} type="button" onClick={() => setLang(l.key)}
             className={`rounded-md px-2 py-0.5 text-[11px] font-bold ${lang === l.key ? "bg-white text-teal-700 shadow-sm" : "text-slate-400"}`}>
             {l.label}
-            <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${(value[l.key] || "").trim() ? "bg-teal-500" : "bg-slate-300"}`} />
+            <span className={`ml-1 inline-block h-1.5 w-1.5 rounded-full ${(value[l.key] || "").trim() ? "bg-green-500" : "bg-slate-300"}`} />
           </button>
         ))}
       </div>
