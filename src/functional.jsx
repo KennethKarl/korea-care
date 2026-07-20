@@ -54,7 +54,7 @@ export function TreatmentListPage() {
   useEffect(() => setMounted(true), []);
   const [cat, setCat] = useState("all");
   const [price, setPrice] = useState("all");
-  const [sort, setSort] = useState("recommended");
+  const [sort, setSort] = useState("price");
   const [q, setQ] = useState("");
   const cats = ["all", ...Array.from(new Set(PROCEDURES.map((p) => p.category)))];
   const catCount = (c) => (c === "all" ? PROCEDURES.length : PROCEDURES.filter((p) => p.category === c).length);
@@ -71,7 +71,7 @@ export function TreatmentListPage() {
   const Pill = ({ on, onClick, children }) => (
     <button onClick={onClick} style={{ fontSize: 13, fontWeight: 700, cursor: "pointer", borderRadius: 999, padding: "8px 15px", background: on ? BLUE : "#fff", color: on ? "#fff" : SUB, border: `1px solid ${on ? BLUE : LINE}`, display: "inline-flex", alignItems: "center", gap: 7 }}>{children}</button>
   );
-  const SORTS = [["recommended", tr("Recommended", lang)], ["price", tr("Price", lang)], ["booked", tr("Most booked", lang)], ["reviewed", tr("Most reviewed", lang)]];
+  const SORTS = [["price", tr("Price", lang)], ["booked", tr("Most booked", lang)], ["reviewed", tr("Most reviewed", lang)]];
   return (
     <>
       <Seo title={tr("Treatments", lang)} description={tr("Browse treatments at accredited Korean hospitals — bilingual descriptions, transparent pricing.", lang)} path="/treatments" />
